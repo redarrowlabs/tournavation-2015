@@ -1,0 +1,83 @@
+{
+  "name": "tournavation-2015",
+  "version": "1.0.0",
+  "description": "Tournavation HealthHeroes Web Application",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redarrowlabs/tournavation-2015.git"
+  },
+  "keywords": [
+    "tournavation",
+    "healthheroes"
+  ],
+  "author": "Red Arrow Labs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/redarrowlabs/tournavation-2015/issues"
+  },
+  "homepage": "https://github.com/redarrowlabs/tournavation-2015#readme",
+  "engines": {
+    "node": ">=0.10.32"
+  },
+  "dependencies": {
+    "alt": "^0.18.1",
+    "babel-polyfill": "^6.3.14",
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "history": "^1.13.1 ",
+    "immutable": "^3.7.5",
+    "jade": "^1.11.0",
+    "mongoose": "^4.3.1",
+    "node-uuid": "^1.4.7",
+    "piping": "^0.3.0",
+    "pretty-error": "^1.2.0",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "react-router": "^1.0.0",
+    "superagent": "^1.5.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.2.1",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.1.18",
+    "babel-preset-react": "^6.1.18",
+    "babel-preset-stage-0": "^6.1.18",
+    "better-npm-run": "0.0.4",
+    "concurrently": "^1.0.0",
+    "json-loader": "^0.5.4",
+    "nodemon": "^1.8.1",
+    "react-hot-loader": "^1.3.0",
+    "webpack": "^1.12.9",
+    "webpack-dev-server": "^1.14.0"
+  },
+  "scripts": {
+    "clean": "node ./bin/clean.js lib static",
+    "build-js": "./node_modules/.bin/babel src -d lib",
+    "build": "npm run clean && npm run build-js",
+    "watch-js": "better-npm-run watch-client",
+    "dev-server": "node lib/server/webpack",
+    "server-web": "better-npm-run start-dev",
+    "dev": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run watch-js\" \"npm run server-web\""
+  },
+  "betterScripts": {
+    "start-dev": {
+      "command": "node ./bin/server.js",
+      "env": {
+        "NODE_ENV": "development",
+        "NODE_PATH": "./src",
+        "HOST": "localhost",
+        "PORT": 3000,
+        "APIHOST": "localhost",
+        "APIPORT": 3030
+      }
+    },
+    "watch-client": {
+      "command": "./node_modules/.bin/babel src -d lib -w",
+      "env": {
+        "UV_THREADPOOL_SIZE": 100,
+        "NODE_PATH": "./src"
+      }
+    }
+  }
+}
