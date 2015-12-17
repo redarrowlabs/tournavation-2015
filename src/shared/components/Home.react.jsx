@@ -2,14 +2,15 @@ import React from "react";
 import HealthBehaviorStore from '../stores/HealthBehaviorStore';
 import HealthBehaviorAction from '../actions/HealthBehaviorActions';
 
-//export default class Home extends React.Component {
 export default React.createClass ({
 
+  // begin listening to store, and call initial fetch to load data
 	componentDidMount() {
     HealthBehaviorStore.listen(this.stateChanged);
     HealthBehaviorAction.fetchAllHealthBehaviors();
   },
 
+  // remove listener when component is unmounted
   componentWillUnmount() {
     HealthBehaviorStore.unlisten(this.stateChanged);
   },

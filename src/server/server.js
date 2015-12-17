@@ -6,13 +6,16 @@ import { createLocation } from "history";
 import createMemoryHistory from 'history/lib/createMemoryHistory';
 import routes from "../shared/routes";
 import config from '../config';
+import compression from 'compression';
 
 import api from './api/api';
 
 const server = global.server = express();
 
 // serve static assets normally
-server.use(express.static('static'));
+server.use(express.static('static', {maxAge: config.cacheAge}));
+// add content compression middle-ware
+server.use(compression());
 // Set view path
 server.set('views', 'views');
 // set up Jade

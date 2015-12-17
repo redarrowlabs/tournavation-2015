@@ -1,5 +1,5 @@
-var mongoose=require('mongoose');
-var Schema=mongoose.Schema;
+import mongoose from 'mongoose';
+var Schema = mongoose.Schema;
 
 var schema = new Schema({
 	user: String,//{ type: Schema.Types.ObjectId, index: true },
@@ -7,4 +7,4 @@ var schema = new Schema({
   data: Schema.Types.Mixed,
 });
 
-module.exports = mongoose.model('HealthBehavior', schema);
+export default mongoose.model('HealthBehavior', schema);

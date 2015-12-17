@@ -8,14 +8,13 @@ const App = React.createClass({
 
   getInitialState() {
     return {
-      txt: 'this is the state text',
-      cat: 'something else'
+      selectedDate: Date.now(),
     };
   },
 
   render() {
-    var childrenWithProps = React.Children.map(this.props.children, function(child) {
-        return React.cloneElement(child, { selectedDate: Date.now() });
+    var childrenWithProps = React.Children.map(this.props.children, child => {
+        return React.cloneElement(child, { selectedDate: this.state.selectedDate });
     });
 
     return (
@@ -38,16 +37,6 @@ const App = React.createClass({
   }
 });
 
-App.propTypes = {
-  txt: React.PropTypes.string,
-  cat: React.PropTypes.number
-};
-
-App.defaultProps = {
-  txt: 'this is the default txt'
-};
-
 // Stateless function component
 //const App = () => <h1>Hello there!</h1>;
-
 export default App;

@@ -19,5 +19,4 @@ export default function (router) {
 	router.route('/tests/:id').delete(function(req, res) {
 	    res.send({ message: 'Test delete: {_id}' });
 	});
-
 }

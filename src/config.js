@@ -31,5 +31,6 @@ module.exports = Object.assign({
       }
     }
   },
-  connectionString: 'mongodb://localhost:27017/healthHeroesDb'
+  connectionString: 'mongodb://localhost:27017/healthHeroesDb',
+  cacheAge: 86400000
 }, environment);
