@@ -22,10 +22,11 @@ This is an ES7 Node.js isomorphic/universal project with a RESTfull web API.  [E
 ## Getting started
 * [Read the wiki]( https://github.com/redarrowlabs/tournavation-2015/wiki) to learn about the project
 * Clone the repo with `git clone  https://github.com/redarrowlabs/tournavation-2015.git`
-* Using `nodejs@5.0.1` & `npm@3.5.1`
+* Using [`nodejs@5.0.1`, `npm@3.5.1`](https://nodejs.org/en/), & [`MongoDB@3.2`](https://www.mongodb.org/)
+* Install and start MondoDB on `mongodb://localhost:27017`
 * `npm install`
 * `npm run dev`
-* open browser to localhost:3000
+* Open browser to localhost:3000
 
 ## Contributing to this project
 Anyone and everyone is welcome to contribute. Please take a moment to review the [guidelines for contributing](CONTRIBUTING.md).
