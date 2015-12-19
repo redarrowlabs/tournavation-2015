@@ -4,10 +4,12 @@ import { Router, Route, IndexRoute } from 'react-router'
 import App from "./components/App.react";
 import Home from "./components/Home.react";
 import SleepTracker from "./components/SleepTracker.react";
+import SleepVisualizer from "./components/SleepVisualizer.react";
 
 export default (  
   <Route path="/" component={ App }>
 	  <IndexRoute component={ Home }/>
 	  <Route path="track" component={ SleepTracker }/>
+	  <Route path="visualize" component={ SleepVisualizer }/>
   </Route>
 );
