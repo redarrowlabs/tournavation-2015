@@ -1,6 +1,7 @@
 import React from "react";
 import HealthBehaviorStore from '../stores/HealthBehaviorStore';
 import HealthBehaviorAction from '../actions/HealthBehaviorActions';
+import SleepVisualizer from './SleepVisualizer.react';
 
 export default React.createClass ({
 
@@ -41,6 +42,7 @@ export default React.createClass ({
     	<div>
     		<span>Welcome to HealthHeroes! This is all the logged data:</span>
     		<ul>{ healthBehaviors.map(this.renderListItem) }</ul>
+        <SleepVisualizer/>
     	</div>
   	);
   }

@@ -24,7 +24,6 @@ const App = React.createClass({
             <ul>
               <li><Link to="/">Home</Link></li>
               <li><Link to="/track">Track</Link></li>
-              <li><Link to="/visualize">Visualize the Sleep</Link></li>
             </ul>
           </nav>
         </header>
