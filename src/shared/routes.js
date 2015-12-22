@@ -1,9 +1,9 @@
 import React from "react";
 import { Router, Route, IndexRoute } from 'react-router'
 
-import App from "./components/App.react";
-import Home from "./components/Home.react";
-import SleepTracker from "./components/SleepTracker.react";
+import App from "./components/App.react.jsx";
+import Home from "./components/Home.react.jsx";
+import SleepTracker from "./components/SleepTracker.react.jsx";
 
 export default (  
   <Route path="/" component={ App }>
