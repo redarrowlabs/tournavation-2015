@@ -55,8 +55,12 @@ var SleepVisualizer = React.createClass({
 			rawData.map(function(dataPoint, idx) {
 				var someDate = new Date();
 				someDate.setDate(someDate.getDate() + idx); 
-				var someDateStr = someDate.getFullYear() + '-' + (someDate.getMonth() + 1) + '-' + someDate.getDate();
-				translatedData.push( { "date": someDateStr, "value": idx } );
+				var dateStr = someDate.getDate() < 10 ? '0' + someDate.getDate() : someDate.getDate().toString();
+				var monthStr = (someDate.getMonth()) + 1 < 10 ? '0' + (someDate.getMonth() + 1) : (someDate.getMonth() + 1).toString();
+				var someDateStr = someDate.getFullYear() + '-' + monthStr + '-' + dateStr;
+				console.log(someDateStr + ' ' + idx);
+				var color = idx >= 4 ? "#04D215" : "#FCD202";
+				translatedData.push( { "date": someDateStr, "value": idx, "color": color } );
 			});
 		}
 		console.log('generated sleep chart data: ' + translatedData);
@@ -75,31 +79,21 @@ var SleepVisualizer = React.createClass({
 		
 		var chart = AmCharts.makeChart("chartdiv", {
             "type": "serial",
-            "theme": "dark",
+            "theme": "black",
             "dataDateFormat": "YYYY-MM-DD",
             "dataProvider": data,
             "valueAxes": [{
-                "maximum": 140,
+                "maximum": 12,
                 "minimum": 0,
-                "axisAlpha": 0,
-                "guides": [{
-                    "fillAlpha": 0.1,
-                    "fillColor": "#CC0000",
-                    "lineAlpha": 0,
-                    "toValue": 120,
-                    "value": 0
-                }, {
-                    "fillAlpha": 0.1,
-                    "fillColor": "#0000cc",
-                    "lineAlpha": 0,
-                    "toValue": 200,
-                    "value": 120
-                }]
+                "axisAlpha": 0.2,
+                "gridAlpha": 0.7,
             }],
             "graphs": [{
-                "bullet": "round",
-                "dashLength": 4,
-                "valueField": "value"
+            	"type": "column",
+                "valueField": "value",
+                "fillAlphas" : 0.9,
+                "colorField": "color",
+                "topRadius": 1
             }],
             "chartCursor": {
                 "cursorAlpha": 0,
@@ -110,6 +104,8 @@ var SleepVisualizer = React.createClass({
             "categoryAxis": {
                 "parseDates": true
             },
+            "depth3D": 50,
+            "angle": 30,
             "valueScrollbar":{
 
             }
@@ -129,5 +125,5 @@ var SleepVisualizer = React.createClass({
 });
 
 export default scriptLoader(
-  ['/amcharts/amcharts.js','/amcharts/serial.js']
+  ['/amcharts/amcharts.js','/amcharts/serial.js','/amcharts/themes/black.js']
 )(SleepVisualizer);
