@@ -1,10 +1,12 @@
-import React from "react";
+import React, {PropTypes} from 'react';
 import { Router, Route, Link } from 'react-router';
 
 // Class component - can have state
 // Can only return a single node
 // - Remember that it is ~ return React.createElement('h1', null, 'Hello'); -- can't return two elements!
 const App = React.createClass({
+
+  contextTypes: { flux: PropTypes.object.isRequired },
 
   getInitialState() {
     return {
@@ -29,7 +31,7 @@ const App = React.createClass({
         </header>
 
         <div>
-          <h1>Health Heroes!</h1>
+          <h1>HealthHero!</h1>
           {childrenWithProps}
         </div>
       </div>

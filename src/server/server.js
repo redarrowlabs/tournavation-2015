@@ -1,12 +1,10 @@
-import express from "express";  
-import React from "react";
-import { renderToString } from 'react-dom/server';
-import { match, RoutingContext } from 'react-router';
+import express from "express";
 import { createLocation } from "history";
-import createMemoryHistory from 'history/lib/createMemoryHistory';
-import routes from "../shared/routes";
 import config from '../config';
 import compression from 'compression';
+
+import createFlux from '../shared/flux/createFlux';
+import universalRender from '../shared/universal-render';
 
 import api from './api/api';
 
@@ -24,23 +22,28 @@ server.set('view engine', 'jade');
 // init the api
 api(server);
 
-server.get('*', function (req, res) {
-	let history = createMemoryHistory();
-	let location = createLocation(req.url);
+const flux = createFlux();
 
-  match({ routes, history, location }, (error, redirectLocation, renderProps) => {
+const webServer = async function(req, res) {
+  let location = createLocation(req.url);
+
+  try {
+    const { content, statusCode } = await universalRender({ flux, location });
+    res.status(statusCode).render('index', {content:content});
+  } catch (err) {
+    console.log(err);
+    const { error, redirectLocation } = err;
     if (error) {
       res.status(500).send(error.message);
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (renderProps) {
-    	var content = renderToString(<RoutingContext {...renderProps} />);
-      res.status(200).render('index', {content:content});
     } else {
-      res.status(404).send('Not found');
+      res.status(404).send('Not found silly');
     }
-  });
-});
+  }
+};
+
+server.get('*', webServer);
 
 var s = server.listen(config.port, function () {  
   var host = s.address().address;

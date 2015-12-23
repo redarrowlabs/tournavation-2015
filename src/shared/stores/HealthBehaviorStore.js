@@ -1,31 +1,22 @@
-import alt from '../instance-alt';
 import Immutable from 'immutable';
-import HealthBehaviorActions from '../actions/HealthBehaviorActions'
 
 class HealthBehaviorStore{
 	constructor() {
+		this.bindActions(this.alt.getActions('healthBehaviors'));
+
 		this.currentHealthBehavior = Immutable.Map({
 			id: null,
 			start: null,
 			end: null
 		});
 		this.healthBehaviors = new Immutable.List([]);
-
-		let { fetchAllHealthBehaviors, fetchHealthBehavior, submitHealthBehavior, updateHealthBehavior, updateAllHealthBehaviors } = HealthBehaviorActions;
-		this.bindListeners({
-			handleFetchAllHealthBehaviors: fetchAllHealthBehaviors,
-			handleFetchHealthBehavior: fetchHealthBehavior,
-			handleSubmitHealthBehavior: submitHealthBehavior,
-			handleUpdateHealthBehavior: updateHealthBehavior,
-			handleUpdateAllHealthBehaviors: updateAllHealthBehaviors
-		});
 	}
 
-	handleFetchAllHealthBehaviors() {
+	onFetchAllHealthBehaviors() {
 		this.setState({ healthBehaviors: new Immutable.List([]) });
 	}
 
-	handleFetchHealthBehavior() {
+	onFetchHealthBehavior() {
 		this.setState({
 			currentHealthBehavior: Immutable.Map({
 				id: null,
@@ -35,7 +26,7 @@ class HealthBehaviorStore{
 		});
 	}
 
-	handleSubmitHealthBehavior(payload) {
+	onSubmitHealthBehavior(payload) {
 		this.setState({
 			currentHealthBehavior: Immutable.Map({
 				id: null,
@@ -45,7 +36,7 @@ class HealthBehaviorStore{
 		});
 	}
 
-	handleUpdateHealthBehavior(payload) {
+	onUpdateHealthBehavior(payload) {
 		let currentHealthBehavior = Immutable.Map({
 			start: payload.start,
 			end: payload.end,
@@ -55,9 +46,9 @@ class HealthBehaviorStore{
 		this.setState({ currentHealthBehavior });
 	}
 
-	handleUpdateAllHealthBehaviors(payload) {
+	onUpdateAllHealthBehaviors(payload) {
 		this.setState({ healthBehaviors: new Immutable.List(payload) });
 	}
 };
 
-export default alt.createStore(HealthBehaviorStore, 'HealthBehaviorStore');
+export default HealthBehaviorStore;

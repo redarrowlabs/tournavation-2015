@@ -1,18 +1,22 @@
+import moment from 'moment';
 import React, {PropTypes} from 'react';
-import HealthBehaviorStore from '../stores/HealthBehaviorStore';
-import HealthBehaviorAction from '../actions/HealthBehaviorActions';
+
+var DateTimePicker = require('react-widgets/lib/DateTimePicker');
 
 export default React.createClass({
 
-  propTypes: { selectedDate: PropTypes.number.isRequired },
+  contextTypes: { flux: PropTypes.object.isRequired },
+  //propTypes: { selectedDate: PropTypes.number.isRequired },
 
   componentDidMount() {
-    HealthBehaviorStore.listen(this.stateChanged);
-    HealthBehaviorAction.fetchHealthBehavior(this.props.selectedDate);
+    const { flux } = this.context;
+    flux.getStore('healthBehaviors').listen(this.stateChanged);
+    flux.getActions('healthBehaviors').fetchHealthBehavior(this.props.selectedDate);
   },
 
   componentWillUnmount() {
-    HealthBehaviorStore.unlisten(this.stateChanged);
+    const { flux } = this.context;
+    flux.getStore('healthBehaviors').unlisten(this.stateChanged);
   },
 
   stateChanged(state) {
@@ -20,42 +24,56 @@ export default React.createClass({
   },
 
   getInitialState() {
+    const { flux } = this.context;
     return {
-      currentHealthBehavior: HealthBehaviorStore.getState().currentHealthBehavior
+      currentHealthBehavior: flux.getStore('healthBehaviors').getState().currentHealthBehavior
     };
-	},
+  },
 
   handleSubmit() {
+    const { flux } = this.context;
+    
     if (this.state.id) {
-      HealthBehaviorAction.updateHealthBehavior({
+      flux.getActions('healthBehaviors').updateHealthBehavior({
         id: this.state.id,
         start: this.state.start,
         end: this.state.end
       });
     } else {
-      HealthBehaviorAction.submitHealthBehavior({
+      flux.getActions('healthBehaviors').submitHealthBehavior({
         start: this.state.start,
         end: this.state.end
       });
     }
   },
 
-  updateBedTime(event) {
-  	this.setState({ start: event.target.value });
+  updateBedTime(date, dateStr) {
+    this.setState({ start: moment(date) });
   },
 
-  updateWakeTime(event) {
-  	this.setState({ end: event.target.value });
+  updateWakeTime(date, dateStr) {
+    this.setState({ end: moment(date) });
   },
 
   render() {
+    let totalHours = (this.state.end && this.state.start)
+      ? moment.duration(this.state.end.diff(this.state.start)).asHours()
+      : null;
+
     return (
-    	<div>
-    		<span>Track sleep</span>
-    		<input type="text" placeholder="bedtime" ref="start-input" value={this.state.start} onChange={this.updateBedTime} />
-    		<input type="text" placeholder="wake time" ref="end-input"  value={this.state.end} onChange={this.updateWakeTime} />
+      <div>
+        <span>Track sleep</span>
+        <DateTimePicker calendar={false}
+          timeFormate={"h:mm tt"}
+          value={this.state.start}
+          onChange={this.updateBedTime} />
+        <DateTimePicker calendar={false}
+          timeFormate={"h:mm tt"}
+          value={this.state.end}
+          onChange={this.updateWakeTime} />
         <input type="submit" value="OK!" onClick={this.handleSubmit} />
-    	</div>
-  	);
+        <span>{totalHours}</span>
+      </div>
+    );
   }
 });

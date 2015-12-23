@@ -1,16 +1,13 @@
-import React from "react";
-import ReactDOM from 'react-dom';
-import { Router, Route } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
-import routes from "../shared/routes";
+import universalRender from '../shared/universal-render';
+import createFlux from '../shared/flux/createFlux';
 
 let history = createBrowserHistory();
-var mountNode = document.getElementById('react-main-mount');
+//const client = new ApiClient();
+const flux = createFlux();
 
-ReactDOM.render(<Router history={history}>{routes}</Router>, mountNode);
+console.log("*** Client");
+console.log(process.env.NODE_ENV);
+console.log(process.env.BROWSER);
 
-console.log("Client started.");
-
-window.onLoad = () => {
-	console.log("window loaded.");
-}
+universalRender({flux, history});

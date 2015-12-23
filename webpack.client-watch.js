@@ -7,7 +7,7 @@ config.cache = true;
 config.debug = true;
 config.devtool = "eval-sourcemap";
 
-config.entry.unshift(
+config.entry.main.unshift(
 	"webpack-dev-server/client?http://" + host + ":8080",
 	"webpack/hot/only-dev-server"
 );
@@ -22,16 +22,12 @@ config.plugins = [
 	new webpack.HotModuleReplacementPlugin()
 ];
 
-config.module.loaders = [
-	{
-    test:    /\.jsx?$/,
-    exclude: /node_modules/,
-    loaders: ['babel-loader']
-  }
-];
-
 config.module.postLoaders =  [
-	{test: /\.js$/, loaders: ["react-hot"], exclude: /node_modules/}
+	{
+		test: /\.js$/,
+		loaders: ["react-hot"],
+		exclude: /node_modules/
+	}
 ];
 
 config.devServer = {

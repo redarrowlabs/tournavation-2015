@@ -6,7 +6,9 @@ module.exports = {
 	cache:   false,
 	context: path.join(__dirname),
 	devtool: false,
-	entry:   ["./src/client/app.js"],
+	entry:   {
+		main: ["babel-polyfill", "./src/client/app.js"]
+	},
 	output:  {
 		path:          path.join(__dirname, "static/dist"),
 		filename:      "app-bundle.js",
@@ -23,8 +25,7 @@ module.exports = {
 	module:  {
 		loaders: [
 			{test: /\.json$/, loaders: ["json"], exclude: /node_modules/},
-			{test: /\.jsx?$/, loaders: ["babel-loader"], exclude: /node_modules/},
-			{test: /\.js$/, loaders: ["babel?cacheDirectory&presets[]=es2015&presets[]=react&presets[]=stage-0"], exclude: /node_modules/}
+			{test: /\.jsx?$/, loaders: ["babel?cacheDirectory&presets[]=es2015&presets[]=react&presets[]=stage-0"], exclude: /node_modules/}
 		],
 		postLoaders: [],
 		noParse: /\.min\.js/
@@ -38,7 +39,7 @@ module.exports = {
 			"node_modules",
 			"web_modules"
 		],
-		extensions: ["", ".json", ".js"]
+		extensions: ["", ".json", ".js", '.jsx']
 	},
 	node:    {
 		__dirname: true,

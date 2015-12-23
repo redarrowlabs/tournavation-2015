@@ -1,7 +1,4 @@
-import alt from '../instance-alt';
 import request from 'superagent';
-import Immutable from 'immutable';
-import UUID from 'node-uuid';
 import config from '../../config'
 
 class HealthBehaviorActions {
@@ -15,57 +12,57 @@ class HealthBehaviorActions {
   }
 
     fetchAllHealthBehaviors() {
-      var self = this;
-      return dispatch => {
-        dispatch();
-        request
-          .get(config.apiBaseUrl + '/healthbehaviors')
-          .end((err, resp) => {
-            self.updateAllHealthBehaviors(resp.body);
-          });
-      }
+      return (dispatch, alt) =>
+        alt.resolve(async () => {
+          dispatch();
+          request
+            .get(config.apiBaseUrl + '/healthbehaviors')
+            .end((err, resp) => {
+              alt.getActions('healthBehaviors').updateAllHealthBehaviors(resp.body);
+            });
+        });
     }
 
     fetchHealthBehavior(id) {
-      var self = this;
-      return dispatch => {
-        dispatch();
-        request
-          .get(config.apiBaseUrl + '/healthbehaviors/' + id)
-          .end((err, resp) => {
-            self.updateHealthBehavior(resp.body);
-          });
-      }
+      return (dispatch, alt) =>
+        alt.resolve(async () => {
+          dispatch();
+          request
+            .get(config.apiBaseUrl + '/healthbehaviors/' + id)
+            .end((err, resp) => {
+              alt.getActions('healthBehaviors').updateHealthBehavior(resp.body);
+            });
+        });
     }
 
     submitHealthBehavior(healthBehavior) {
-      var self = this;
-      return dispatch => {
-        dispatch();
-        request
-          .post(config.apiBaseUrl + '/healthbehaviors')
-          .send(healthBehavior)
-          .end((err, resp) => {
-            self.updateHealthBehavior(resp.body);
-          });
-      }
+      return (dispatch, alt) =>
+        alt.resolve(async () => {
+          dispatch();
+          request
+            .post(config.apiBaseUrl + '/healthbehaviors')
+            .send(healthBehavior)
+            .end((err, resp) => {
+              alt.getActions('healthBehaviors').updateHealthBehavior(resp.body);
+            });
+        });
     }
 
     updateHealthBehavior(healthBehavior) {
-      var self = this;
-      return dispatch => {
-        dispatch();
-        request
-          .put(config.apiBaseUrl + '/healthbehaviors/' + healthBehavior.id)
-          .send(healthBehavior)
-          .end((err, resp) => {
-            self.updateHealthBehavior(resp.body);
-          });
-      }
+      return (dispatch, alt) =>
+        alt.resolve(async () => {
+          dispatch();
+          request
+            .put(config.apiBaseUrl + '/healthbehaviors/' + healthBehavior.id)
+            .send(healthBehavior)
+            .end((err, resp) => {
+              alt.getActions('healthBehaviors').updateHealthBehavior(resp.body);
+            });
+        });
     }
 }
 
 /* If your actions are as simple as just dispatching passed values, you can use a slightly different (and more concise) API for such use case:
  * export default alt.generateActions('changeContent', 'clearForm');
  */
-export default alt.createActions(HealthBehaviorActions);
+export default HealthBehaviorActions;
