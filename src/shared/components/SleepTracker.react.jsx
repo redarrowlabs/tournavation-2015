@@ -21,7 +21,8 @@ export default React.createClass({
 
   getInitialState() {
     return {
-      currentHealthBehavior: HealthBehaviorStore.getState().currentHealthBehavior
+      currentHealthBehavior: HealthBehaviorStore.getState().currentHealthBehavior,
+      behaviorDate: new Date(),
     };
 	},
 
@@ -48,13 +49,25 @@ export default React.createClass({
   	this.setState({ end: event.target.value });
   },
 
+  updateWakeDate(event) {
+    this.setState({behaviorDate: new Date(event.target.value)});
+  },
+
+  toDateInputValue(date) {
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return date.toJSON().slice(0,10);
+  },
+
   render() {
     return (
     	<div>
     		<span>Track sleep</span>
-    		<input type="text" placeholder="bedtime" ref="start-input" value={this.state.start} onChange={this.updateBedTime} />
+        <input type="text" placeholder="bedtime" ref="start-input" value={this.state.start} onChange={this.updateBedTime} />
     		<input type="text" placeholder="wake time" ref="end-input"  value={this.state.end} onChange={this.updateWakeTime} />
-        <input type="submit" value="OK!" onClick={this.handleSubmit} />
+        <br />
+        <span>Wake Date:</span>
+        <input type="Date" ref="wakeDate" max={this.toDateInputValue(new Date())} value={this.toDateInputValue(this.state.behaviorDate)} onChange={this.updateWakeDate} />
+    	  <input type="submit" value="OK!" onClick={this.handleSubmit} />
     	</div>
   	);
   }
