@@ -30,7 +30,7 @@ export default React.createClass ({
 	renderListItem(behavior) {
 		return (
       <li>
-      	{behavior.data.start} - {behavior.data.end}
+      	{behavior.data.start} - {behavior.data.end} on {behavior.data.date}
       </li>
     );
 	},

@@ -31,12 +31,14 @@ export default React.createClass({
       HealthBehaviorAction.updateHealthBehavior({
         id: this.state.id,
         start: this.state.start,
-        end: this.state.end
+        end: this.state.end,
+        date: this.state.behaviorDate,
       });
     } else {
       HealthBehaviorAction.submitHealthBehavior({
         start: this.state.start,
-        end: this.state.end
+        end: this.state.end,
+        date: this.state.behaviorDate,
       });
     }
   },
@@ -54,7 +56,6 @@ export default React.createClass({
   },
 
   toDateInputValue(date) {
-    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
     return date.toJSON().slice(0,10);
   },
 
