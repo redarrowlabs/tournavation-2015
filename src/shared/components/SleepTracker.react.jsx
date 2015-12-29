@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React, {PropTypes} from 'react';
+import Globalize from 'globalize';
 
 var DateTimePicker = require('react-widgets/lib/DateTimePicker');
 
@@ -62,17 +63,46 @@ export default React.createClass({
 
     return (
       <div>
-        <span>Track sleep</span>
-        <DateTimePicker calendar={false}
-          timeFormate={"h:mm tt"}
-          value={this.state.start}
-          onChange={this.updateBedTime} />
-        <DateTimePicker calendar={false}
-          timeFormate={"h:mm tt"}
-          value={this.state.end}
-          onChange={this.updateWakeTime} />
-        <input type="submit" value="OK!" onClick={this.handleSubmit} />
-        <span>{totalHours}</span>
+        <div>
+          <span align="left">1</span>
+          <div align="center">
+            <span>{Globalize.formatMessage('sleeptracker-time-title')}</span>
+            <br/>
+            <span>{Globalize.formatMessage('sleeptracker-time-subtitle')}</span>
+          </div>
+        </div>
+
+        <div align="center">
+          <div>
+            <span align="left">
+              <span>{Globalize.formatMessage('sleeptracker-time-start')}</span>
+            </span>
+            <DateTimePicker calendar={false}
+              timeFormate={"h:mm tt"}
+              value={this.state.start}
+              onChange={this.updateBedTime} />
+          </div>
+          <div>
+            <span align="left">
+              <span>{Globalize.formatMessage('sleeptracker-time-end')}</span>
+            </span>
+            <DateTimePicker calendar={false}
+              timeFormate={"h:mm tt"}
+              value={this.state.end}
+              onChange={this.updateWakeTime} />
+          </div>
+        </div>
+
+        <div align="right">
+          <span>{Globalize.formatMessage('sleeptracker-time-amount')}</span>
+          <br/>
+          <span>{totalHours}</span>
+          <br/>
+          <span>{Globalize.formatMessage('sleeptracker-time-unit')}</span>
+        </div>
+
+        <input type="submit" value={Globalize.formatMessage('sleeptracker-submit')} onClick={this.handleSubmit} />
+        
       </div>
     );
   }

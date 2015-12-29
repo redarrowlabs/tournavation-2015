@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import { Router, Route, Link } from 'react-router';
+import Globalize from 'globalize';
 
 // Class component - can have state
 // Can only return a single node
@@ -24,14 +25,14 @@ const App = React.createClass({
         <header id="navigation">
           <nav>
             <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/track">Track</Link></li>
+              <li><Link to="/">{Globalize.formatMessage('home-nav-home')}</Link></li>
+              <li><Link to="/track">{Globalize.formatMessage('home-nav-track')}</Link></li>
             </ul>
           </nav>
         </header>
 
         <div>
-          <h1>HealthHero!</h1>
+          <h1>{Globalize.formatMessage('home-title')}</h1>
           {childrenWithProps}
         </div>
       </div>

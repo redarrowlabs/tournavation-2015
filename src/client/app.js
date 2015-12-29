@@ -3,11 +3,10 @@ import universalRender from '../shared/universal-render';
 import createFlux from '../shared/flux/createFlux';
 
 let history = createBrowserHistory();
-//const client = new ApiClient();
 const flux = createFlux();
 
-console.log("*** Client");
+console.log("*** Client: " + __CLIENT__);
 console.log(process.env.NODE_ENV);
-console.log(process.env.BROWSER);
+var state = window.__STATE__;
 
-universalRender({flux, history});
+universalRender({flux, history, locale: state.locale});

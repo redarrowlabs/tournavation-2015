@@ -5,21 +5,30 @@ import { Router, match, RoutingContext } from 'react-router';
 import AltContainer from 'alt-container';
 import routes from './routes';
 
-/*var Globalize = require('globalize');
-var globalizeLocalizer = require('react-widgets/lib/localizers/globalize');
-globalizeLocalizer(Globalize);*/
-//Globalize.locale('en');
+import Globalize from 'globalize';
+Globalize.load(require("cldr-data").entireSupplemental());
+Globalize.load(require("cldr-data").entireMainFor("en", "es"));
+Globalize.loadMessages(require("./globalization/en"));
 
-const { BROWSER, NODE_ENV } = process.env;
+var globalizeLocalizer = require('react-widgets/lib/localizers/globalize');
+globalizeLocalizer(Globalize);
+
+// prime globalization
+Globalize.locale('en');
+var msg = Globalize.formatMessage("home-title");
+console.log("*** MSG: " + msg);
 
 const runRouter = location =>
   new Promise(resolve => match({ routes, location }, (error, redirectLocation, renderProps) => {
 		resolve({error, redirectLocation, renderProps});
   }));
 
-export default async function({ flux, history, location }) {
-	if (BROWSER) {
-console.log("*** Client Render");
+export default async function({ flux, history, location, locale }) {
+	console.log("*** Universal Render");
+	Globalize.locale(locale);
+
+	if (__CLIENT__) {
+	console.log("*** Client Render");
 		const element = (
       <AltContainer flux={ flux }>
         <Router
@@ -35,7 +44,7 @@ console.log("*** Client Render");
     // next promises will be resolved
     flux.resolver.firstRender = false;
 	} else {
-console.log("*** Server Render");
+		console.log("*** Server Render");
 		const {error, redirectLocation, renderProps} = await runRouter(location);	
 		
 		if (error || redirectLocation || !renderProps) throw ({ error, redirectLocation });

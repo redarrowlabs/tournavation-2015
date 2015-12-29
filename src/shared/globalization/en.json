@@ -9,5 +9,6 @@
 		"sleeptracker-time-end": "woke up",
 		"sleeptracker-time-amount": "You slept",
 		"sleeptracker-time-unit": "Hours",
+		"sleeptracker-submit": "Graph my data"
 	}
 }

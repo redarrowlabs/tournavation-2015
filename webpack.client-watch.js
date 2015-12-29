@@ -1,5 +1,7 @@
 var webpack = require("webpack");
+var path = require("path");
 var config = require("./webpack.client.js");
+var GlobalizePlugin = require( "globalize-webpack-plugin" );
 
 var host = process.env.HOST || "localhost";
 
@@ -19,7 +21,14 @@ config.output.hotUpdateChunkFilename = "update/[hash]/[id].update.js";
 
 config.plugins = [
 	new webpack.DefinePlugin({__CLIENT__: true, __SERVER__: false}),
-	new webpack.HotModuleReplacementPlugin()
+	new webpack.HotModuleReplacementPlugin(),
+	new GlobalizePlugin({
+			production: false,
+			developmentLocale: "en",
+			supportedLocales: ["en", "es"],
+			messages: path.join(__dirname, "src/shared/globalization/[locale].json"),
+			output: path.join(__dirname, "static/dist/i18n/[locale].js")
+		})
 ];
 
 config.module.postLoaders =  [
