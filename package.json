@@ -72,8 +72,7 @@
     "clean": "node ./bin/run-clean.js static/dist",
     "dev": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run watch-client\" \"npm run start:dev\"",
     "start:dev": "better-npm-run start-dev",
-    "watch-client": "node ./node_modules/webpack/bin/webpack.js --verbose --colors --display-error-details --config webpack.client-watch.js && node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.client-watch.js --hot --progress --colors --inline",
-    "watch-client2": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.client-watch.js --hot --progress --colors --inline",
+    "watch-client": "node ./node_modules/webpack/bin/webpack.js --verbose --colors --display-error-details --config webpack.client-watch.js && node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.client-watch.js",
     "start:prod": "better-npm-run start-prod",
     "build": "better-npm-run build-prod"
   },

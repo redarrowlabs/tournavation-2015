@@ -10,6 +10,14 @@ import universalRender from '../shared/universal-render';
 
 import api from './api/api';
 
+import Globalize from 'globalize';
+Globalize.load(require("cldr-data").entireSupplemental());
+Globalize.load(require("cldr-data").entireMainFor("en", "es"));
+Globalize.loadMessages(require("../shared/globalization/en"));
+// prime globalization
+Globalize.locale('en');
+var msg = Globalize.formatMessage("home-title");
+
 console.log("*** Server: " + __SERVER__);
 console.log(process.env.NODE_ENV);
 

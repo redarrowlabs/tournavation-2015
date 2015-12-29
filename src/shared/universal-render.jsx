@@ -6,17 +6,17 @@ import AltContainer from 'alt-container';
 import routes from './routes';
 
 import Globalize from 'globalize';
-Globalize.load(require("cldr-data").entireSupplemental());
-Globalize.load(require("cldr-data").entireMainFor("en", "es"));
-Globalize.loadMessages(require("./globalization/en"));
+//Globalize.load(require("cldr-data").entireSupplemental());
+//Globalize.load(require("cldr-data").entireMainFor("en", "es"));
+//Globalize.loadMessages(require("./globalization/en"));
 
 var globalizeLocalizer = require('react-widgets/lib/localizers/globalize');
 globalizeLocalizer(Globalize);
 
 // prime globalization
-Globalize.locale('en');
-var msg = Globalize.formatMessage("home-title");
-console.log("*** MSG: " + msg);
+//Globalize.locale('en');
+//var msg = Globalize.formatMessage("home-title");
+//console.log("*** MSG: " + msg);
 
 const runRouter = location =>
   new Promise(resolve => match({ routes, location }, (error, redirectLocation, renderProps) => {
@@ -26,6 +26,8 @@ const runRouter = location =>
 export default async function({ flux, history, location, locale }) {
 	console.log("*** Universal Render");
 	Globalize.locale(locale);
+  var msg = Globalize.formatMessage("home-title");
+  console.log("*** MSG: " + msg);
 
 	if (__CLIENT__) {
 	console.log("*** Client Render");

@@ -1,8 +1,7 @@
 import moment from 'moment';
 import React, {PropTypes} from 'react';
 import Globalize from 'globalize';
-
-var DateTimePicker = require('react-widgets/lib/DateTimePicker');
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 
 export default React.createClass({
 
