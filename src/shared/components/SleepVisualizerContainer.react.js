@@ -7,7 +7,9 @@ import AltContainer from 'alt-container';
 export default React.createClass({
   render() {
     return (
-      <AltContainer store={HealthBehaviorStore}>
+      <AltContainer 
+      		stores={{sleepStore: HealthBehaviorStore}} 
+      		transform={function(stores) { return { sleepData: stores.sleepStore.healthBehaviors}}}>
         <SleepVisualizer />
       </AltContainer>
     )

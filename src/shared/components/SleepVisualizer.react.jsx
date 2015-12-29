@@ -1,10 +1,10 @@
 import React from 'react';
-import ColumnChart from './ColumnChart.react';
+import ObservationChart from './ObservationChartBuilder.react';
 
 export default React.createClass({
   
 	componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
-		console.log('SleepVisualizer componentWillReceiveProps script loaded, storeData: ' + this.props.healthBehaviors) ;
+		console.log('SleepVisualizer componentWillReceiveProps script loaded, data: ' + this.props.sleepData) ;
 		console.log(this.props);
 	},
 
@@ -27,7 +27,7 @@ export default React.createClass({
 				var monthStr = (someDate.getMonth()) + 1 < 10 ? '0' + (someDate.getMonth() + 1) : (someDate.getMonth() + 1).toString();
 				var someDateStr = someDate.getFullYear() + '-' + monthStr + '-' + dateStr;
 				console.log(someDateStr + ' ' + idx);
-				var color = idx >= 4 ? "#04D215" : "#FCD202";
+				var color = (idx % 2 === 0) ? "#04D215" : "#FCD202";
 				translatedData.push( { "date": someDateStr, "value": idx, "color": color } );
 			});
 		}
@@ -36,12 +36,11 @@ export default React.createClass({
 	},
 
 	render() {
-		console.log('rendering sleep chart, props: ' + this.props.healthBehaviors);
-		var transformedData = this.generateChartData(this.props.healthBehaviors);
+		console.log('rendering sleep chart, props: ' + this.props.sleepData);
+		var transformedData = this.generateChartData(this.props.sleepData);
 		return (
 			<div>
-		    	Visualize my sleep!
-		    	<ColumnChart chartData={transformedData} chartName='sleep'/>
+		    	<ObservationChart chartData={transformedData} chartName='sleep' chartTitle='Total Hours of Sleep' chartType='StepLine'/>
 			</div>
 		);
 	}
