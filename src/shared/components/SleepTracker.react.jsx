@@ -1,18 +1,22 @@
+import moment from 'moment';
 import React, {PropTypes} from 'react';
-import HealthBehaviorStore from '../stores/HealthBehaviorStore';
-import HealthBehaviorAction from '../actions/HealthBehaviorActions';
+import Globalize from 'globalize';
+import Immutable from 'immutable';
 
 export default React.createClass({
 
-  propTypes: { selectedDate: PropTypes.number.isRequired },
+  contextTypes: { flux: PropTypes.object.isRequired },
+  //propTypes: { selectedDate: PropTypes.number.isRequired },
 
   componentDidMount() {
-    HealthBehaviorStore.listen(this.stateChanged);
-    HealthBehaviorAction.fetchHealthBehavior(this.props.selectedDate);
+    const { flux } = this.context;
+    flux.getStore('healthBehaviors').listen(this.stateChanged);
+    flux.getActions('healthBehaviors').fetchHealthBehavior(this.props.selectedDate);
   },
 
   componentWillUnmount() {
-    HealthBehaviorStore.unlisten(this.stateChanged);
+    const { flux } = this.context;
+    flux.getStore('healthBehaviors').unlisten(this.stateChanged);
   },
 
   stateChanged(state) {
@@ -20,42 +24,105 @@ export default React.createClass({
   },
 
   getInitialState() {
+    const { flux } = this.context;
     return {
-      currentHealthBehavior: HealthBehaviorStore.getState().currentHealthBehavior
+      currentHealthBehavior: flux.getStore('healthBehaviors').getState().currentHealthBehavior
     };
-	},
+  },
 
   handleSubmit() {
-    if (this.state.id) {
-      HealthBehaviorAction.updateHealthBehavior({
-        id: this.state.id,
-        start: this.state.start,
-        end: this.state.end
+    const { flux } = this.context;
+    
+    if (this.state.currentHealthBehavior.get('id')) {
+      flux.getActions('healthBehaviors').updateHealthBehavior({
+        id: this.state.currentHealthBehavior.get('id'),
+        start: this.state.currentHealthBehavior.get('start'),
+        end: this.state.currentHealthBehavior.get('end')
       });
     } else {
-      HealthBehaviorAction.submitHealthBehavior({
-        start: this.state.start,
-        end: this.state.end
+      flux.getActions('healthBehaviors').submitHealthBehavior({
+        start: this.state.currentHealthBehavior.get('start'),
+        end: this.state.currentHealthBehavior.get('end')
       });
     }
   },
 
+  parseTimeString(time) {
+    return moment(time, ['HH:mm']);
+  },
+
   updateBedTime(event) {
-  	this.setState({ start: event.target.value });
+    let val = event.currentTarget.value;
+    let date = this.parseTimeString(val);
+    date.subtract(1, 'days');
+    this.setState({
+      currentHealthBehavior: Immutable.Map({
+        id: this.state.currentHealthBehavior.get('id'),
+        start: date,
+        end: this.state.currentHealthBehavior.get('end')
+      })
+    });
   },
 
   updateWakeTime(event) {
-  	this.setState({ end: event.target.value });
+    let val = event.currentTarget.value;
+    let date = this.parseTimeString(val);
+    this.setState({
+      currentHealthBehavior: Immutable.Map({
+        id: this.state.currentHealthBehavior.get('id'),
+        start: this.state.currentHealthBehavior.get('start'),
+        end: date
+      })
+    });
   },
 
   render() {
+    let start = this.state.currentHealthBehavior.get('start');
+    let end = this.state.currentHealthBehavior.get('end');
+    let totalHours = (end && start)
+      ? moment.duration(end.diff(start)).asHours()
+      : null;
+
+    let startDisplay = start ? start.format('HH:mm') : null;
+    let endDisplay = end ? end.format('HH:mm') : null;
+
     return (
-    	<div>
-    		<span>Track sleep</span>
-    		<input type="text" placeholder="bedtime" ref="start-input" value={this.state.start} onChange={this.updateBedTime} />
-    		<input type="text" placeholder="wake time" ref="end-input"  value={this.state.end} onChange={this.updateWakeTime} />
-        <input type="submit" value="OK!" onClick={this.handleSubmit} />
-    	</div>
-  	);
+      <div>
+        <div>
+          <span align="left">1</span>
+          <div align="center">
+            <span>{Globalize.formatMessage('sleeptracker-time-title')}</span>
+            <br/>
+            <span>{Globalize.formatMessage('sleeptracker-time-subtitle')}</span>
+          </div>
+        </div>
+
+        <div align="center">
+          <div>
+            <span align="left">
+              <span>{Globalize.formatMessage('sleeptracker-time-start')}</span>
+            </span>
+              <input type="time" value={startDisplay} onChange={this.updateBedTime} />
+          </div>
+          <div>
+            <span align="left">
+              <span>{Globalize.formatMessage('sleeptracker-time-end')}</span>
+            </span>
+              <input type="time" value={endDisplay} onChange={this.updateWakeTime} />
+          </div>
+        </div>
+
+        <div align="right">
+          <span>{Globalize.formatMessage('sleeptracker-time-amount')}</span>
+          <br/>
+          <span>{totalHours}</span>
+          <br/>
+          <span>{Globalize.formatMessage('sleeptracker-time-unit')}</span>
+        </div>
+
+        <input type="submit" value={Globalize.formatMessage('sleeptracker-submit')} onClick={this.handleSubmit} />
+        
+      </div>
+    );
   }
 });

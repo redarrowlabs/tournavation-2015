@@ -1,16 +1,37 @@
-import React from "react";
-import ReactDOM from 'react-dom';
-import { Router, Route } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
-import routes from "../shared/routes";
+import universalRender from '../shared/universal-render';
+import createFlux from '../shared/flux/createFlux';
+
+import Globalize from 'globalize';
+/*Globalize.load(require("cldr-data").entireSupplemental());
+Globalize.load(require("cldr-data").entireMainFor("en", "es"));*/
+Globalize.load(
+	require("cldr-data/main/en/ca-gregorian.json"),
+	require("cldr-data/main/en/characters.json"),
+	require("cldr-data/main/en/dateFields.json"),
+	require("cldr-data/main/en/numbers.json"),
+	require("cldr-data/main/es/ca-gregorian.json"),
+	require("cldr-data/main/es/characters.json"),
+	require("cldr-data/main/es/dateFields.json"),
+	require("cldr-data/main/es/numbers.json"),
+	require("cldr-data/supplemental/calendarData.json"),
+	require("cldr-data/supplemental/dayPeriods.json"),
+	require("cldr-data/supplemental/likelySubtags.json"),
+	require("cldr-data/supplemental/numberingSystems.json"),
+	require("cldr-data/supplemental/plurals.json"),
+	require("cldr-data/supplemental/timeData.json"),
+	require("cldr-data/supplemental/weekData.json")
+);
+Globalize.loadMessages(require("../shared/globalization/en.json"));
+// prime globalization
+Globalize.locale('en');
+var msg = Globalize.formatMessage("home-title")
 
 let history = createBrowserHistory();
-var mountNode = document.getElementById('react-main-mount');
+const flux = createFlux();
 
-ReactDOM.render(<Router history={history}>{routes}</Router>, mountNode);
+console.log("*** Client: " + __CLIENT__);
+console.log(process.env.NODE_ENV);
+var state = window.__STATE__;
 
-console.log("Client started.");
-
-window.onLoad = () => {
-	console.log("window loaded.");
-}
+universalRender({flux, history, locale: state.locale});

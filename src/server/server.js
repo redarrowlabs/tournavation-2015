@@ -1,16 +1,33 @@
-import express from "express";  
-import React from "react";
-import { renderToString } from 'react-dom/server';
-import { match, RoutingContext } from 'react-router';
+import express from "express";
+import locale from 'express-locale';
 import { createLocation } from "history";
-import createMemoryHistory from 'history/lib/createMemoryHistory';
-import routes from "../shared/routes";
 import config from '../config';
 import compression from 'compression';
 
+import createFlux from '../shared/flux/createFlux';
+import universalRender from '../shared/universal-render';
+
 import api from './api/api';
 
+import Globalize from 'globalize';
+Globalize.load(require("cldr-data").entireSupplemental());
+Globalize.load(require("cldr-data").entireMainFor("en", "es"));
+Globalize.loadMessages(require("../shared/globalization/en"));
+// prime globalization
+Globalize.locale('en');
+var msg = Globalize.formatMessage("home-title");
+
+console.log("*** Server: " + __SERVER__);
+console.log(process.env.NODE_ENV);
+
 const server = global.server = express();
+
+// server locale
+server.use(locale({
+  'default': 'en_US',
+  'priority': ['accept-language', 'cookie', 'default'],
+  'cookie': {'name': 'locale'}
+}));
 
 // serve static assets normally
 server.use(express.static('static', {maxAge: config.cacheAge}));
@@ -24,23 +41,41 @@ server.set('view engine', 'jade');
 // init the api
 api(server);
 
-server.get('*', function (req, res) {
-	let history = createMemoryHistory();
-	let location = createLocation(req.url);
+const flux = createFlux();
 
-  match({ routes, history, location }, (error, redirectLocation, renderProps) => {
+const webServer = async function(req, res) {
+  console.log("*** Server request");
+  console.log("-- request: " + JSON.stringify({
+    url: req.url,
+    locale: req.locale
+  }));
+  let location = createLocation(req.url);
+  let exposedState = {'locale': req.locale.code};
+
+  try {
+    console.log("*** Server @ " + req.url + " for: " + req.locale.code);
+    const { content, statusCode } = await universalRender({flux, location, locale: exposedState.locale});
+    res
+      .status(statusCode)
+      .render('index',
+        {
+          content,
+          state: JSON.stringify(exposedState).split('"').join('\'')
+        });
+  } catch (err) {
+    console.log(err);
+    const { error, redirectLocation } = err;
     if (error) {
       res.status(500).send(error.message);
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (renderProps) {
-    	var content = renderToString(<RoutingContext {...renderProps} />);
-      res.status(200).render('index', {content:content});
     } else {
       res.status(404).send('Not found');
     }
-  });
-});
+  }
+};
+
+server.get('*', webServer);
 
 var s = server.listen(config.port, function () {  
   var host = s.address().address;

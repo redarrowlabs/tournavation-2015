@@ -1,9 +1,6 @@
 //  enable runtime transpilation to use ES6/7 in node
 require("babel-polyfill");
-require("babel-core/register")({
-	only: /src/,
-	presets: ["es2015", "react", "stage-0"]
-});
+require("babel-core/register");
 
 /**
  * Define isomorphic constants.

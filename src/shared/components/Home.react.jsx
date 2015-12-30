@@ -1,18 +1,20 @@
-import React from "react";
-import HealthBehaviorStore from '../stores/HealthBehaviorStore';
-import HealthBehaviorAction from '../actions/HealthBehaviorActions';
+import React, {PropTypes} from 'react';
 
 export default React.createClass ({
 
+  contextTypes: { flux: PropTypes.object.isRequired },
+
   // begin listening to store, and call initial fetch to load data
 	componentDidMount() {
-    HealthBehaviorStore.listen(this.stateChanged);
-    HealthBehaviorAction.fetchAllHealthBehaviors();
+    const { flux } = this.context;
+    flux.getStore('healthBehaviors').listen(this.stateChanged);
+    flux.getActions('healthBehaviors').fetchAllHealthBehaviors();
   },
 
   // remove listener when component is unmounted
   componentWillUnmount() {
-    HealthBehaviorStore.unlisten(this.stateChanged);
+    const { flux } = this.context;
+    flux.getStore('healthBehaviors').unlisten(this.stateChanged);
   },
 
   stateChanged(state) {
@@ -22,8 +24,9 @@ export default React.createClass ({
   },
 
   getInitialState() {
+    const { flux } = this.context;
     return {
-    	healthBehaviors: HealthBehaviorStore.getState().healthBehaviors
+    	healthBehaviors: flux.getStore('healthBehaviors').getState().healthBehaviors
     };
 	},
 

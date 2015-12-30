@@ -4,7 +4,8 @@ node_modules
 npm-debug.log
 dist
 lib
-.tmp
+tmp
+.tmp*
 .DS_Store
 .sass-cache
 .env
