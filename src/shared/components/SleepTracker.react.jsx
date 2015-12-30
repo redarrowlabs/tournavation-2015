@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, {PropTypes} from 'react';
 import Globalize from 'globalize';
-import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+import Immutable from 'immutable';
 
 export default React.createClass({
 
@@ -33,32 +33,58 @@ export default React.createClass({
   handleSubmit() {
     const { flux } = this.context;
     
-    if (this.state.id) {
+    if (this.state.currentHealthBehavior.get('id')) {
       flux.getActions('healthBehaviors').updateHealthBehavior({
-        id: this.state.id,
-        start: this.state.start,
-        end: this.state.end
+        id: this.state.currentHealthBehavior.get('id'),
+        start: this.state.currentHealthBehavior.get('start'),
+        end: this.state.currentHealthBehavior.get('end')
       });
     } else {
       flux.getActions('healthBehaviors').submitHealthBehavior({
-        start: this.state.start,
-        end: this.state.end
+        start: this.state.currentHealthBehavior.get('start'),
+        end: this.state.currentHealthBehavior.get('end')
       });
     }
   },
 
-  updateBedTime(date, dateStr) {
-    this.setState({ start: moment(date) });
+  parseTimeString(time) {
+    return moment(time, ['HH:mm']);
   },
 
-  updateWakeTime(date, dateStr) {
-    this.setState({ end: moment(date) });
+  updateBedTime(event) {
+    let val = event.currentTarget.value;
+    let date = this.parseTimeString(val);
+    date.subtract(1, 'days');
+    this.setState({
+      currentHealthBehavior: Immutable.Map({
+        id: this.state.currentHealthBehavior.get('id'),
+        start: date,
+        end: this.state.currentHealthBehavior.get('end')
+      })
+    });
+  },
+
+  updateWakeTime(event) {
+    let val = event.currentTarget.value;
+    let date = this.parseTimeString(val);
+    this.setState({
+      currentHealthBehavior: Immutable.Map({
+        id: this.state.currentHealthBehavior.get('id'),
+        start: this.state.currentHealthBehavior.get('start'),
+        end: date
+      })
+    });
   },
 
   render() {
-    let totalHours = (this.state.end && this.state.start)
-      ? moment.duration(this.state.end.diff(this.state.start)).asHours()
+    let start = this.state.currentHealthBehavior.get('start');
+    let end = this.state.currentHealthBehavior.get('end');
+    let totalHours = (end && start)
+      ? moment.duration(end.diff(start)).asHours()
       : null;
+
+    let startDisplay = start ? start.format('HH:mm') : null;
+    let endDisplay = end ? end.format('HH:mm') : null;
 
     return (
       <div>
@@ -76,19 +102,13 @@ export default React.createClass({
             <span align="left">
               <span>{Globalize.formatMessage('sleeptracker-time-start')}</span>
             </span>
-            <DateTimePicker calendar={false}
-              timeFormate={"h:mm tt"}
-              value={this.state.start}
-              onChange={this.updateBedTime} />
+              <input type="time" value={startDisplay} onChange={this.updateBedTime} />
           </div>
           <div>
             <span align="left">
               <span>{Globalize.formatMessage('sleeptracker-time-end')}</span>
             </span>
-            <DateTimePicker calendar={false}
-              timeFormate={"h:mm tt"}
-              value={this.state.end}
-              onChange={this.updateWakeTime} />
+              <input type="time" value={endDisplay} onChange={this.updateWakeTime} />
           </div>
         </div>
 

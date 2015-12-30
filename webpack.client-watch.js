@@ -1,24 +1,20 @@
 var webpack = require("webpack");
 var path = require("path");
 var config = require("./webpack.client.js");
-var GlobalizePlugin = require("globalize-webpack-plugin");
+//var GlobalizePlugin = require("globalize-webpack-plugin");
+var ReactGlobalizePlugin = require('react-globalize-webpack-plugin');
+var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
 var host = process.env.HOST || "localhost";
 
 config.cache = true;
 config.debug = true;
-config.devtool = "eval-sourcemap";
+config.devtool = "eval";
 
-/*config.entry.main.unshift(
+config.entry.main.unshift(
 	"webpack-dev-server/client?http://" + host + ":8080",
 	"webpack/hot/only-dev-server"
-);*/
-config.entry = [
-	"webpack-dev-server/client?http://" + host + ":8080",
-	"webpack/hot/only-dev-server",
-	"babel-polyfill",
-	"./src/client/app.js"
-];
+);
 
 config.output.filename = "app-bundle.js"
 config.output.publicPath = "http://" + host + ":8080/dist/";
@@ -27,14 +23,17 @@ config.output.hotUpdateChunkFilename = "update/[hash]/[id].update.js";
 
 config.plugins = [
 	new webpack.DefinePlugin({__CLIENT__: true, __SERVER__: false}),
-	new webpack.HotModuleReplacementPlugin(),
-	new GlobalizePlugin({
+	new webpack.DefinePlugin({"process.env": {NODE_ENV: '"development"'}}),
+		new webpack.HotModuleReplacementPlugin(),
+	/*new ReactGlobalizePlugin({
 			production: false,
 			developmentLocale: "en",
 			supportedLocales: ["en", "es"],
 			messages: path.join(__dirname, "src/shared/globalization/[locale].json"),
-			output: path.join(__dirname, "static/dist/i18n/[locale].js")
-		})
+			writeMessages: true,
+			output: "i18n/[locale].js"
+		}),*/
+		new CommonsChunkPlugin("vendor", "vendor-bundle.js")
 ];
 
 config.module.postLoaders =  [
@@ -47,7 +46,7 @@ config.module.postLoaders =  [
 
 config.devServer = {
 	publicPath:  "http://" + host + ":8080/dist/",
-	contentBase: "./static",
+	contentBase: path.join(__dirname, "static"),
 	hot:         true,
 	inline:      true,
 	lazy:        false,

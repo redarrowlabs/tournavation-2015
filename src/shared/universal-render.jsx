@@ -1,22 +1,14 @@
 import React from "react";
 import ReactDOM from 'react-dom';
-import { renderToString } from 'react-dom/server';
+import ReactDOMServer from 'react-dom/server';
 import { Router, match, RoutingContext } from 'react-router';
 import AltContainer from 'alt-container';
 import routes from './routes';
 
 import Globalize from 'globalize';
-//Globalize.load(require("cldr-data").entireSupplemental());
-//Globalize.load(require("cldr-data").entireMainFor("en", "es"));
-//Globalize.loadMessages(require("./globalization/en"));
-
-var globalizeLocalizer = require('react-widgets/lib/localizers/globalize');
+import globalizeLocalizer from 'react-widgets/lib/localizers/globalize';
 globalizeLocalizer(Globalize);
-
-// prime globalization
-//Globalize.locale('en');
-//var msg = Globalize.formatMessage("home-title");
-//console.log("*** MSG: " + msg);
+//import css from 'react-widgets/lib/less/react-widgets.less';
 
 const runRouter = location =>
   new Promise(resolve => match({ routes, location }, (error, redirectLocation, renderProps) => {
@@ -61,13 +53,13 @@ export default async function({ flux, history, location, locale }) {
     let fluxSnapshot;
 
     // Collect promises with a first render
-    renderToString(element);
+    ReactDOMServer.renderToString(element);
 
     // Resolve them
     await flux.resolver.dispatchPendingActions();
 
     fluxSnapshot = flux.takeSnapshot();
-    app = renderToString(element);
+    app = ReactDOMServer.renderToString(element);
 		return {
 			content: app,
 			statusCode: 200

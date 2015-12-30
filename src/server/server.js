@@ -1,6 +1,5 @@
 import express from "express";
 import locale from 'express-locale';
-import _ from 'lodash';
 import { createLocation } from "history";
 import config from '../config';
 import compression from 'compression';

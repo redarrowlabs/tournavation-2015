@@ -1,4 +1,4 @@
-const { BROWSER, NODE_ENV } = process.env;
+const { NODE_ENV } = process.env;
 
 class AltResolver {
 
@@ -6,7 +6,7 @@ class AltResolver {
   pendingActions = []
 
   resolve(action, setImmediate = (NODE_ENV === 'test')) {
-    if ((BROWSER && !this.firstRender) || setImmediate) return action();
+    if ((__CLIENT__ && !this.firstRender) || setImmediate) return action();
 
     this.pendingActions = [ ...this.pendingActions, action ];
   }
