@@ -5,10 +5,14 @@ export default React.createClass ({
   contextTypes: { flux: PropTypes.object.isRequired },
 
   // begin listening to store, and call initial fetch to load data
-	componentDidMount() {
+	componentWillMount() {
+    const { flux } = this.context;
+    flux.getActions('healthBehaviors').fetchAllHealthBehaviors();
+  },
+
+  componentDidMount() {
     const { flux } = this.context;
     flux.getStore('healthBehaviors').listen(this.stateChanged);
-    flux.getActions('healthBehaviors').fetchAllHealthBehaviors();
   },
 
   // remove listener when component is unmounted
@@ -19,21 +23,21 @@ export default React.createClass ({
 
   stateChanged(state) {
     this.setState({
-    	healthBehaviors: state.healthBehaviors
+    	healthBehaviors: state.get('healthBehaviors')
     });
   },
 
   getInitialState() {
     const { flux } = this.context;
     return {
-    	healthBehaviors: flux.getStore('healthBehaviors').getState().healthBehaviors
+    	healthBehaviors: flux.getStore('healthBehaviors').getState().get('healthBehaviors')
     };
 	},
 
 	renderListItem(behavior) {
 		return (
-      <li>
-      	{behavior.data.start} - {behavior.data.end}
+      <li key={behavior.get('_id')}>
+      	{behavior.get('data').get('start')} - {behavior.get('data').get('end')}
       </li>
     );
 	},

@@ -1,9 +1,10 @@
 const { NODE_ENV } = process.env;
 
 class AltResolver {
-
-  firstRender = true
-  pendingActions = []
+  constructor() {
+    this.firstRender = true;
+    this.pendingActions = [];
+  }
 
   resolve(action, setImmediate = (NODE_ENV === 'test')) {
     if ((__CLIENT__ && !this.firstRender) || setImmediate) return action();
@@ -12,7 +13,10 @@ class AltResolver {
   }
 
   async dispatchPendingActions() {
-    for (const action of this.pendingActions) await action();
+    for (const action of this.pendingActions) {
+    	await action();
+    }
+    this.pendingActions = [];
   }
 
 }

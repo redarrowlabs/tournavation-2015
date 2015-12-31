@@ -9,15 +9,13 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1')
 
     link(href='/styles.css', rel='stylesheet')
-    //link(href='/react-widgets.css', rel='stylesheet')
 
   body
     #react-main-mount!= content
 
   script.
-    window.__STATE__= JSON.parse("#{state}".split('\'').join('"'));
-    console.log(JSON.stringify(window.__STATE__));
+    window.__LOCALE__= "#{locale}";
 
-  script(src='http://localhost:8080/dist/vendor-bundle.js', defer)
-  script(src='http://localhost:8080/dist/app-bundle.js', defer)
+  script(src='#{scriptUrl}/dist/vendor-bundle.js', defer)
+  script(src='#{scriptUrl}/dist/app-bundle.js', defer)
   

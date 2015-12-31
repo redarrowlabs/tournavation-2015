@@ -1,6 +1,7 @@
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import universalRender from '../shared/universal-render';
-import createFlux from '../shared/flux/createFlux';
+import createFlux from '../shared/flux/create-flux';
+import appConfig from '../config';
 
 import Globalize from 'globalize';
 /*Globalize.load(require("cldr-data").entireSupplemental());
@@ -25,13 +26,10 @@ Globalize.load(
 Globalize.loadMessages(require("../shared/globalization/en.json"));
 // prime globalization
 Globalize.locale('en');
-var msg = Globalize.formatMessage("home-title")
 
 let history = createBrowserHistory();
-const flux = createFlux();
+const flux = createFlux(appConfig);
 
-console.log("*** Client: " + __CLIENT__);
-console.log(process.env.NODE_ENV);
-var state = window.__STATE__;
+let locale = window.__LOCALE__;
 
-universalRender({flux, history, locale: state.locale});
+universalRender({flux, history, location, locale});

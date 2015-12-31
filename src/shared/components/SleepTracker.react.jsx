@@ -8,10 +8,14 @@ export default React.createClass({
   contextTypes: { flux: PropTypes.object.isRequired },
   //propTypes: { selectedDate: PropTypes.number.isRequired },
 
+  componentWillMount() {
+    const { flux } = this.context;
+    flux.getActions('healthBehaviors').fetchHealthBehavior(this.props.selectedDate);
+  },
+
   componentDidMount() {
     const { flux } = this.context;
     flux.getStore('healthBehaviors').listen(this.stateChanged);
-    flux.getActions('healthBehaviors').fetchHealthBehavior(this.props.selectedDate);
   },
 
   componentWillUnmount() {
@@ -20,29 +24,31 @@ export default React.createClass({
   },
 
   stateChanged(state) {
-    this.setState(state.currentHealthBehavior);
+    this.setState(state.get('currentHealthBehavior'));
   },
 
   getInitialState() {
     const { flux } = this.context;
+    const currentHealthBehavior = flux.getStore('healthBehaviors').getState().get('currentHealthBehavior');
     return {
-      currentHealthBehavior: flux.getStore('healthBehaviors').getState().currentHealthBehavior
+      currentHealthBehavior
     };
   },
 
   handleSubmit() {
     const { flux } = this.context;
+    const currentHealthBehavior = this.state.currentHealthBehavior;
     
     if (this.state.currentHealthBehavior.get('id')) {
       flux.getActions('healthBehaviors').updateHealthBehavior({
-        id: this.state.currentHealthBehavior.get('id'),
-        start: this.state.currentHealthBehavior.get('start'),
-        end: this.state.currentHealthBehavior.get('end')
+        id: currentHealthBehavior.get('id'),
+        start: currentHealthBehavior.get('start'),
+        end: currentHealthBehavior.get('end')
       });
     } else {
       flux.getActions('healthBehaviors').submitHealthBehavior({
-        start: this.state.currentHealthBehavior.get('start'),
-        end: this.state.currentHealthBehavior.get('end')
+        start: currentHealthBehavior.get('start'),
+        end: currentHealthBehavior.get('end')
       });
     }
   },
@@ -55,11 +61,13 @@ export default React.createClass({
     let val = event.currentTarget.value;
     let date = this.parseTimeString(val);
     date.subtract(1, 'days');
+    const currentHealthBehavior = this.state.currentHealthBehavior;
+    
     this.setState({
       currentHealthBehavior: Immutable.Map({
-        id: this.state.currentHealthBehavior.get('id'),
+        id: currentHealthBehavior.get('id'),
         start: date,
-        end: this.state.currentHealthBehavior.get('end')
+        end: currentHealthBehavior.get('end')
       })
     });
   },
@@ -67,18 +75,21 @@ export default React.createClass({
   updateWakeTime(event) {
     let val = event.currentTarget.value;
     let date = this.parseTimeString(val);
+    const currentHealthBehavior = this.state.currentHealthBehavior;
+    
     this.setState({
       currentHealthBehavior: Immutable.Map({
-        id: this.state.currentHealthBehavior.get('id'),
-        start: this.state.currentHealthBehavior.get('start'),
+        id: currentHealthBehavior.get('id'),
+        start: currentHealthBehavior.get('start'),
         end: date
       })
     });
   },
 
   render() {
-    let start = this.state.currentHealthBehavior.get('start');
-    let end = this.state.currentHealthBehavior.get('end');
+    const currentHealthBehavior = this.state.currentHealthBehavior;
+    let start = currentHealthBehavior.get('start');
+    let end = currentHealthBehavior.get('end');
     let totalHours = (end && start)
       ? moment.duration(end.diff(start)).asHours()
       : null;

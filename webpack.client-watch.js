@@ -1,8 +1,6 @@
 var webpack = require("webpack");
 var path = require("path");
 var config = require("./webpack.client.js");
-//var GlobalizePlugin = require("globalize-webpack-plugin");
-var ReactGlobalizePlugin = require('react-globalize-webpack-plugin');
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
 var host = process.env.HOST || "localhost";
