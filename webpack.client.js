@@ -59,12 +59,9 @@ module.exports = {
 		new webpack.DefinePlugin({
 			"process.env": {
 				NODE_ENV: '"production"',
-				HOST: '"http://localhost"',
-				//HOST: '"http://tournavation-db.cloudapp.net/"',
-				PORT: '"80"',
-				APIHOST: '"http://localhost"',
-				//APIHOST: '"http://tournavation-db.cloudapp.net/"',
-				APIPORT: '"80"'
+				//HOST: '"http://localhost"',
+				HOST: '"http://tournavation-db.cloudapp.net/"',
+				PORT: '"80"'
 			}
 		}),
 		/*new ReactGlobalizePlugin({
@@ -94,7 +91,6 @@ module.exports = {
 		        ],
 		        presets: ['es2015', 'react', 'stage-0'],
 		      },
-				//loaders: ["babel?cacheDirectory&presets[]=es2015&presets[]=react&presets[]=stage-0"],
 				exclude: /node_modules/},
 			{test: /\\.css$/, loader: "style!css"},
 			{test: /\\.scss$/, loader: "style!css!sass"},
