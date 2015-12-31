@@ -6,9 +6,7 @@ import AltContainer from 'alt-container';
 import routes from './routes';
 
 import Globalize from 'globalize';
-import globalizeLocalizer from 'react-widgets/lib/localizers/globalize';
-globalizeLocalizer(Globalize);
-//import css from 'react-widgets/lib/less/react-widgets.less';
+
 
 const runRouter = location =>
   new Promise(resolve => match({ routes, location }, (error, redirectLocation, renderProps) => {

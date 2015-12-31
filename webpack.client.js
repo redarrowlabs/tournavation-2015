@@ -46,7 +46,6 @@ module.exports = {
 	    "react",
 	    "react-dom",
 	    "react-router",
-	    "react-widgets",
 	    "superagent"
 		]
 	},
