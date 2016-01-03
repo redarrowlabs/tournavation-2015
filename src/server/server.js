@@ -1,19 +1,32 @@
-import express from "express";  
-import React from "react";
-import { renderToString } from 'react-dom/server';
-import { match, RoutingContext } from 'react-router';
+import express from "express";
+import locale from 'express-locale';
 import { createLocation } from "history";
-import createMemoryHistory from 'history/lib/createMemoryHistory';
-import routes from "../shared/routes";
-import config from '../config';
+import appConfig from '../config';
 import compression from 'compression';
+
+import createFlux from '../shared/flux/create-flux';
+import universalRender from '../shared/universal-render';
 
 import api from './api/api';
 
+import Globalize from 'globalize';
+Globalize.load(require("cldr-data").entireSupplemental());
+Globalize.load(require("cldr-data").entireMainFor("en", "es"));
+Globalize.loadMessages(require("../shared/globalization/en"));
+// prime globalization
+Globalize.locale('en');
+
 const server = global.server = express();
 
+// server locale
+server.use(locale({
+  'default': 'en_US',
+  'priority': ['accept-language', 'cookie', 'default'],
+  'cookie': {'name': 'locale'}
+}));
+
 // serve static assets normally
-server.use(express.static('static', {maxAge: config.cacheAge}));
+server.use(express.static('static', {maxAge: appConfig.cacheAge}));
 // add content compression middle-ware
 server.use(compression());
 // Set view path
@@ -24,28 +37,42 @@ server.set('view engine', 'jade');
 // init the api
 api(server);
 
-server.get('*', function (req, res) {
-	let history = createMemoryHistory();
-	let location = createLocation(req.url);
+const flux = createFlux(appConfig);
 
-  match({ routes, history, location }, (error, redirectLocation, renderProps) => {
+const webServer = async function(req, res) {
+  let location = createLocation(req.url);
+
+  try {
+    console.log("*** Server @ " + req.url + " for: " + req.locale.code);
+    const { content, statusCode } = await universalRender({flux, location, locale: req.locale.code});
+
+    res
+      .status(statusCode)
+      .render('index',
+        {
+          content,
+          scriptUrl: appConfig.scriptUrl,
+          locale: req.locale.code
+        });
+  } catch (err) {
+    console.log(err);
+    const { error, redirectLocation } = err;
     if (error) {
       res.status(500).send(error.message);
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (renderProps) {
-    	var content = renderToString(<RoutingContext {...renderProps} />);
-      res.status(200).render('index', {content:content});
     } else {
       res.status(404).send('Not found');
     }
-  });
-});
+  }
+};
 
-var s = server.listen(config.port, function () {  
+server.get('*', webServer);
+
+var s = server.listen(appConfig.port, function () {  
   var host = s.address().address;
   var port = s.address().port;
 
-  console.info('----\n==> ✅  %s is running, talking to API server on %s.', config.app.title, port);
+  console.info('----\n==> ✅  %s is running, talking to API server on %s.', appConfig.app.title, port);
   console.info('==> 💻  Open http://%s:%s in a browser to view the app.', host, port);
 });

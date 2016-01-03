@@ -9,15 +9,17 @@ const environment = {
 
 const host = process.env.HOST || 'http://localhost';
 const port = process.env.PORT || 3000;
-const apiHost = process.env.APIHOST || 'http://localhost';
-const apiPort = process.env.APIPORT || 3000;
+
+const baseUrl = host + (port === '80' ? '' : ':' + port);
+const apiBaseUrl = baseUrl + '/api/';
+const scriptUrl = process.env.SCRIPT_HOST || 'http://localhost:8080';
 
 module.exports = Object.assign({
   host: host,
   port: port,
-  apiHost: apiHost,
-  apiPort: apiPort,
-  apiBaseUrl: apiHost + ':' + apiPort + '/api',
+  baseUrl: baseUrl,
+  apiBaseUrl: apiBaseUrl,
+  scriptUrl: scriptUrl,
   app: {
     title: 'HealthHero',
     description: 'Application for health monitoring.',

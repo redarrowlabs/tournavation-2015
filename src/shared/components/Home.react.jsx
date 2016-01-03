@@ -1,37 +1,43 @@
-import React from "react";
-import HealthBehaviorStore from '../stores/HealthBehaviorStore';
-import HealthBehaviorAction from '../actions/HealthBehaviorActions';
-import SleepVisualizerContainer from './SleepVisualizerContainer.react';
+import React, {PropTypes} from 'react';
 
 export default React.createClass ({
 
+  contextTypes: { flux: PropTypes.object.isRequired },
+
   // begin listening to store, and call initial fetch to load data
-	componentDidMount() {
-    HealthBehaviorStore.listen(this.stateChanged);
-    HealthBehaviorAction.fetchAllHealthBehaviors();
+	componentWillMount() {
+    const { flux } = this.context;
+    flux.getActions('healthBehaviors').fetchAllHealthBehaviors();
+  },
+
+  componentDidMount() {
+    const { flux } = this.context;
+    flux.getStore('healthBehaviors').listen(this.stateChanged);
   },
 
   // remove listener when component is unmounted
   componentWillUnmount() {
-    HealthBehaviorStore.unlisten(this.stateChanged);
+    const { flux } = this.context;
+    flux.getStore('healthBehaviors').unlisten(this.stateChanged);
   },
 
   stateChanged(state) {
     this.setState({
-    	healthBehaviors: state.healthBehaviors
+    	healthBehaviors: state.get('healthBehaviors')
     });
   },
 
   getInitialState() {
+    const { flux } = this.context;
     return {
-    	healthBehaviors: HealthBehaviorStore.getState().healthBehaviors
+    	healthBehaviors: flux.getStore('healthBehaviors').getState().get('healthBehaviors')
     };
 	},
 
 	renderListItem(behavior) {
 		return (
-      <li>
-      	{behavior.data.start} - {behavior.data.end}
+      <li key={behavior.get('_id')}>
+      	{behavior.get('data').get('start')} - {behavior.get('data').get('end')}
       </li>
     );
 	},
@@ -42,7 +48,6 @@ export default React.createClass ({
     	<div>
     		<span>Welcome to HealthHeroes! This is all the logged data:</span>
     		<ul>{ healthBehaviors.map(this.renderListItem) }</ul>
-        <SleepVisualizerContainer />
     	</div>
   	);
   }

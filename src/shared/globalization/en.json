@@ -1,0 +1,14 @@
+{
+	"en": {
+		"home-title": "HealthHero",
+		"home-nav-home": "Home",
+		"home-nav-track": "Track",
+		"sleeptracker-time-title": "Record Your Sleep",
+		"sleeptracker-time-subtitle": "How long did you sleep last night?",
+		"sleeptracker-time-start": "went to bed",
+		"sleeptracker-time-end": "woke up",
+		"sleeptracker-time-amount": "You slept",
+		"sleeptracker-time-unit": "Hours",
+		"sleeptracker-submit": "Graph my data"
+	}
+}

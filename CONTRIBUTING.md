@@ -46,8 +46,13 @@ Example:
 <a name="features"></a>
 ## Feature requests
 
-Feature requests are welcome. But take a moment to find out whether your idea fits with the scope and aims of the project. It's up to *you* to make a strong case to convince the project's developers of the merits of this feature. Please provide as much detail and context as possible.
+Feature requests are welcome. But take a moment to find out whether your idea fits with the scope and aims of the project. It's up to *you* to make a strong case to convince the project team of the merits of the feature. Please provide as much detail and context as possible.  
 
+It is recommended to use the #ideation Slack channel (link below) to discuss ideas for features, enhancements, user stories, requirements, etc.  Anything that goes from ideation to feature must be validated against the project research and problem statement.
+
+[![Slack](https://img.shields.io/badge/Slack-Channel-blue.svg)](https://redarrowlabs.slack.com/messages/ideation/details/)
+
+User Stories in GitHub should follow the BDD approach where applicable.  A strong story narrative with at least one valid scenario should be present. Be sure to note "User Story" in the Github issue title, apply the correct labels (enhancement) and milestone.
 
 <a name="pull-requests"></a>
 ## Pull requests
