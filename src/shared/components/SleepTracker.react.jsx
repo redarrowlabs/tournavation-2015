@@ -2,6 +2,7 @@ import moment from 'moment';
 import React, {PropTypes} from 'react';
 import Globalize from 'globalize';
 import Immutable from 'immutable';
+import SleepVisualizer from './SleepVisualizer.react';
 
 export default React.createClass({
 
@@ -133,6 +134,7 @@ export default React.createClass({
 
         <input type="submit" value={Globalize.formatMessage('sleeptracker-submit')} onClick={this.handleSubmit} />
 
+        <SleepVisualizer/>
       </div>
     );
   }

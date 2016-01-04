@@ -29,6 +29,7 @@ var ObservationChartBuilder = React.createClass({
 
 	buildChart(data) {
 		console.log('building chart -- ready:' + this.state.scriptsReady + ', data: ' + data);
+        console.log(data);
 		if (!this.state.scriptsReady) { return; }
 		
         var chartSettings = {
@@ -108,5 +109,5 @@ var ObservationChartBuilder = React.createClass({
 });
 
 export default scriptLoader(
-  ['/amcharts/amcharts.js','/amcharts/serial.js','/amcharts/themes/dark.js']
+  '/amcharts/amcharts.js','/amcharts/serial.js','/amcharts/themes/dark.js'
 )(ObservationChartBuilder);

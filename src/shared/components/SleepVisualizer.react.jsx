@@ -1,16 +1,44 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import ObservationChart from './ObservationChartBuilder.react';
 
 export default React.createClass({
   
+  	contextTypes: { flux: PropTypes.object.isRequired },
+  	
 	componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
-		console.log('SleepVisualizer componentWillReceiveProps script loaded, data: ' + this.props.sleepData) ;
-		console.log(this.props);
+		console.log('SleepVisualizer componentWillReceiveProps') ;
 	},
 
 	componentDidMount () {		
-		console.log('SleepVisualizer componentDidMount script loaded');
-		console.log(this.props);
+		console.log('SleepVisualizer componentDidMount');
+		const { flux } = this.context;
+    	flux.getStore('healthBehaviors').listen(this.stateChanged);
+	},
+
+	componentWillMount() {
+		console.log('SleepVisualizer componentWillMount');
+	    const { flux } = this.context;
+	    flux.getActions('healthBehaviors').fetchAllHealthBehaviors();
+	},
+
+	componentWillUnmount() {
+		console.log('SleepVisualizer componentWillMount');
+		const { flux } = this.context;
+		flux.getStore('healthBehaviors').unlisten(this.stateChanged);
+	},
+
+	stateChanged(state) {
+		console.log('SleepVisualizer stateChanged');
+		this.setState({
+			sleepData: state.get('healthBehaviors')
+		});
+	},
+
+  	getInitialState() {
+	    const { flux } = this.context;
+	    return {
+	    	sleepData: flux.getStore('healthBehaviors').getState().get('healthBehaviors')
+	    };
 	},
 
 	generateChartData(rawData) {
@@ -36,8 +64,8 @@ export default React.createClass({
 	},
 
 	render() {
-		console.log('rendering sleep chart, props: ' + this.props.sleepData);
-		var transformedData = this.generateChartData(this.props.sleepData);
+		console.log('rendering sleep chart, ' + this.state.sleepData);
+		var transformedData = this.generateChartData(this.state.sleepData);
 		return (
 			<div>
 		    	<ObservationChart chartData={transformedData} chartName='sleep' chartTitle='Total Hours of Sleep' chartType='StepLine'/>
