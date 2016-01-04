@@ -7,6 +7,8 @@ export default React.createClass({
 
   contextTypes: { flux: PropTypes.object.isRequired },
 
+  behaviorKey: "alertness",
+
   componentWillMount() {
     const { flux } = this.context;
     flux.getActions('healthBehaviors').fetchHealthBehavior(this.props.selectedDate);
@@ -38,17 +40,16 @@ export default React.createClass({
     const { flux } = this.context;
     const currentHealthBehavior = this.state.currentHealthBehavior;
     
+    let updatedBehavior = {  
+        date: currentHealthBehavior.get('date'),
+        level: currentHealthBehavior.get('level')
+    };
     if (this.state.currentHealthBehavior.get('id')) {
-      flux.getActions('healthBehaviors').updateHealthBehavior({
-        id: currentHealthBehavior.get('id'),
-        date: currentHealthBehavior.get('date'),
-        level: currentHealthBehavior.get('level')
-      });
+      updatedBehavior.id = currentHealthBehavior.get('id');
+      flux.getActions('healthBehaviors').updateHealthBehavior(updatedBehavior);
     } else {
-      flux.getActions('healthBehaviors').submitHealthBehavior({
-        date: currentHealthBehavior.get('date'),
-        level: currentHealthBehavior.get('level')
-      });
+      updatedBehavior.key = this.behaviorKey;        
+      flux.getActions('healthBehaviors').submitHealthBehavior(updatedBehavior);
     }
   },
 

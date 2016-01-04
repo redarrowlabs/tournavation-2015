@@ -8,6 +8,8 @@ export default React.createClass({
   contextTypes: { flux: PropTypes.object.isRequired },
   //propTypes: { selectedDate: PropTypes.number.isRequired },
 
+  behaviorKey: "sleep",
+
   componentWillMount() {
     const { flux } = this.context;
     flux.getActions('healthBehaviors').fetchHealthBehavior(this.props.selectedDate);
@@ -39,17 +41,17 @@ export default React.createClass({
     const { flux } = this.context;
     const currentHealthBehavior = this.state.currentHealthBehavior;
     
+    let updatedBehavior = {
+      key: this.behaviorKey,
+      start: currentHealthBehavior.get('start'),
+      end: currentHealthBehavior.get('end')
+    };
     if (this.state.currentHealthBehavior.get('id')) {
-      flux.getActions('healthBehaviors').updateHealthBehavior({
-        id: currentHealthBehavior.get('id'),
-        start: currentHealthBehavior.get('start'),
-        end: currentHealthBehavior.get('end')
-      });
+      updatedBehavior.id = currentHealthBehavior.get('id');
+      flux.getActions('healthBehaviors').updateHealthBehavior(updatedBehavior);
     } else {
-      flux.getActions('healthBehaviors').submitHealthBehavior({
-        start: currentHealthBehavior.get('start'),
-        end: currentHealthBehavior.get('end')
-      });
+      updatedBehavior.key = this.behaviorKey;
+      flux.getActions('healthBehaviors').submitHealthBehavior(updatedBehavior);
     }
   },
 

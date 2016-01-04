@@ -1,5 +1,4 @@
 import Immutable from 'immutable';
-import AuthActions from '../actions/AuthActions'
 
 class AuthStore{
 	constructor() {

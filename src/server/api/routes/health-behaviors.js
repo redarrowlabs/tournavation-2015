@@ -22,10 +22,13 @@ export default function (router) {
 	});
 
 	router.route('/healthbehaviors').post(function(req, res) {
-		var healthBehavior = new HealthBehaviors({
+      var key = req.body.key;
+      delete req.body.key;
+	  var healthBehavior = new HealthBehaviors({
 	  	user: 'system',
-	  	key: req.body.key,
-	  	data: req.body});
+	  	key: key,
+	  	data: req.body
+      });
 
 	  healthBehavior.save(function(err) {
 	    if (err) {

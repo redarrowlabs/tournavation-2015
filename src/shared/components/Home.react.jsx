@@ -37,6 +37,8 @@ export default React.createClass ({
 	renderListItem(behavior) {
 		return (
       <li key={behavior.get('_id')}>
+        <label>key: {behavior.get('key')}</label>
+        <br/>
       	{behavior.get('data').map(this.renderKeyValue)}
       </li>
     );
