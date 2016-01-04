@@ -28,9 +28,8 @@ var ObservationChartBuilder = React.createClass({
 	},
 
 	buildChart(data) {
-		console.log('building chart -- ready:' + this.state.scriptsReady + ', data: ' + data);
-        console.log(data);
-		if (!this.state.scriptsReady) { return; }
+		console.log('building chart -- scripts ready:' + this.state.scriptsReady + ', data points: ' + (data ? data.length : 0));
+        if (!this.state.scriptsReady) { return; }
 		
         var chartSettings = {
             "type": "serial",
@@ -98,7 +97,7 @@ var ObservationChartBuilder = React.createClass({
   },
 
   render() {
-  	console.log('rendering ObservationChartBuilder, props: ' + this.props);
+  	console.log('rendering ObservationChartBuilder');
   	this.buildChart(this.props.chartData);
     return (
     	<div>

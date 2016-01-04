@@ -1,11 +1,12 @@
 import React, {PropTypes} from 'react';
 import ObservationChart from './ObservationChartBuilder.react';
+import moment from 'moment';
 
 export default React.createClass({
   
   	contextTypes: { flux: PropTypes.object.isRequired },
-  	
-	componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
+
+	componentWillReceiveProps () {
 		console.log('SleepVisualizer componentWillReceiveProps') ;
 	},
 
@@ -42,29 +43,28 @@ export default React.createClass({
 	},
 
 	generateChartData(rawData) {
-		console.log('generating sleep chart data from ' + rawData);
+		console.log('generating sleep chart data');
 		var translatedData = [];
 		if (rawData) {
-			// Until the data is "real", just using some fake data with same number of points as source
-			// Ultimately this might do some transformation of the source data given the type of chart we want
-			// So this will tacitly, but not directly, understand the chart implementation.
 			rawData.map(function(dataPoint, idx) {
-				var someDate = new Date();
-				someDate.setDate(someDate.getDate() + idx); 
-				var dateStr = someDate.getDate() < 10 ? '0' + someDate.getDate() : someDate.getDate().toString();
-				var monthStr = (someDate.getMonth()) + 1 < 10 ? '0' + (someDate.getMonth() + 1) : (someDate.getMonth() + 1).toString();
-				var someDateStr = someDate.getFullYear() + '-' + monthStr + '-' + dateStr;
-				console.log(someDateStr + ' ' + idx);
-				var color = (idx % 2 === 0) ? "#04D215" : "#FCD202";
-				translatedData.push( { "date": someDateStr, "value": idx, "color": color } );
+				let start = dataPoint.get('data').get('start');
+			    let end = dataPoint.get('data').get('end');
+				if (!end || !start) return;
+
+				var startDate = moment(start);
+      			var endDate = moment(end);
+			    let totalHours = Number(Math.round(moment.duration(endDate.diff(startDate)).asHours()+'e2')+'e-2');
+	      		
+      			var startDateStr = startDate.format('YYYY-MM-DD');
+      			var color = (totalHours >= 8) ? "#04D215" : "#FCD202";
+      			translatedData.push( { "date": startDateStr, "value": totalHours, "color": color } );
 			});
 		}
-		console.log('generated sleep chart data: ' + translatedData);
 		return translatedData;
 	},
 
 	render() {
-		console.log('rendering sleep chart, ' + this.state.sleepData);
+		console.log('rendering sleep chart');
 		var transformedData = this.generateChartData(this.state.sleepData);
 		return (
 			<div>
