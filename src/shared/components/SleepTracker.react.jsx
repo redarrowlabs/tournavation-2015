@@ -52,6 +52,7 @@ export default React.createClass({
         end: currentHealthBehavior.get('end')
       });
     }
+    flux.getActions('healthBehaviors').fetchAllHealthBehaviors();
   },
 
   parseTimeString(time) {
