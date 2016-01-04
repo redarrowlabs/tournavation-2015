@@ -1,0 +1,99 @@
+import moment from 'moment';
+import React, {PropTypes} from 'react';
+import Globalize from 'globalize';
+import Immutable from 'immutable';
+
+export default React.createClass({
+
+  contextTypes: { flux: PropTypes.object.isRequired },
+
+  componentWillMount() {
+    const { flux } = this.context;
+    flux.getActions('healthBehaviors').fetchHealthBehavior(this.props.selectedDate);
+  },
+
+  componentDidMount() {
+    const { flux } = this.context;
+    flux.getStore('healthBehaviors').listen(this.stateChanged);
+  },
+
+  componentWillUnmount() {
+    const { flux } = this.context;
+    flux.getStore('healthBehaviors').unlisten(this.stateChanged);
+  },
+
+  stateChanged(state) {
+    this.setState(state.get('currentHealthBehavior'));
+  },
+
+  getInitialState() {
+    const { flux } = this.context;
+    const currentHealthBehavior = flux.getStore('healthBehaviors').getState().get('currentHealthBehavior');
+    return {
+      currentHealthBehavior
+    };
+  },
+
+  handleSubmit() {
+    const { flux } = this.context;
+    const currentHealthBehavior = this.state.currentHealthBehavior;
+    
+    if (this.state.currentHealthBehavior.get('id')) {
+      flux.getActions('healthBehaviors').updateHealthBehavior({
+        id: currentHealthBehavior.get('id'),
+        date: currentHealthBehavior.get('date'),
+        level: currentHealthBehavior.get('level')
+      });
+    } else {
+      flux.getActions('healthBehaviors').submitHealthBehavior({
+        date: currentHealthBehavior.get('date'),
+        level: currentHealthBehavior.get('level')
+      });
+    }
+  },
+
+  updateLevel(event) {
+    let val = event.currentTarget.value;
+    const currentHealthBehavior = this.state.currentHealthBehavior;
+    
+    this.setState({
+      currentHealthBehavior: Immutable.Map({
+        id: currentHealthBehavior.get('id'),
+        date: this.props.selectedDate,
+        level: val,
+      })
+    });
+  },
+
+  render() {
+    const currentHealthBehavior = this.state.currentHealthBehavior;
+    return (
+      <div>
+        <div>
+          <span align="left">2</span>
+          <div align="center">
+            <span>{Globalize.formatMessage('alertnesstracker-level-title')}</span>
+            <br/>
+            <span>{Globalize.formatMessage('alertnesstracker-level-subtitle')}</span>
+          </div>
+        </div>
+        {JSON.stringify(this.props)}
+        <div align="center">
+          <div>
+            <span align="left">
+              <span>{Globalize.formatMessage('alertnesstracker-level')}</span>
+            </span>
+            <input type="radio" name="level" value="1" onChange={this.updateLevel} />1
+            <input type="radio" name="level" value="2" onChange={this.updateLevel} />2
+            <input type="radio" name="level" value="3" onChange={this.updateLevel} />3
+            <input type="radio" name="level" value="4" onChange={this.updateLevel} />4
+            <input type="radio" name="level" value="5" onChange={this.updateLevel} />5
+          </div>
+        </div>
+
+        <input type="submit" value={Globalize.formatMessage('alertnesstracker-submit')} onClick={this.handleSubmit} />
+        
+      </div>
+    );
+  }
+});

@@ -1,5 +1,9 @@
 {
 	"en": {
+		"alertnesstracker-level-title": "(ES) Record Your Alertness",
+        "alertnesstracker-level-subtitle": "(ES) How do you feel today?",
+        "alertnesstracker-submit": "(ES) Graph my data",
+        "alertnesstracker-level": "(ES) Level",
 		"home-title": "(ES) HealthHero",
 		"home-nav-home": "(ES) Home",
 		"home-nav-track": "(ES) Track",
@@ -8,6 +12,7 @@
 		"sleeptracker-time-start": "(ES) went to bed",
 		"sleeptracker-time-end": "(ES) woke up",
 		"sleeptracker-time-amount": "(ES) You slept",
-		"sleeptracker-time-unit": "(ES) Hours"
+		"sleeptracker-time-unit": "(ES) Hours",
+		"sleeptracker-submit": "(ES) Graph my data"
 	}
 }
