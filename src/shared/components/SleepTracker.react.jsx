@@ -7,11 +7,10 @@ import SleepVisualizer from './SleepVisualizer.react';
 export default React.createClass({
 
   contextTypes: { flux: PropTypes.object.isRequired },
-  //propTypes: { selectedDate: PropTypes.number.isRequired },
 
   componentWillMount() {
     const { flux } = this.context;
-    flux.getActions('healthBehaviors').fetchHealthBehavior(this.props.selectedDate);
+    flux.getActions('healthBehaviors').findHealthBehavior(this.state.selectedDate || moment().startOf('day').valueOf());
   },
 
   componentDidMount() {
@@ -25,14 +24,24 @@ export default React.createClass({
   },
 
   stateChanged(state) {
-    this.setState(state.get('currentHealthBehavior'));
+    this.setState(this.getStateFromStore());
   },
 
   getInitialState() {
+    return this.getStateFromStore();
+  },
+
+  getStateFromStore() {
     const { flux } = this.context;
-    const currentHealthBehavior = flux.getStore('healthBehaviors').getState().get('currentHealthBehavior');
+    const selectedDate = moment().startOf('day').valueOf();
+    const storeState = flux.getStore('healthBehaviors').getState();
+    const currentHealthBehavior = storeState.get('currentHealthBehavior')
+      .set('key', 'sleep-tracker')
+      .set('filter', selectedDate);
+
     return {
-      currentHealthBehavior
+      currentHealthBehavior: currentHealthBehavior,
+      selectedDate: selectedDate
     };
   },
 
@@ -40,37 +49,42 @@ export default React.createClass({
     const { flux } = this.context;
     const currentHealthBehavior = this.state.currentHealthBehavior;
     
-    if (this.state.currentHealthBehavior.get('id')) {
-      flux.getActions('healthBehaviors').updateHealthBehavior({
-        id: currentHealthBehavior.get('id'),
-        start: currentHealthBehavior.get('start'),
-        end: currentHealthBehavior.get('end')
-      });
-    } else {
-      flux.getActions('healthBehaviors').submitHealthBehavior({
-        start: currentHealthBehavior.get('start'),
-        end: currentHealthBehavior.get('end')
-      });
+    if (!currentHealthBehavior.get('data')
+      || !currentHealthBehavior.get('data').get('start')
+      || !currentHealthBehavior.get('data').get('end')) {
+      return;
     }
-    flux.getActions('healthBehaviors').fetchAllHealthBehaviors();
+
+    if (currentHealthBehavior.get('_id')) {
+      flux.getActions('healthBehaviors').updateHealthBehavior(currentHealthBehavior);
+    } else {
+      flux.getActions('healthBehaviors').submitHealthBehavior(currentHealthBehavior);
+    }
   },
 
   parseTimeString(time) {
-    return moment(time, ['HH:mm']);
+    return time === '' ? null : moment(time, ['HH:mm']);
+  },
+
+  getData(healthBehavior) {
+    return healthBehavior.get('data') ||
+      Immutable.Map({
+        start: null,
+        end: null
+      });
   },
 
   updateBedTime(event) {
     let val = event.currentTarget.value;
     let date = this.parseTimeString(val);
     date.subtract(1, 'days');
+
     const currentHealthBehavior = this.state.currentHealthBehavior;
-    
+    const data = this.getData(currentHealthBehavior)
+      .set('start', date);
+
     this.setState({
-      currentHealthBehavior: Immutable.Map({
-        id: currentHealthBehavior.get('id'),
-        start: date,
-        end: currentHealthBehavior.get('end')
-      })
+      currentHealthBehavior: currentHealthBehavior.set('data', data)
     });
   },
 
@@ -78,26 +92,28 @@ export default React.createClass({
     let val = event.currentTarget.value;
     let date = this.parseTimeString(val);
     const currentHealthBehavior = this.state.currentHealthBehavior;
+    const data = this.getData(currentHealthBehavior)
+      .set('end', date);
     
     this.setState({
-      currentHealthBehavior: Immutable.Map({
-        id: currentHealthBehavior.get('id'),
-        start: currentHealthBehavior.get('start'),
-        end: date
-      })
+      currentHealthBehavior: currentHealthBehavior.set('data', data)
     });
   },
 
   render() {
     const currentHealthBehavior = this.state.currentHealthBehavior;
-    let start = currentHealthBehavior.get('start');
-    let end = currentHealthBehavior.get('end');
+    const data = this.getData(currentHealthBehavior);
+    
+    let start = moment(data.get('start'));
+    let end = moment(data.get('end'));
     let totalHours = (end && start)
       ? moment.duration(end.diff(start)).asHours()
       : null;
 
     let startDisplay = start ? start.format('HH:mm') : null;
     let endDisplay = end ? end.format('HH:mm') : null;
+
+    let isDisabled = !(end.isValid() && start.isValid());
 
     return (
       <div>
@@ -133,7 +149,7 @@ export default React.createClass({
           <span>{Globalize.formatMessage('sleeptracker-time-unit')}</span>
         </div>
 
-        <input type="submit" value={Globalize.formatMessage('sleeptracker-submit')} onClick={this.handleSubmit} />
+        <input type="submit" value={Globalize.formatMessage('sleeptracker-submit')} onClick={this.handleSubmit} disabled={isDisabled}/>
 
         <SleepVisualizer/>
       </div>

@@ -19,7 +19,7 @@ export default React.createClass({
 	componentWillMount() {
 		console.log('SleepVisualizer componentWillMount');
 	    const { flux } = this.context;
-	    flux.getActions('healthBehaviors').fetchAllHealthBehaviors();
+	    flux.getActions('healthBehaviors').fetchAllHealthBehaviors('sleep-tracker');
 	},
 
 	componentWillUnmount() {
