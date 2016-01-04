@@ -2,8 +2,15 @@ const { NODE_ENV } = process.env;
 
 class AltResolver {
   constructor() {
-    this.firstRender = true;
+    this._firstRender = true;
     this.pendingActions = [];
+  }
+
+  get firstRender() { return this._firstRender; }
+
+  set firstRender(value) {
+    this._firstRender = value;
+    this.dispatchPendingActions();
   }
 
   resolve(action, setImmediate = (NODE_ENV === 'test')) {
