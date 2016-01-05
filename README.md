@@ -8,7 +8,7 @@
 MKE Tournavation project for 2015.
 
 ## What is Tournavation
-Tournavation is a social innovation project led by Red Arrow Labs and Dohmen Foundation.  The goal is to address a address a social issue voted on by the community, and create a technical solution to help alleviate the problem.  The project is developed by a volunteer team from the community, and gifted back as an open source project.
+Tournavation is a social innovation project led by Red Arrow Labs and Dohmen Foundation.  The goal is to address a social issue voted on by the community, and create a technical solution to help alleviate the problem.  The project is developed by a volunteer team from the community, and gifted back as an open source project.
 
 ## The Idea
 Health disparities are inextricably linked with poverty (Milwaukee Health Report, 2013). At the core of the issue are three root causes that Health STEMheroes addresses: (1) lack of real-time information for both public servants and citizens, which hinders effective resource allocation to those most in need; (2) disempowerment of those in poverty, particularly adolescents, to understand and improve their own health; and (3) far too few students (especially females and students of color) pursuing studies and careers in science, technology, engineering, math (STEM), especially as such jobs boom in Milwaukee and would provide a path out of economic poverty that negatively affects health outcomes.

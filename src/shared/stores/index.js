@@ -1,2 +1,2 @@
-export { default as healthBehaviors } from './healthBehaviorStore';
-export { default as auth } from './authStore';
+export { default as healthBehaviors } from './HealthBehaviorStore';
+export { default as auth } from './AuthStore';

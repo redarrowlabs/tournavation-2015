@@ -20,6 +20,7 @@ module.exports = {
 	    "history",
 	    "immutable",
 	    "iso",
+	    "lodash",
 	    "moment",
 	    "node-uuid",
 	    "react",

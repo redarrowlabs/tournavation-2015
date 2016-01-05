@@ -12,7 +12,27 @@ export default function (router) {
 	});
 
 	router.route('/healthbehaviors/:id').get(function(req, res) {
-		HealthBehaviors.findOne({ _id: req.params.id}, function(err, healthbehavior) {
+		HealthBehaviors.findOne({_id: req.params.id}, function(err, healthbehavior) {
+	    if (err) {
+	      return res.send(err);
+	    }
+
+	    res.json(healthbehavior);
+	  });
+	});
+
+	router.route('/healthbehaviors/key/:key').get(function(req, res) {
+		HealthBehaviors.find({key: req.params.key}, function(err, healthbehaviors) {
+	    if (err) {
+	      return res.send(err);
+	    }
+
+	    res.json(healthbehaviors);
+	  });
+	});
+
+	router.route('/healthbehaviors/filter/:filter').get(function(req, res) {
+		HealthBehaviors.findOne({filter: req.params.filter}, function(err, healthbehavior) {
 	    if (err) {
 	      return res.send(err);
 	    }
@@ -22,13 +42,15 @@ export default function (router) {
 	});
 
 	router.route('/healthbehaviors').post(function(req, res) {
-      var key = req.body.key;
-      delete req.body.key;
+	  var key = req.body.key;
+	  delete req.body.key;
+	  var filter = req.body.filter;
+	  delete req.body.filter;
 	  var healthBehavior = new HealthBehaviors({
 	  	user: 'system',
 	  	key: key,
-	  	data: req.body
-      });
+	  	filter: filter,
+	  	data: req.body.data});
 
 	  healthBehavior.save(function(err) {
 	    if (err) {
@@ -49,7 +71,6 @@ export default function (router) {
 	      healthbehavior[prop] = req.body[prop];
 	    }
 
-	    // save the movie
 	    healthbehavior.save(function(err) {
 	      if (err) {
 	        return res.send(err);

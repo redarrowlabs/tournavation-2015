@@ -5,14 +5,14 @@ class HealthBehaviorActions {
     // Add dispatch only actions
     this.generateActions(
       'updateAllHealthBehaviors',
-      'updateHealthBehavior'
+      'updateCurrentHealthBehavior'
     );
   }
 
-  fetchAllHealthBehaviors() {
+  fetchAllHealthBehaviors(key) {
     return (dispatch, alt) =>
       alt.resolve(async () => {
-        var data = await alt.api.fetchAll('healthbehaviors');      
+        var data = await alt.api.fetch('healthbehaviors/key', key);
         alt.getActions('healthBehaviors').updateAllHealthBehaviors(data);
       });
   }
@@ -21,7 +21,15 @@ class HealthBehaviorActions {
     return (dispatch, alt) =>
       alt.resolve(async () => {
         var data = await alt.api.fetch('healthbehaviors', id);      
-        alt.getActions('healthBehaviors').updateHealthBehavior(data);
+        alt.getActions('healthBehaviors').updateCurrentHealthBehavior(data);
+      });
+  }
+
+  findHealthBehavior(filter) {
+    return (dispatch, alt) =>
+      alt.resolve(async () => {
+        var data = await alt.api.fetch('healthbehaviors/filter', filter);      
+        alt.getActions('healthBehaviors').updateCurrentHealthBehavior(data);
       });
   }
 
@@ -29,15 +37,15 @@ class HealthBehaviorActions {
     return (dispatch, alt) =>
       alt.resolve(async () => {
         var data = await alt.api.create('healthbehaviors', healthBehavior);      
-        alt.getActions('healthBehaviors').updateHealthBehavior(data);
+        alt.getActions('healthBehaviors').updateCurrentHealthBehavior(data);
       });
   }
 
   updateHealthBehavior(healthBehavior) {
     return (dispatch, alt) =>
       alt.resolve(async () => {
-        var data = await alt.api.update('healthbehaviors', id, healthBehavior);      
-        alt.getActions('healthBehaviors').updateHealthBehavior(data);
+        var data = await alt.api.update('healthbehaviors', healthBehavior.get('_id'), healthBehavior);      
+        alt.getActions('healthBehaviors').updateCurrentHealthBehavior(data);
       });
   }
 }
