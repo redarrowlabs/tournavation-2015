@@ -58,12 +58,16 @@ class HealthBehaviorStore{
 		let currentHealthBehaviors = this.state.get('currentHealthBehaviors')
 		  .set(payload.key, healthBehavior);
 
-		let healthBehaviors = this.state.get('healthBehaviors').get(payload.key) || new Immutable.List([]);
-		let index = _.findIndex(healthBehaviors.toArray(), item => {
-			return item.get('_id') === healthBehavior.get('_id');
-		});
-		healthBehaviors = healthBehaviors
-					.set(index, healthBehavior);
+		let healthBehaviors = this.state.get('healthBehaviors').get(payload.key);
+		if (healthBehaviors) {
+			let index = _.findIndex(healthBehaviors.toArray(), item => {
+				return item.get('_id') === healthBehavior.get('_id');
+			});
+		  healthBehaviors = healthBehaviors
+				.set(index, healthBehavior);
+		} else {
+			healthBehaviors	= new Immutable.List([healthBehavior]);
+		}
 
 		let state = this.state.set('currentHealthBehavior', currentHealthBehaviors);
 		state = state.set('healthBehaviors',

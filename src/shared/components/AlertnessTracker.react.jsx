@@ -11,7 +11,7 @@ export default React.createClass({
 
   componentWillMount() {
     const { flux } = this.context;
-    flux.getActions('healthBehaviors').fetchHealthBehavior(this.props.selectedDate);
+    flux.getActions('healthBehaviors').findHealthBehavior('alertness-level ', this.props.selectedDate);
   },
 
   componentDidMount() {

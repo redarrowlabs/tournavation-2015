@@ -15,10 +15,6 @@ const App = React.createClass({
   },
 
   render() {
-    var childrenWithProps = React.Children.map(this.props.children, child => {
-        return React.cloneElement(child);
-    });
-
     return (
       <div>
         <header id="navigation">
@@ -32,7 +28,7 @@ const App = React.createClass({
 
         <div>
           <h1>{Globalize.formatMessage('home-title')}</h1>
-          {childrenWithProps}
+          {this.props.children}
         </div>
       </div>
     );

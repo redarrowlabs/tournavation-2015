@@ -7,7 +7,6 @@ export default React.createClass ({
   // begin listening to store, and call initial fetch to load data
 	componentWillMount() {
     const { flux } = this.context;
-    flux.getActions('healthBehaviors').fetchAllHealthBehaviors();
   },
 
   componentDidMount() {
@@ -22,35 +21,12 @@ export default React.createClass ({
   },
 
   stateChanged(state) {
-    this.setState({
-    	healthBehaviors: state.get('healthBehaviors')
-    });
+    this.setState({});
   },
 
   getInitialState() {
     const { flux } = this.context;
-    return {
-    	healthBehaviors: flux.getStore('healthBehaviors').getState().get('healthBehaviors')
-    };
-	},
-
-	renderListItem(behavior) {
-		return (
-      <li key={behavior.get('_id')}>
-        <label>key: {behavior.get('key')}</label>
-        <br/>
-      	{behavior.get('data').map(this.renderKeyValue)}
-      </li>
-    );
-	},
-
-  renderKeyValue(value, index) {
-	  return (
-        <div>
-          <label>{index}: {value}</label>
-          <br/>
-        </div>
-      );
+    return {};
 	},
 
   render() {
@@ -58,7 +34,6 @@ export default React.createClass ({
     return (
     	<div>
     		<span>Welcome to HealthHeroes! This is all the logged data:</span>
-    		<ul>{ healthBehaviors.map(this.renderListItem) }</ul>
     	</div>
   	);
   }
