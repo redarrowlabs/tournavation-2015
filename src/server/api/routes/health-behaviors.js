@@ -44,7 +44,7 @@ export default function (router) {
 	router.route('/healthbehaviors').post(function(req, res) {
 	  var key = req.body.key;
 	  var filter = req.body.filter;
-	  var healthBehavior = new HealthBehaviors({
+	  var healthbehavior = new HealthBehaviors({
 	  	user: 'system',
 	  	key: key,
 	  	filter: filter,

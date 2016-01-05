@@ -18,7 +18,6 @@ export default class Api {
   }
   
   fetch(resource, id) {
-    console.log('** Fetch: ' + this.baseUrl + resource + '/' + id)
     return new Promise((resolve, reject) =>
       request
         .get(this.baseUrl + resource + '/' + id)

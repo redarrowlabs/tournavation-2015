@@ -12,7 +12,6 @@ class HealthBehaviorActions {
   fetchAllHealthBehaviors(key) {
     return (dispatch, alt) =>
       alt.resolve(async () => {
-    console.log('** fetchAllHealthBehaviors');
         var data = await alt.api.fetch('healthbehaviors/key', key);
         alt.getActions('healthBehaviors').updateAllHealthBehaviors({key, data});
       });
@@ -21,7 +20,6 @@ class HealthBehaviorActions {
   fetchHealthBehavior(id) {
     return (dispatch, alt) =>
       alt.resolve(async () => {
-    console.log('** fetchHealthBehavior');
         var data = await alt.api.fetch('healthbehaviors', id);      
         alt.getActions('healthBehaviors').updateCurrentHealthBehavior({key: data.key, data});
       });
@@ -30,7 +28,6 @@ class HealthBehaviorActions {
   findHealthBehavior(key, filter) {
     return (dispatch, alt) =>
       alt.resolve(async () => {
-    console.log('** findHealthBehavior');
         var data = await alt.api.fetch('healthbehaviors/key/' + key + '/filter', filter);      
         alt.getActions('healthBehaviors').updateCurrentHealthBehavior({key, data});
       });

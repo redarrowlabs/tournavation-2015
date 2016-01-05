@@ -50,7 +50,8 @@ class HealthBehaviorStore{
 
 	onUpdateCurrentHealthBehavior(payload) {
 		if (!payload.data) {
-			console.log('*** null payload ***');
+			this.setState(this.state.set('currentHealthBehaviors',
+				this.state.get('currentHealthBehaviors').set(payload.key, null)));
 			return;
 		}
 

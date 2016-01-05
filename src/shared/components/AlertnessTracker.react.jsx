@@ -11,7 +11,7 @@ export default React.createClass({
 
   componentWillMount() {
     const { flux } = this.context;
-    flux.getActions('healthBehaviors').findHealthBehavior('alertness-level', this.props.selectedDate);
+    flux.getActions('healthBehaviors').findHealthBehavior('alertness-level', this.state.selectedDate);
   },
 
   componentDidMount() {
@@ -25,14 +25,29 @@ export default React.createClass({
   },
 
   stateChanged(state) {
-    this.setState(state.get('currentHealthBehaviors').get('alertness-level'));
+    this.setState(this.getStateFromStore());
   },
 
   getInitialState() {
+    return this.getStateFromStore();
+  },
+
+  getStateFromStore() {
     const { flux } = this.context;
-    const currentHealthBehavior = flux.getStore('healthBehaviors').getState().get('currentHealthBehaviors').get('alertness-level');
+    const selectedDate = moment().startOf('day').valueOf();
+    const currentHealthBehavior = flux.getStore('healthBehaviors').getState().get('currentHealthBehaviors').get('alertness-level')
+      || new Immutable.Map({
+        _id: null,
+        key: 'alertness-level',
+        filter: selectedDate,
+        data: new Immutable.Map({
+          level: null
+        })
+      });
+
     return {
-      currentHealthBehavior
+      currentHealthBehavior: currentHealthBehavior,
+      selectedDate: selectedDate
     };
   },
 
@@ -40,34 +55,36 @@ export default React.createClass({
     const { flux } = this.context;
     const currentHealthBehavior = this.state.currentHealthBehavior;
     
-    let updatedBehavior = {  
-        date: currentHealthBehavior.get('date'),
-        level: currentHealthBehavior.get('level')
-    };
-    if (this.state.currentHealthBehavior.get('id')) {
-      updatedBehavior.id = currentHealthBehavior.get('id');
-      flux.getActions('healthBehaviors').updateHealthBehavior(updatedBehavior);
+    if (currentHealthBehavior.get('id')) {
+      flux.getActions('healthBehaviors').updateHealthBehavior(currentHealthBehavior);
     } else {
-      updatedBehavior.key = this.behaviorKey;        
-      flux.getActions('healthBehaviors').submitHealthBehavior(updatedBehavior);
+      flux.getActions('healthBehaviors').submitHealthBehavior(currentHealthBehavior);
     }
+  },
+
+  getData(healthBehavior) {
+    return healthBehavior.get('data') ||
+      Immutable.Map({
+        start: null,
+        end: null
+      });
   },
 
   updateLevel(event) {
     let val = event.currentTarget.value;
     const currentHealthBehavior = this.state.currentHealthBehavior;
-    
+    const data = this.getData(currentHealthBehavior)
+      .set('level', val);
+
     this.setState({
-      currentHealthBehavior: Immutable.Map({
-        id: currentHealthBehavior.get('id'),
-        date: this.props.selectedDate,
-        level: val,
-      })
+      currentHealthBehavior: currentHealthBehavior.set('data', data)
     });
   },
 
   render() {
     const currentHealthBehavior = this.state.currentHealthBehavior;
+    const selectedLevel = this.getData(currentHealthBehavior).get('level');
+
     return (
       <div>
         <div>
@@ -84,11 +101,11 @@ export default React.createClass({
             <span align="left">
               <span>{Globalize.formatMessage('alertnesstracker-level')}</span>
             </span>
-            <input type="radio" name="level" value="1" onChange={this.updateLevel} />1
-            <input type="radio" name="level" value="2" onChange={this.updateLevel} />2
-            <input type="radio" name="level" value="3" onChange={this.updateLevel} />3
-            <input type="radio" name="level" value="4" onChange={this.updateLevel} />4
-            <input type="radio" name="level" value="5" onChange={this.updateLevel} />5
+            <input type="radio" name="level" value="1" onChange={this.updateLevel} checked={selectedLevel==="1"} />1
+            <input type="radio" name="level" value="2" onChange={this.updateLevel} checked={selectedLevel==="2"} />2
+            <input type="radio" name="level" value="3" onChange={this.updateLevel} checked={selectedLevel==="3"} />3
+            <input type="radio" name="level" value="4" onChange={this.updateLevel} checked={selectedLevel==="4"} />4
+            <input type="radio" name="level" value="5" onChange={this.updateLevel} checked={selectedLevel==="5"} />5
           </div>
         </div>
 
