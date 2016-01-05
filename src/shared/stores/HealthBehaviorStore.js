@@ -69,7 +69,7 @@ class HealthBehaviorStore{
 			healthBehaviors	= new Immutable.List([healthBehavior]);
 		}
 
-		let state = this.state.set('currentHealthBehavior', currentHealthBehaviors);
+		let state = this.state.set('currentHealthBehaviors', currentHealthBehaviors);
 		state = state.set('healthBehaviors',
 		  this.state.get('healthBehaviors').set(payload.key, healthBehaviors));
 		this.setState(state);

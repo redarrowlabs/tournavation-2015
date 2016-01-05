@@ -11,7 +11,7 @@ export default React.createClass({
 
   componentWillMount() {
     const { flux } = this.context;
-    flux.getActions('healthBehaviors').findHealthBehavior('alertness-level ', this.props.selectedDate);
+    flux.getActions('healthBehaviors').findHealthBehavior('alertness-level', this.props.selectedDate);
   },
 
   componentDidMount() {
@@ -25,12 +25,12 @@ export default React.createClass({
   },
 
   stateChanged(state) {
-    this.setState(state.get('currentHealthBehavior'));
+    this.setState(state.get('currentHealthBehaviors').get('alertness-level'));
   },
 
   getInitialState() {
     const { flux } = this.context;
-    const currentHealthBehavior = flux.getStore('healthBehaviors').getState().get('currentHealthBehavior');
+    const currentHealthBehavior = flux.getStore('healthBehaviors').getState().get('currentHealthBehaviors').get('alertness-level');
     return {
       currentHealthBehavior
     };

@@ -31,22 +31,23 @@ export default React.createClass({
 	stateChanged(state) {
 		console.log('SleepVisualizer stateChanged');
 		this.setState({
-			sleepData: state.get('healthBehaviors')
+			sleepData: state.get('healthBehaviors').get('sleep-tracker')
 		});
 	},
 
   	getInitialState() {
 	    const { flux } = this.context;
 	    return {
-	    	sleepData: flux.getStore('healthBehaviors').getState().get('healthBehaviors')
+	    	sleepData: flux.getStore('healthBehaviors').getState().get('healthBehaviors').get('sleep-tracker')
 	    };
 	},
 
 	generateChartData(rawData) {
 		console.log('generating sleep chart data');
+		console.log(JSON.stringify(rawData));
 		var translatedData = [];
-		if (rawData) {
-			rawData.map(function(dataPoint, idx) {
+		if (rawData && rawData.get('data')) {
+			rawData.get('data').map(function(dataPoint, idx) {
 				let start = dataPoint.get('data').get('start');
 			    let end = dataPoint.get('data').get('end');
 				if (!end || !start) return;
