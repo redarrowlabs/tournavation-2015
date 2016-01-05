@@ -31,8 +31,8 @@ export default function (router) {
 	  });
 	});
 
-	router.route('/healthbehaviors/filter/:filter').get(function(req, res) {
-		HealthBehaviors.findOne({filter: req.params.filter}, function(err, healthbehavior) {
+	router.route('/healthbehaviors/key/:key/filter/:filter').get(function(req, res) {
+		HealthBehaviors.findOne({key: req.params.key, filter: req.params.filter}, function(err, healthbehavior) {
 	    if (err) {
 	      return res.send(err);
 	    }
@@ -43,21 +43,19 @@ export default function (router) {
 
 	router.route('/healthbehaviors').post(function(req, res) {
 	  var key = req.body.key;
-	  delete req.body.key;
 	  var filter = req.body.filter;
-	  delete req.body.filter;
 	  var healthBehavior = new HealthBehaviors({
 	  	user: 'system',
 	  	key: key,
 	  	filter: filter,
 	  	data: req.body.data});
 
-	  healthBehavior.save(function(err) {
+	  healthbehavior.save(function(err) {
 	    if (err) {
 	      return res.send(err);
 	    }
 
-	    res.send({ message: 'Health Behavior Added' });
+	    res.json(healthbehavior);
 	  });
 	});
 
@@ -76,7 +74,7 @@ export default function (router) {
 	        return res.send(err);
 	      }
 
-	      res.send({ message: 'Health Behavior updated!' });
+	      res.json(healthbehavior);
 	    });
 	  });
 	});

@@ -13,7 +13,7 @@ class HealthBehaviorActions {
     return (dispatch, alt) =>
       alt.resolve(async () => {
         var data = await alt.api.fetch('healthbehaviors/key', key);
-        alt.getActions('healthBehaviors').updateAllHealthBehaviors(data);
+        alt.getActions('healthBehaviors').updateAllHealthBehaviors({key, data});
       });
   }
 
@@ -21,31 +21,33 @@ class HealthBehaviorActions {
     return (dispatch, alt) =>
       alt.resolve(async () => {
         var data = await alt.api.fetch('healthbehaviors', id);      
-        alt.getActions('healthBehaviors').updateCurrentHealthBehavior(data);
+        alt.getActions('healthBehaviors').updateCurrentHealthBehavior({key: data.key, data});
       });
   }
 
-  findHealthBehavior(filter) {
+  findHealthBehavior(key, filter) {
     return (dispatch, alt) =>
       alt.resolve(async () => {
-        var data = await alt.api.fetch('healthbehaviors/filter', filter);      
-        alt.getActions('healthBehaviors').updateCurrentHealthBehavior(data);
+        var data = await alt.api.fetch('healthbehaviors/key/' + key + '/filter', filter);      
+        alt.getActions('healthBehaviors').updateCurrentHealthBehavior({key, data});
       });
   }
 
   submitHealthBehavior(healthBehavior) {
+    let key = healthBehavior.get('key');
     return (dispatch, alt) =>
       alt.resolve(async () => {
         var data = await alt.api.create('healthbehaviors', healthBehavior);      
-        alt.getActions('healthBehaviors').updateCurrentHealthBehavior(data);
+        alt.getActions('healthBehaviors').updateCurrentHealthBehavior({key, data});
       });
   }
 
   updateHealthBehavior(healthBehavior) {
+    let key = healthBehavior.get('key');
     return (dispatch, alt) =>
       alt.resolve(async () => {
         var data = await alt.api.update('healthbehaviors', healthBehavior.get('_id'), healthBehavior);      
-        alt.getActions('healthBehaviors').updateCurrentHealthBehavior(data);
+        alt.getActions('healthBehaviors').updateCurrentHealthBehavior({key, data});
       });
   }
 }
