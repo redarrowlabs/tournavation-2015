@@ -2,30 +2,32 @@ import moment from 'moment';
 import React, {PropTypes} from 'react';
 import Globalize from 'globalize';
 import Immutable from 'immutable';
-import SleepVisualizer from './SleepVisualizer.react';
 
 export default React.createClass({
 
   contextTypes: { flux: PropTypes.object.isRequired },
 
-  behaviorKey: "sleep",
+  propTypes: { selectedDate : PropTypes.number.isRequired },
+
+  behaviorKey: "sleep-tracker",
 
   componentWillMount() {
     const { flux } = this.context;
-    flux.getActions('healthBehaviors').findHealthBehavior('sleep-tracker', this.state.selectedDate || moment().startOf('day').valueOf());
+    flux.getActions('healthBehaviors').findHealthBehavior(this.behaviorKey, this.props.selectedDate);
+    flux.getActions('submit').allowSubmit({component: this.behaviorKey, canSubmit: this.state.canSubmit});
   },
 
   componentDidMount() {
     const { flux } = this.context;
-    flux.getStore('healthBehaviors').listen(this.stateChanged);
+    flux.getStore('healthBehaviors').listen(this.healthBehaviorStateChanged);
   },
 
   componentWillUnmount() {
     const { flux } = this.context;
-    flux.getStore('healthBehaviors').unlisten(this.stateChanged);
+    flux.getStore('healthBehaviors').unlisten(this.healthBehaviorStateChanged);
   },
 
-  stateChanged(state) {
+  healthBehaviorStateChanged(state) {
     this.setState(this.getStateFromStore());
   },
 
@@ -35,39 +37,45 @@ export default React.createClass({
 
   getStateFromStore() {
     const { flux } = this.context;
-    const selectedDate = moment().startOf('day').valueOf();
-    const currentHealthBehavior = flux.getStore('healthBehaviors').getState().get('currentHealthBehaviors').get('sleep-tracker')
+    const currentHealthBehavior = flux.getStore('healthBehaviors').getState().get('currentHealthBehaviors').get(this.behaviorKey)
       || new Immutable.Map({
         _id: null,
-        key: 'sleep-tracker',
-        filter: selectedDate,
+        key: this.behaviorKey,
+        filter: this.props.selectedDate,
         data: new Immutable.Map({
           start: null,
           end: null
         })
-      });
+      });    
 
     return {
       currentHealthBehavior: currentHealthBehavior,
-      selectedDate: selectedDate
+      canSubmit: this._getCanSubmit(currentHealthBehavior)
     };
   },
 
-  handleSubmit() {
+  _getCanSubmit(currentHealthBehavior) {
+    const data = this.getData(currentHealthBehavior);    
+    let start = moment(data.get('start'));
+    let end = moment(data.get('end'));
+    return end.isValid() && start.isValid();
+  },
+
+  canSubmit() {
+    return this.state.canSubmit;
+  },
+
+  doSubmit() {
     const { flux } = this.context;
     const currentHealthBehavior = this.state.currentHealthBehavior;
-    
-    if (!currentHealthBehavior.get('data')
-      || !currentHealthBehavior.get('data').get('start')
-      || !currentHealthBehavior.get('data').get('end')) {
-      return;
-    }
 
     if (currentHealthBehavior.get('_id')) {
       flux.getActions('healthBehaviors').updateHealthBehavior(currentHealthBehavior);
     } else {
       flux.getActions('healthBehaviors').submitHealthBehavior(currentHealthBehavior);
     }
+
+    flux.getActions('submit').didSubmit({component: this.behaviorKey});
   },
 
   parseTimeString(time) {
@@ -86,14 +94,17 @@ export default React.createClass({
     let val = event.currentTarget.value;
     let date = this.parseTimeString(val);
     date.subtract(1, 'days');
-
     const currentHealthBehavior = this.state.currentHealthBehavior;
     const data = this.getData(currentHealthBehavior)
       .set('start', date);
 
     this.setState({
-      currentHealthBehavior: currentHealthBehavior.set('data', data)
+      currentHealthBehavior: currentHealthBehavior.set('data', data),
+      canSubmit: this._getCanSubmit(currentHealthBehavior)
     });
+    
+    const { flux } = this.context;
+    flux.getActions('submit').allowSubmit({component: this.behaviorKey, canSubmit: this.state.canSubmit});
   },
 
   updateWakeTime(event) {
@@ -104,8 +115,12 @@ export default React.createClass({
       .set('end', date);
     
     this.setState({
-      currentHealthBehavior: currentHealthBehavior.set('data', data)
+      currentHealthBehavior: currentHealthBehavior.set('data', data),
+      canSubmit: this.canSubmit(currentHealthBehavior)
     });
+    
+    const { flux } = this.context;
+    flux.getActions('submit').allowSubmit({component: this.behaviorKey, canSubmit: this.state.canSubmit});
   },
 
   render() {
@@ -120,8 +135,6 @@ export default React.createClass({
 
     let startDisplay = start.isValid() ? start.format('HH:mm') : null;
     let endDisplay = end.isValid() ? end.format('HH:mm') : null;
-
-    let isDisabled = !(end.isValid() && start.isValid());
 
     return (
       <div>
@@ -156,10 +169,6 @@ export default React.createClass({
           <br/>
           <span>{Globalize.formatMessage('sleeptracker-time-unit')}</span>
         </div>
-
-        <input type="submit" value={Globalize.formatMessage('sleeptracker-submit')} onClick={this.handleSubmit} disabled={isDisabled}/>
-
-        <SleepVisualizer/>
       </div>
     );
   }

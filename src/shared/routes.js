@@ -3,7 +3,7 @@ import { Router, Route, IndexRoute } from 'react-router'
 
 import App from "./components/App.react";
 import Home from "./components/Home.react";
-import Track from "./components/Track.react";
+import Track from "./components/Tracker.react";
 import Login from "./components/Login.react";
 
 export default (
