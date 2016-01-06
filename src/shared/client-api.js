@@ -37,7 +37,7 @@ export default class Api {
   update(resource, id, data) {
     return new Promise((resolve, reject) =>
       request
-        .post(this.baseUrl + resource + '/' + id)
+        .put(this.baseUrl + resource + '/' + id)
         .send(data)
         .end((err, resp) => err ? reject(err) : resolve(resp.body))
     );

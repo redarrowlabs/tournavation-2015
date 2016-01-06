@@ -65,7 +65,7 @@ export default function (router) {
 	      return res.send(err);
 	    }
 
-	    for (prop in req.body) {
+	    for (let prop in req.body) {
 	      healthbehavior[prop] = req.body[prop];
 	    }
 
