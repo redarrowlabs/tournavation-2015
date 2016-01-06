@@ -31,21 +31,6 @@ class SubmitStore{
   			.set(payload.component, componentState)));
 	}
 
-	onStartSubmit() {
-		// reset all components to not submitted
-		let components = this.state.get('submittableComponents');
-		for (let key of components.keys()) {
-			if (components.get(key).get('canSubmit')) {
-				components = components.set(key,
-					components.get(key).set('isSubmitted', false));
-			}
-		}
-
-  	this.setState(this.state
-  		.set('submittableComponents', components)
-  		.set('doSubmit', true));
-	}
-
 	onDidSubmit(payload) {
   	let components = this.state.get('submittableComponents');
 		components = components.set(payload.component,
