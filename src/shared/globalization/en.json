@@ -1,5 +1,9 @@
 {
 	"en": {
+        "alertnesstracker-level-title": "Record Your Alertness",
+        "alertnesstracker-level-subtitle": "How do you feel today?",
+        "alertnesstracker-submit": "Graph my data",
+        "alertnesstracker-level": "Level",
 		"home-title": "HealthHero",
 		"home-nav-home": "Home",
 		"home-nav-track": "Track",

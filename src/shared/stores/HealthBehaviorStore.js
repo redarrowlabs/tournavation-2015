@@ -10,6 +10,10 @@ class HealthBehaviorStore{
 		this.bindActions(this.alt.getActions('healthBehaviors'));
 
 		this.state = Immutable.Map({
+			healthBehaviors: Immutable.Map(),
+			currentHealthBehaviors: Immutable.Map()
+		});
+		/*this.state = Immutable.Map({
 			healthBehaviors: new Immutable.List([]),
 			currentHealthBehavior: Immutable.Map({
 				_id: null,
@@ -17,57 +21,65 @@ class HealthBehaviorStore{
 				filter: null,
 				data: null
 			})
-		});
+		});*/
 	}
 
-	onFetchAllHealthBehaviors() {
+	/*onFetchAllHealthBehaviors(payload) {
   	this.setState(
   		this.state.set('healthBehaviors',
   			this.state.get('healthBehaviors').clear()));
 	}
 
-	onFetchHealthBehavior() {
+	onFetchHealthBehavior(payload) {
 		this.setState(
   		this.state.set('currentHealthBehavior',
   			this.state.get('currentHealthBehavior').clear()));
 	}
 
-	onSubmitHealthBehavior() {
+	onSubmitHealthBehavior(payload) {
 		this.setState(
   		this.state.set('currentHealthBehavior',
   			this.state.get('currentHealthBehavior').clear()));
 	}
 
-	onUpdateHealthBehavior() {
+	onUpdateHealthBehavior(payload) {
 		this.setState(
   		this.state.set('currentHealthBehavior',
   			this.state.get('currentHealthBehavior').clear()));
-	}
+	}*/
 
 	onUpdateCurrentHealthBehavior(payload) {
-		let healthBehavior = payload
-			? Immutable.fromJS(payload)
-			: Immutable.Map({
-					_id: null,
-					key: null,
-					filter: null,
-					data: null
-				});
+		if (!payload.data) {
+			this.setState(this.state.set('currentHealthBehaviors',
+				this.state.get('currentHealthBehaviors').set(payload.key, null)));
+			return;
+		}
 
-		let index = _.findIndex(this.state.get('healthBehaviors').toArray(), item => {
-			return item.get('_id') === healthBehavior.get('_id');
-		});
-		let healthBehaviors = this.state.get('healthBehaviors')
-					.set(index, healthBehavior)
+		let healthBehavior = Immutable.fromJS(payload.data);
+		let currentHealthBehaviors = this.state.get('currentHealthBehaviors')
+		  .set(payload.key, healthBehavior);
 
-		let state = this.state.set('currentHealthBehavior', healthBehavior);
-		state = state.set('healthBehaviors', healthBehaviors);
+		let healthBehaviors = this.state.get('healthBehaviors').get(payload.key);
+		if (healthBehaviors) {
+			let index = _.findIndex(healthBehaviors.toArray(), item => {
+				return item.get('_id') === healthBehavior.get('_id');
+			});
+		  healthBehaviors = healthBehaviors
+				.set(index, healthBehavior);
+		} else {
+			healthBehaviors	= new Immutable.List([healthBehavior]);
+		}
+
+		let state = this.state.set('currentHealthBehaviors', currentHealthBehaviors);
+		state = state.set('healthBehaviors',
+		  this.state.get('healthBehaviors').set(payload.key, healthBehaviors));
 		this.setState(state);
 	}
 
 	onUpdateAllHealthBehaviors(payload) {
 		let state = this.state.set('healthBehaviors',
-  			Immutable.fromJS(payload));
+  			this.state.get('healthBehaviors')
+  				.set(payload.key, Immutable.fromJS(payload.data)));
 		this.setState(state);
 	}
 };

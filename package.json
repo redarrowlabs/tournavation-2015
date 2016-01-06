@@ -72,7 +72,7 @@
     "webpack-dev-server": "^1.14.0"
   },
   "scripts": {
-    "clean": "node ./bin/run-clean.js static/dist",
+    "clean": "node ./bin/run-clean.js static\\dist",
     "dev": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run watch-client\" \"npm run start:dev\"",
     "start:dev": "better-npm-run start-dev",
     "watch-client": "node ./node_modules/webpack/bin/webpack.js --verbose --colors --display-error-details --config webpack.client-watch.js && node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.client-watch.js",

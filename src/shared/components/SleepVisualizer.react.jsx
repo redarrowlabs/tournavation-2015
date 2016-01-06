@@ -4,46 +4,37 @@ import moment from 'moment';
 
 export default React.createClass({
   
-  	contextTypes: { flux: PropTypes.object.isRequired },
+  contextTypes: { flux: PropTypes.object.isRequired },
 
-	componentWillReceiveProps () {
-		console.log('SleepVisualizer componentWillReceiveProps') ;
-	},
-
-	componentDidMount () {		
-		console.log('SleepVisualizer componentDidMount');
+	componentDidMount () {
 		const { flux } = this.context;
-    	flux.getStore('healthBehaviors').listen(this.stateChanged);
+    flux.getStore('healthBehaviors').listen(this.stateChanged);
 	},
 
 	componentWillMount() {
-		console.log('SleepVisualizer componentWillMount');
-	    const { flux } = this.context;
-	    flux.getActions('healthBehaviors').fetchAllHealthBehaviors('sleep-tracker');
+	  const { flux } = this.context;
+	  flux.getActions('healthBehaviors').fetchAllHealthBehaviors('sleep-tracker');
 	},
 
 	componentWillUnmount() {
-		console.log('SleepVisualizer componentWillMount');
 		const { flux } = this.context;
 		flux.getStore('healthBehaviors').unlisten(this.stateChanged);
 	},
 
 	stateChanged(state) {
-		console.log('SleepVisualizer stateChanged');
 		this.setState({
-			sleepData: state.get('healthBehaviors')
+			sleepData: state.get('healthBehaviors').get('sleep-tracker')
 		});
 	},
 
-  	getInitialState() {
-	    const { flux } = this.context;
-	    return {
-	    	sleepData: flux.getStore('healthBehaviors').getState().get('healthBehaviors')
-	    };
+  getInitialState() {
+	  const { flux } = this.context;
+	  return {
+	    sleepData: flux.getStore('healthBehaviors').getState().get('healthBehaviors').get('sleep-tracker')
+	  };
 	},
 
 	generateChartData(rawData) {
-		console.log('generating sleep chart data');
 		var translatedData = [];
 		if (rawData) {
 			rawData.map(function(dataPoint, idx) {
@@ -64,7 +55,6 @@ export default React.createClass({
 	},
 
 	render() {
-		console.log('rendering sleep chart');
 		var transformedData = this.generateChartData(this.state.sleepData);
 		return (
 			<div>

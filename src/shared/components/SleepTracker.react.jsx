@@ -8,9 +8,11 @@ export default React.createClass({
 
   contextTypes: { flux: PropTypes.object.isRequired },
 
+  behaviorKey: "sleep",
+
   componentWillMount() {
     const { flux } = this.context;
-    flux.getActions('healthBehaviors').findHealthBehavior(this.state.selectedDate || moment().startOf('day').valueOf());
+    flux.getActions('healthBehaviors').findHealthBehavior('sleep-tracker', this.state.selectedDate || moment().startOf('day').valueOf());
   },
 
   componentDidMount() {
@@ -34,10 +36,16 @@ export default React.createClass({
   getStateFromStore() {
     const { flux } = this.context;
     const selectedDate = moment().startOf('day').valueOf();
-    const storeState = flux.getStore('healthBehaviors').getState();
-    const currentHealthBehavior = storeState.get('currentHealthBehavior')
-      .set('key', 'sleep-tracker')
-      .set('filter', selectedDate);
+    const currentHealthBehavior = flux.getStore('healthBehaviors').getState().get('currentHealthBehaviors').get('sleep-tracker')
+      || new Immutable.Map({
+        _id: null,
+        key: 'sleep-tracker',
+        filter: selectedDate,
+        data: new Immutable.Map({
+          start: null,
+          end: null
+        })
+      });
 
     return {
       currentHealthBehavior: currentHealthBehavior,
@@ -106,12 +114,12 @@ export default React.createClass({
     
     let start = moment(data.get('start'));
     let end = moment(data.get('end'));
-    let totalHours = (end && start)
+    let totalHours = (end.isValid() && start.isValid())
       ? moment.duration(end.diff(start)).asHours()
       : null;
 
-    let startDisplay = start ? start.format('HH:mm') : null;
-    let endDisplay = end ? end.format('HH:mm') : null;
+    let startDisplay = start.isValid() ? start.format('HH:mm') : null;
+    let endDisplay = end.isValid() ? end.format('HH:mm') : null;
 
     let isDisabled = !(end.isValid() && start.isValid());
 

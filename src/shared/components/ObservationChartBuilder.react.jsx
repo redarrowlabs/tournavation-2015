@@ -6,7 +6,6 @@ var ObservationChartBuilder = React.createClass({
 	componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
 		if (isScriptLoaded && !this.props.isScriptLoaded) { // load finished
 			if (isScriptLoadSucceed) {
-				console.log('ObservationChartBuilder componentWillReceiveProps script loaded');
 				this.setState({scriptsReady: true});
 			}
 			else this.props.onError()
@@ -16,8 +15,7 @@ var ObservationChartBuilder = React.createClass({
 	componentDidMount () {
 		const { isScriptLoaded, isScriptLoadSucceed } = this.props
 		if (isScriptLoaded && isScriptLoadSucceed) {			
-			console.log('ObservationChartBuilder componentDidMount script loaded');
-		    this.setState({scriptsReady: true});
+			this.setState({scriptsReady: true});
 		}
 	},
 
@@ -28,8 +26,7 @@ var ObservationChartBuilder = React.createClass({
 	},
 
 	buildChart(data) {
-		console.log('building chart -- scripts ready:' + this.state.scriptsReady + ', data points: ' + (data ? data.length : 0));
-        if (!this.state.scriptsReady) { return; }
+		if (!this.state.scriptsReady) { return; }
 		
         var chartSettings = {
             "type": "serial",
@@ -97,7 +94,6 @@ var ObservationChartBuilder = React.createClass({
   },
 
   render() {
-  	console.log('rendering ObservationChartBuilder');
   	this.buildChart(this.props.chartData);
     return (
     	<div>

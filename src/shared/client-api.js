@@ -10,7 +10,6 @@ export default class Api {
   }
 
   fetchAll(resource) {
-    console.log('*** fetchAll: ' + this.baseUrl + resource);
     return new Promise((resolve, reject) =>
       request
         .get(this.baseUrl + resource)
@@ -19,7 +18,6 @@ export default class Api {
   }
   
   fetch(resource, id) {
-    console.log('*** Fetch: ' + this.baseUrl + resource + '/' + id);
     return new Promise((resolve, reject) =>
       request
         .get(this.baseUrl + resource + '/' + id)
@@ -28,7 +26,6 @@ export default class Api {
   }
   
   create(resource, data) {
-    console.log('*** create: ' + this.baseUrl + resource);
     return new Promise((resolve, reject) =>
       request
         .post(this.baseUrl + resource)
@@ -38,7 +35,6 @@ export default class Api {
   }
   
   update(resource, id, data) {
-    console.log('*** update: ' + this.baseUrl + resource + '/' + id);
     return new Promise((resolve, reject) =>
       request
         .post(this.baseUrl + resource + '/' + id)
