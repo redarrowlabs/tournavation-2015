@@ -79,7 +79,7 @@ class HealthBehaviorStore{
 	onUpdateAllHealthBehaviors(payload) {
 		let state = this.state.set('healthBehaviors',
   			this.state.get('healthBehaviors')
-  				.set(payload.key, Immutable.fromJS(payload)));
+  				.set(payload.key, Immutable.fromJS(payload.data)));
 		this.setState(state);
 	}
 };

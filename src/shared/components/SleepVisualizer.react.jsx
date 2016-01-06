@@ -36,8 +36,8 @@ export default React.createClass({
 
 	generateChartData(rawData) {
 		var translatedData = [];
-		if (rawData && rawData.get('data')) {
-			rawData.get('data').map(function(dataPoint, idx) {
+		if (rawData) {
+			rawData.map(function(dataPoint, idx) {
 				let start = dataPoint.get('data').get('start');
 			    let end = dataPoint.get('data').get('end');
 				if (!end || !start) return;
