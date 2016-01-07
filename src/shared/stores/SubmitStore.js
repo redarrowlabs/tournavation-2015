@@ -3,7 +3,7 @@ var immutableAlt = require('alt-utils/lib/ImmutableUtil');
 
 @immutableAlt
 class SubmitStore{
-	displayName = 'SubmitStore'
+	displayName = 'SubmitStore';
 
 	constructor() {
 		this.bindActions(this.alt.getActions('submit'));
