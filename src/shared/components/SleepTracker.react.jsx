@@ -50,15 +50,15 @@ export default React.createClass({
 
     return {
       currentHealthBehavior: currentHealthBehavior,
-      canSubmit: this._getCanSubmit(currentHealthBehavior)
+      canSubmit: this._getCanSubmit(currentHealthBehavior.get('data'))
     };
   },
 
-  _getCanSubmit(currentHealthBehavior) {
-    const data = this.getData(currentHealthBehavior);    
-    let start = moment(data.get('start'));
-    let end = moment(data.get('end'));
-    return end.isValid() && start.isValid();
+  _getCanSubmit(data) {
+    let start = data.get('start');
+    let end = data.get('end');
+    return start !== null && moment(start).isValid()
+      && end !== null && moment(end).isValid();
   },
 
   canSubmit() {
@@ -97,14 +97,15 @@ export default React.createClass({
     const currentHealthBehavior = this.state.currentHealthBehavior;
     const data = this.getData(currentHealthBehavior)
       .set('start', date);
+    const canSubmit = this._getCanSubmit(data);
 
     this.setState({
       currentHealthBehavior: currentHealthBehavior.set('data', data),
-      canSubmit: this._getCanSubmit(currentHealthBehavior)
+      canSubmit: canSubmit
     });
     
     const { flux } = this.context;
-    flux.getActions('submit').allowSubmit({component: this.behaviorKey, canSubmit: this.state.canSubmit});
+    flux.getActions('submit').allowSubmit({component: this.behaviorKey, canSubmit: canSubmit});
   },
 
   updateWakeTime(event) {
@@ -113,14 +114,15 @@ export default React.createClass({
     const currentHealthBehavior = this.state.currentHealthBehavior;
     const data = this.getData(currentHealthBehavior)
       .set('end', date);
+    const canSubmit = this._getCanSubmit(data);
     
     this.setState({
       currentHealthBehavior: currentHealthBehavior.set('data', data),
-      canSubmit: this.canSubmit(currentHealthBehavior)
+      canSubmit: canSubmit
     });
     
     const { flux } = this.context;
-    flux.getActions('submit').allowSubmit({component: this.behaviorKey, canSubmit: this.state.canSubmit});
+    flux.getActions('submit').allowSubmit({component: this.behaviorKey, canSubmit: canSubmit});
   },
 
   render() {

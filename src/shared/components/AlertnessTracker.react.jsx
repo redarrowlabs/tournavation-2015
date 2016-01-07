@@ -49,12 +49,12 @@ export default React.createClass({
 
     return {
       currentHealthBehavior: currentHealthBehavior,
-      canSubmit: this._getCanSubmit(currentHealthBehavior)
+      canSubmit: this._getCanSubmit(currentHealthBehavior.get('data'))
     };
   },
 
-  _getCanSubmit(currentHealthBehavior) {
-    const selectedLevel = this.getData(currentHealthBehavior).get('level');
+  _getCanSubmit(data) {
+    const selectedLevel = data.get('level');
     return selectedLevel !== null && selectedLevel !== undefined;
   },
 
@@ -88,13 +88,14 @@ export default React.createClass({
     const currentHealthBehavior = this.state.currentHealthBehavior;
     const data = this.getData(currentHealthBehavior)
       .set('level', val);
+    const canSubmit = this._getCanSubmit(data);
 
     this.setState({
       currentHealthBehavior: currentHealthBehavior.set('data', data),
-      canSubmit: this._getCanSubmit(currentHealthBehavior)
+      canSubmit: canSubmit
     });
     const { flux } = this.context;
-    flux.getActions('submit').allowSubmit({component: this.behaviorKey, canSubmit: this.state.canSubmit});
+    flux.getActions('submit').allowSubmit({component: this.behaviorKey, canSubmit: canSubmit});
   },
 
   render() {
