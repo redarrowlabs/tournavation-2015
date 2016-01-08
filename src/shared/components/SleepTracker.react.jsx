@@ -7,8 +7,6 @@ export default React.createClass({
 
   contextTypes: { flux: PropTypes.object.isRequired },
 
-  propTypes: { selectedDate : PropTypes.number.isRequired },
-
   behaviorKey: "sleep-tracker",
 
   componentWillMount() {
@@ -20,15 +18,24 @@ export default React.createClass({
   componentDidMount() {
     const { flux } = this.context;
     flux.getStore('healthBehaviors').listen(this.healthBehaviorStateChanged);
+    flux.getStore('date').listen(this.dateStateChanged);
   },
 
   componentWillUnmount() {
     const { flux } = this.context;
     flux.getStore('healthBehaviors').unlisten(this.healthBehaviorStateChanged);
+    flux.getStore('date').unlisten(this.dateStateChanged);
   },
 
   healthBehaviorStateChanged(state) {
     this.setState(this.getStateFromStore());
+  },
+
+  dateStateChanged(state) {
+    const { flux } = this.context;
+    flux.getActions('healthBehaviors').findHealthBehavior(this.behaviorKey, state.get('selectedDate'));
+    
+    //this.setState({selectedDate: state.get('selectedDate')});
   },
 
   getInitialState() {
@@ -37,11 +44,12 @@ export default React.createClass({
 
   getStateFromStore() {
     const { flux } = this.context;
+    const selectedDate = flux.getStore('date').getState().get('selectedDate');
     const currentHealthBehavior = flux.getStore('healthBehaviors').getState().get('currentHealthBehaviors').get(this.behaviorKey)
       || new Immutable.Map({
         _id: null,
         key: this.behaviorKey,
-        filter: this.props.selectedDate,
+        filter: selectedDate,
         data: new Immutable.Map({
           start: null,
           end: null
@@ -50,7 +58,8 @@ export default React.createClass({
 
     return {
       currentHealthBehavior: currentHealthBehavior,
-      canSubmit: this._getCanSubmit(currentHealthBehavior.get('data'))
+      canSubmit: this._getCanSubmit(currentHealthBehavior.get('data')),
+      selectedDate: selectedDate
     };
   },
 
