@@ -1,5 +1,4 @@
 class HealthBehaviorActions {
-  //displayName = 'HealthBehaviorActions'
 
   constructor() {
     // Add dispatch only actions
