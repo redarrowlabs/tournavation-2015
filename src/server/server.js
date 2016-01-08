@@ -9,6 +9,8 @@ import universalRender from '../shared/universal-render';
 
 import api from './api/api';
 var fs = require('fs');
+var http = require('http');
+var https = require('https');
 
 import Globalize from 'globalize';
 Globalize.load(require("cldr-data").entireSupplemental());
@@ -74,7 +76,7 @@ var appServer = null;
 // In production, redirect incoming requests on the insecure http port to the secured https port
 if(appConfig.isProduction) {
     var redirectServer = http.createServer(function(req, res){
-        var redirect = "https://" + appServer.address().address + ":" + appServer.address().port + req.url;
+        var redirect = appConfig.host + ":" + appConfig.port + req.url;
         console.log("*** Request on insecure URL http://" + req.headers['host'] + req.url + " redirected to " + redirect);
         res.writeHead(301, { "Location": redirect });
         res.end();
@@ -88,10 +90,8 @@ if(appConfig.isProduction) {
         key: fs.readFileSync(appConfig.sslKeyPath),
         cert: fs.readFileSync(appConfig.sslCertPath),
     };
-    var https = require('https');
     appServer = https.createServer(httpsOptions, server);
 } else {
-    var http = require('http');
     appServer = http.createServer(server);    
 }
 

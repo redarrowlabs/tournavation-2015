@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 @immutableAlt
 class HealthBehaviorStore{
-	displayName = 'HealthBehaviorStore'
+	displayName = 'HealthBehaviorStore';
 
 	constructor() {
 		this.bindActions(this.alt.getActions('healthBehaviors'));
