@@ -8,6 +8,9 @@ import createFlux from '../shared/flux/create-flux';
 import universalRender from '../shared/universal-render';
 
 import api from './api/api';
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
 
 import Globalize from 'globalize';
 Globalize.load(require("cldr-data").entireSupplemental());
@@ -69,9 +72,32 @@ const webServer = async function(req, res) {
 
 server.get('*', webServer);
 
-var s = server.listen(appConfig.port, function () {  
-  var host = s.address().address;
-  var port = s.address().port;
+var appServer = null;
+// In production, redirect incoming requests on the insecure http port to the secured https port
+if(appConfig.isProduction) {
+    var redirectServer = http.createServer(function(req, res){
+        var redirect = appConfig.host + ":" + appConfig.port + req.url;
+        console.log("*** Request on insecure URL http://" + req.headers['host'] + req.url + " redirected to " + redirect);
+        res.writeHead(301, { "Location": redirect });
+        res.end();
+    }).listen(appConfig.insecurePort, function () {  
+        var host = redirectServer.address().address;
+        var port = redirectServer.address().port;
+        console.info('----\n==> ✅  HTTP redirect is running on http://%s:%s', host, port);
+    });
+    
+    var httpsOptions = {
+        key: fs.readFileSync(appConfig.sslKeyPath),
+        cert: fs.readFileSync(appConfig.sslCertPath),
+    };
+    appServer = https.createServer(httpsOptions, server);
+} else {
+    appServer = http.createServer(server);    
+}
+
+appServer.listen(appConfig.port, function () {  
+  var host = appServer.address().address;
+  var port = appServer.address().port;
 
   console.info('----\n==> ✅  %s is running, talking to API server on %s.', appConfig.app.title, port);
   console.info('==> 💻  Open http://%s:%s in a browser to view the app.', host, port);
