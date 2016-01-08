@@ -4,18 +4,20 @@ var config = require("./webpack.client.js");
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
 var host = process.env.HOST || "localhost";
+var port = 8080;
 
 config.cache = true;
 config.debug = true;
 config.devtool = "eval";
 
 config.entry.main.unshift(
-	"webpack-dev-server/client?http://" + host + ":8080",
+	"webpack-dev-server/client?http://" + host + ":" + port,
 	"webpack/hot/only-dev-server"
 );
 
+var publicPath = "http://" + host + ":" + port + "/dist/";
 config.output.filename = "app-bundle.js"
-config.output.publicPath = "http://" + host + ":8080/dist/";
+config.output.publicPath = publicPath;
 config.output.hotUpdateMainFilename = "update/[hash]/update.json";
 config.output.hotUpdateChunkFilename = "update/[hash]/[id].update.js";
 
@@ -43,16 +45,19 @@ config.module.postLoaders =  [
 ];
 
 config.devServer = {
-	publicPath:  "http://" + host + ":8080/dist/",
+    https:       false,    
+    host:        host,
+    port:        port,
+	publicPath:  publicPath,
 	contentBase: path.join(__dirname, "static"),
 	hot:         true,
+    debug:       true,
 	inline:      true,
 	lazy:        false,
 	quiet:       true,
 	noInfo:      false,
 	headers:     {"Access-Control-Allow-Origin": "*"},
 	stats:       {colors: true},
-	host:        host
 };
 
 module.exports = config;
