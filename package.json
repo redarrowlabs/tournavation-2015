@@ -102,9 +102,9 @@
       "env": {
         "NODE_ENV": "production",
         "NODE_PATH": "./src",
-        "HOST": "https://tournavation-db.cloudapp.net",
-        "PORT": 443,
-        "SCRIPT_HOST": "https://tournavation-db.cloudapp.net"
+        "HOST": "http://localhost",
+        "PORT": 80,
+        "SCRIPT_HOST": "http://localhost"
       }
     }
   }

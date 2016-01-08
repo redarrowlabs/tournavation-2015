@@ -60,9 +60,9 @@ module.exports = {
 		new webpack.DefinePlugin({
 			"process.env": {
 				NODE_ENV: '"production"',
-				//HOST: '"https://localhost"',
-				HOST: '"https://tournavation-db.cloudapp.net/"',
-				PORT: '"443"'
+				//HOST: '"http://localhost"',
+				HOST: '"http://tournavation-db.cloudapp.net/"',
+				PORT: '"80"'
 			}
 		}),
 		/*new ReactGlobalizePlugin({
