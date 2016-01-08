@@ -61,7 +61,7 @@ module.exports = {
 			"process.env": {
 				NODE_ENV: '"production"',
 				//HOST: '"https://localhost"',
-				HOST: '"https://tournavation-db.cloudapp.net/"',
+				HOST: '"https://tournavation-db.cloudapp.net"',
 				PORT: '"443"'
 			}
 		}),
