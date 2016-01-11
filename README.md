@@ -215,5 +215,14 @@ export default React.createClass ({
 ### Globalization
 [Globalize](https://github.com/jquery/globalize) is used as the globalization engine.  Resource files are one per locale, and are found in `src/shared/globalization`.
 
+### SSL/TLS
+The production server runs under HTTPS while development is HTTP only.  To configure SSL, set the environment variables SSL_CERT_PATH and SSL_KEY_PATH to the path of the SSL certificate and key.
+[Let's Encrypt](https://letsencrypt.org/) is one trusted Certificate Authority providing free certificates.  A certificate that is signed by an untrusted Certificate Authority or a certificate that is self-signed will display a warning in the browser before the user can proceed.  Production certificates should be signed by a trusted Certificate Authority, as forcing users to bypass this warning allows certain attacks.
+For testing purposes, a self-signed certificate is enough and any users will need to bypass the warning.  Using the openssl command below, a self-signed certificate can be created.
+```
+openssl req -x509 -newkey rsa:2048 -keyout self-signed.key -out self-signed.crt -days XXX -nodes
+```
+Additionally when using self-signed certificates, set the environment variable NODE_TLS_REJECT_UNAUTHORIZED=0.  This setting bypasses authentication of the SSL certificate on the Node server.  Do not use this setting in production, as it allows many of the attacks that HTTPS was designed to prevent.
+
 ## License
 [MIT License (MIT)](LICENSE.md)
