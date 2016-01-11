@@ -1,13 +1,16 @@
 import express from "express";
 import locale from 'express-locale';
 import { createLocation } from "history";
-import config from '../config';
+import appConfig from '../config';
 import compression from 'compression';
 
-import createFlux from '../shared/flux/createFlux';
+import createFlux from '../shared/flux/create-flux';
 import universalRender from '../shared/universal-render';
 
 import api from './api/api';
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
 
 import Globalize from 'globalize';
 Globalize.load(require("cldr-data").entireSupplemental());
@@ -15,10 +18,6 @@ Globalize.load(require("cldr-data").entireMainFor("en", "es"));
 Globalize.loadMessages(require("../shared/globalization/en"));
 // prime globalization
 Globalize.locale('en');
-var msg = Globalize.formatMessage("home-title");
-
-console.log("*** Server: " + __SERVER__);
-console.log(process.env.NODE_ENV);
 
 const server = global.server = express();
 
@@ -30,7 +29,7 @@ server.use(locale({
 }));
 
 // serve static assets normally
-server.use(express.static('static', {maxAge: config.cacheAge}));
+server.use(express.static('static', {maxAge: appConfig.cacheAge}));
 // add content compression middle-ware
 server.use(compression());
 // Set view path
@@ -41,32 +40,28 @@ server.set('view engine', 'jade');
 // init the api
 api(server);
 
-const flux = createFlux();
+const flux = createFlux(appConfig);
 
 const webServer = async function(req, res) {
-  console.log("*** Server request");
-  console.log("-- request: " + JSON.stringify({
-    url: req.url,
-    locale: req.locale
-  }));
   let location = createLocation(req.url);
-  let exposedState = {'locale': req.locale.code};
 
   try {
     console.log("*** Server @ " + req.url + " for: " + req.locale.code);
-    const { content, statusCode } = await universalRender({flux, location, locale: exposedState.locale});
+    const { content, statusCode } = await universalRender({flux, location, locale: req.locale.code});
+
     res
       .status(statusCode)
       .render('index',
         {
           content,
-          state: JSON.stringify(exposedState).split('"').join('\'')
+          scriptUrl: appConfig.scriptUrl,
+          locale: req.locale.code
         });
   } catch (err) {
     console.log(err);
     const { error, redirectLocation } = err;
     if (error) {
-      res.status(500).send(error.message);
+      res.status(500).send(error.toJSON());
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else {
@@ -77,10 +72,33 @@ const webServer = async function(req, res) {
 
 server.get('*', webServer);
 
-var s = server.listen(config.port, function () {  
-  var host = s.address().address;
-  var port = s.address().port;
+var appServer = null;
+// In production, redirect incoming requests on the insecure http port to the secured https port
+if(appConfig.isProduction) {
+    var redirectServer = http.createServer(function(req, res){
+        var redirect = appConfig.host + ":" + appConfig.port + req.url;
+        console.log("*** Request on insecure URL http://" + req.headers['host'] + req.url + " redirected to " + redirect);
+        res.writeHead(301, { "Location": redirect });
+        res.end();
+    }).listen(appConfig.insecurePort, function () {  
+        var host = redirectServer.address().address;
+        var port = redirectServer.address().port;
+        console.info('----\n==> ✅  HTTP redirect is running on http://%s:%s', host, port);
+    });
+    
+    var httpsOptions = {
+        key: fs.readFileSync(appConfig.sslKeyPath),
+        cert: fs.readFileSync(appConfig.sslCertPath),
+    };
+    appServer = https.createServer(httpsOptions, server);
+} else {
+    appServer = http.createServer(server);    
+}
 
-  console.info('----\n==> ✅  %s is running, talking to API server on %s.', config.app.title, port);
+appServer.listen(appConfig.port, function () {  
+  var host = appServer.address().address;
+  var port = appServer.address().port;
+
+  console.info('----\n==> ✅  %s is running, talking to API server on %s.', appConfig.app.title, port);
   console.info('==> 💻  Open http://%s:%s in a browser to view the app.', host, port);
 });

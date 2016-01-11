@@ -28,5 +28,9 @@
 	nav ul li a:hover{
 		color: teal;
 	}
+
+	input[type="date"]::-webkit-clear-button {
+    display: none;
+}
 	
 </style>

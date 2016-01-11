@@ -8,7 +8,7 @@
 MKE Tournavation project for 2015.
 
 ## What is Tournavation
-Tournavation is a social innovation project led by Red Arrow Labs and Dohmen Foundation.  The goal is to address a address a social issue voted on by the community, and create a technical solution to help alleviate the problem.  The project is developed by a volunteer team from the community, and gifted back as an open source project.
+Tournavation is a social innovation project led by Red Arrow Labs and Dohmen Foundation.  The goal is to address a social issue voted on by the community, and create a technical solution to help alleviate the problem.  The project is developed by a volunteer team from the community, and gifted back as an open source project.
 
 ## The Idea
 Health disparities are inextricably linked with poverty (Milwaukee Health Report, 2013). At the core of the issue are three root causes that Health STEMheroes addresses: (1) lack of real-time information for both public servants and citizens, which hinders effective resource allocation to those most in need; (2) disempowerment of those in poverty, particularly adolescents, to understand and improve their own health; and (3) far too few students (especially females and students of color) pursuing studies and careers in science, technology, engineering, math (STEM), especially as such jobs boom in Milwaukee and would provide a path out of economic poverty that negatively affects health outcomes.
@@ -45,6 +45,7 @@ Anyone and everyone is welcome to contribute. Please take a moment to review the
  * [react-dom ^0.14.3](https://github.com/EtienneLem/react-dom)
  * [react-router ^1.0.0](https://github.com/rackt/react-router)
  * [superagent ^1.5.0](https://github.com/visionmedia/superagent)
+ * [Globalize ^1.1.0-rc.7](https://github.com/jquery/globalize)
  * [babel.js](https://github.com/babel/babel)
  * [webpack](https://github.com/webpack/webpack)
 
@@ -99,9 +100,9 @@ Data access is done through Mongoose to MongoDB.
 Code for client facing code can be found under `src/shared`.  This is the client side running code and what is rendered server side.  This is built with [React](https://facebook.github.io/react/) and Flux ([Alt](http://alt.js.org/) implementation).  This breaks the code down into actions, stores, and components.
 
 #### Actions
-Actions can be defined as the tasks that the application need to perform from user, or even application, events.  Actions are used to dispatch events to stores, as well has make API calls.  These are basic classes, wrapped by Alt.
+Actions can be defined as the tasks that the application need to perform from user, or even application, events.  Actions are used to dispatch events to stores, as well has make API calls.  These are basic classes, wrapped by Alt.  Actions should be wrapped in the Alt resolver for asynchronous work (and handled for server side rendering).  The result of the work should be dispatched out for notifications.  When a new action class is added, it needs to be registered in `src/shared/actions/index.js`.
 ```
-class Testctions {
+class TestActions {
 
   constructor() {
     // Add dispatch only actions
@@ -111,45 +112,48 @@ class Testctions {
   }
 
     fetchTests() {
-      var self = this;
-      return dispatch => {
-        dispatch();
-        request
-          .get(config.apiBaseUrl + '/tests')
-          .end((err, resp) => {
-            self.updateTest(resp.body);
-          });
-      }
+      return (dispatch, alt) =>
+        alt.resolve(async () => {
+          var data = await alt.api.fetchAll('tests');      
+          alt.getActions('tests').updateAllTests(data);
+        });
     }
 }
 
-export default alt.createActions(HealthBehaviorActions);
+export default HealthBehaviorActions;
 ```
 
 ### Stores
-Stores are what hold state for the application.  When an action dispatches, it is the store that is listening to update the state.  Like actions, stores are classes that get wrapped by Alt.
+Stores are what hold (immutable) state for the application.  When an action dispatches, it is the store that is listening to update the state.  Like actions, stores are classes that get wrapped by (immutable) Alt.  This makes it an immutable store, so state needs to be set a little differently then traditional Alt stores.  When binding to a store, a convention is used: store methods need to be named `on<ActionMethodName>`.  For example, if there was and action for `fetchTests`, then the store needs `onFetchTests` to bind for dispatch events.  Similarly with Actions, Stores need to be registered in `src/shared/stores/index.js`.
 ```
+import Immutable from 'immutable';
+var immutableAlt = require('alt-utils/lib/ImmutableUtil');
+
+@immutableAlt
 class TestStore{
-	constructor() {
-		this.items = new Immutable.List([]);
+  displayName = 'TestStore'
+  constructor() {
+    this.bindActions(this.alt.getActions('tests'));
+    
+    this.state = Immutable.Map({
+      tests: new Immutable.List([])
+    });
+  }
 
-		let { fetchTests, updateTests } = HealthBehaviorActions;
-		this.bindListeners({
-			handleFetchTests: fetchTest,
-			handleUpdateTests: updateTest
-		});
-	}
+  onFetchTests() {
+    this.setState(
+      this.state.set('tests',
+        this.state.get('tests').clear()));
+  }
 
-	handleFetchTests() {
-		this.setState({ items: new Immutable.List([]) });
-	}
-
-	handleUpdateTests(payload) {
-		this.setState({ items: new Immutable.List(payload) });
-	}
+  onUpdateTests(payload) {
+    this.setState(
+      this.state.set('tests',
+        Immutable.fromJS(payload)));
+  }
 };
 
-export default alt.createStore(TestStore, 'TestStore');
+export default TestStore;
 ```
 
 ### Components
@@ -157,48 +161,59 @@ Components are React classes that render HTML.  They use stores to get state, an
 ```
 export default React.createClass ({
 
-  // begin listening to store, and call initial fetch to load data
-	componentDidMount() {
-    TestStore.listen(this.stateChanged);
-    TestAction.fetchTests();
+  // call initial fetch to load data, called on both client and server
+  componentWillMount() {
+    const { flux } = this.context;
+    flux.getActions('tests').fetchAllHealthBehaviors();
+  },
+
+  // begin listening to store
+  componentDidMount() {
+    const { flux } = this.context;
+    flux.getStore('tests').listen(this.stateChanged);
   },
 
   // remove listener when component is unmounted
   componentWillUnmount() {
-    TestStore.unlisten(this.stateChanged);
+    onst { flux } = this.context;
+    flux.getStore('tests').unlisten(this.stateChanged);
   },
 
   stateChanged(state) {
     this.setState({
-    	tests: state.tests
+    	tests: state.get('tests')
     });
   },
 
   getInitialState() {
+    const { flux } = this.context;
     return {
-    	tests: HealthBehaviorStore.getState().tests
+    	tests: flux.getStore('tests').getState().get('tests')
     };
-	},
+  },
 
-	renderListItem(test) {
-		return (
-      <li>
-      	{test.start} - {test.end}
+  renderListItem(test) {
+    return (
+      <li key={test.get('id')}>
+      	{test.get('start')} - {test.get('end')}
       </li>
     );
-	},
+  },
 
   render() {
-  	const { tests } = this.state;
+    const { tests } = this.state;
     return (
-    	<div>
-    		<span>Logged data:</span>
-    		<ul>{ tests.map(this.renderListItem) }</ul>
-    	</div>
-  	);
+      <div>
+        <span>Logged data:</span>
+    	<ul>{ tests.map(this.renderListItem) }</ul>
+      </div>
+    );
   }
 });
 ```
+
+### Globalization
+[Globalize](https://github.com/jquery/globalize) is used as the globalization engine.  Resource files are one per locale, and are found in `src/shared/globalization`.
 
 ## License
 [MIT License (MIT)](LICENSE.md)

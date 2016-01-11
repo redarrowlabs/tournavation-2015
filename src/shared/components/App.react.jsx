@@ -11,21 +11,16 @@ const App = React.createClass({
 
   getInitialState() {
     return {
-      selectedDate: Date.now(),
     };
   },
 
   render() {
-    var childrenWithProps = React.Children.map(this.props.children, child => {
-        return React.cloneElement(child, { selectedDate: this.state.selectedDate });
-    });
-
     return (
       <div>
         <header id="navigation">
           <nav>
             <ul>
-              <li><Link to="/">{Globalize.formatMessage('home-nav-home')}</Link></li>
+              <li><Link to="/home">{Globalize.formatMessage('home-nav-home')}</Link></li>
               <li><Link to="/track">{Globalize.formatMessage('home-nav-track')}</Link></li>
             </ul>
           </nav>
@@ -33,7 +28,7 @@ const App = React.createClass({
 
         <div>
           <h1>{Globalize.formatMessage('home-title')}</h1>
-          {childrenWithProps}
+          {this.props.children}
         </div>
       </div>
     );

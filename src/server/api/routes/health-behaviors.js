@@ -12,7 +12,27 @@ export default function (router) {
 	});
 
 	router.route('/healthbehaviors/:id').get(function(req, res) {
-		HealthBehaviors.findOne({ _id: req.params.id}, function(err, healthbehavior) {
+		HealthBehaviors.findOne({_id: req.params.id}, function(err, healthbehavior) {
+	    if (err) {
+	      return res.send(err);
+	    }
+
+	    res.json(healthbehavior);
+	  });
+	});
+
+	router.route('/healthbehaviors/key/:key').get(function(req, res) {
+		HealthBehaviors.find({key: req.params.key}, function(err, healthbehaviors) {
+	    if (err) {
+	      return res.send(err);
+	    }
+
+	    res.json(healthbehaviors);
+	  });
+	});
+
+	router.route('/healthbehaviors/key/:key/filter/:filter').get(function(req, res) {
+		HealthBehaviors.findOne({key: req.params.key, filter: req.params.filter}, function(err, healthbehavior) {
 	    if (err) {
 	      return res.send(err);
 	    }
@@ -22,17 +42,20 @@ export default function (router) {
 	});
 
 	router.route('/healthbehaviors').post(function(req, res) {
-		var healthBehavior = new HealthBehaviors({
+	  var key = req.body.key;
+	  var filter = req.body.filter;
+	  var healthbehavior = new HealthBehaviors({
 	  	user: 'system',
-	  	key: req.body.key,
-	  	data: req.body});
+	  	key: key,
+	  	filter: filter,
+	  	data: req.body.data});
 
-	  healthBehavior.save(function(err) {
+	  healthbehavior.save(function(err) {
 	    if (err) {
 	      return res.send(err);
 	    }
 
-	    res.send({ message: 'Health Behavior Added' });
+	    res.json(healthbehavior);
 	  });
 	});
 
@@ -42,17 +65,16 @@ export default function (router) {
 	      return res.send(err);
 	    }
 
-	    for (prop in req.body) {
+	    for (let prop in req.body) {
 	      healthbehavior[prop] = req.body[prop];
 	    }
 
-	    // save the movie
 	    healthbehavior.save(function(err) {
 	      if (err) {
 	        return res.send(err);
 	      }
 
-	      res.send({ message: 'Health Behavior updated!' });
+	      res.json(healthbehavior);
 	    });
 	  });
 	});

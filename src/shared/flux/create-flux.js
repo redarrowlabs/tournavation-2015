@@ -2,14 +2,19 @@ import Alt from 'alt';
 import makeFinalStore from 'alt-utils/lib/makeFinalStore';
 
 import AltResolver from './alt-resolver';
+import ClientApi from '../client-api';
 
 import * as stores from '../stores/index';
 import * as actions from '../actions/index';
 
+/**
+Flux (Alt) container.
+Keeps Stores, Actions, Resolver, and Client Api.
+**/
 class Flux extends Alt {
 
-  constructor(client, config = {}) {
-    super(config);
+  constructor(appConfig) {
+    super();
 
     // Bind AltResolve to flux instance
     //   - access to it in actions with `alt.resolve`
@@ -17,9 +22,8 @@ class Flux extends Alt {
     this.resolver = new AltResolver();
     this.resolve = ::this.resolver.resolve;
 
-    // Bind the ApiClient aswell
-    //   - access to it in actions with `alt.request`
-    //this.request = ::client.request;
+    // Bind the ApiClient as well
+    this.api = new ClientApi(appConfig.apiBaseUrl);
 
     // Load actions into alt
     Object.keys(actions).forEach(key => this.addActions(key, actions[key]));
@@ -32,4 +36,4 @@ class Flux extends Alt {
 
 }
 
-export default function (config) { return new Flux(config); }
+export default function (appConfig) { return new Flux(appConfig); }

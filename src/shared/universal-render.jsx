@@ -1,3 +1,4 @@
+import Iso from 'iso';
 import React from "react";
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
@@ -7,6 +8,10 @@ import routes from './routes';
 
 import Globalize from 'globalize';
 
+const bootstrap = () =>
+  new Promise((resolve) =>
+    Iso.bootstrap((initialState, container) =>
+      resolve({ initialState, container })));
 
 const runRouter = location =>
   new Promise(resolve => match({ routes, location }, (error, redirectLocation, renderProps) => {
@@ -14,13 +19,13 @@ const runRouter = location =>
   }));
 
 export default async function({ flux, history, location, locale }) {
-	console.log("*** Universal Render");
 	Globalize.locale(locale);
-  var msg = Globalize.formatMessage("home-title");
-  console.log("*** MSG: " + msg);
 
 	if (__CLIENT__) {
-	console.log("*** Client Render");
+
+    const { container, initialState } = await bootstrap();
+    flux.bootstrap(initialState);
+
 		const element = (
       <AltContainer flux={ flux }>
         <Router
@@ -29,14 +34,13 @@ export default async function({ flux, history, location, locale }) {
       </AltContainer>
     );
     
-		var mountNode = document.getElementById('react-main-mount');
-		ReactDOM.render(element, mountNode);
+		//var mountNode = document.getElementById('react-main-mount');
+		ReactDOM.render(element, container);
 
     // Tell `alt-resolver` we have done the first render
     // next promises will be resolved
     flux.resolver.firstRender = false;
 	} else {
-		console.log("*** Server Render");
 		const {error, redirectLocation, renderProps} = await runRouter(location);	
 		
 		if (error || redirectLocation || !renderProps) throw ({ error, redirectLocation });
@@ -49,17 +53,16 @@ export default async function({ flux, history, location, locale }) {
 
     let app;
     let fluxSnapshot;
-
     // Collect promises with a first render
     ReactDOMServer.renderToString(element);
 
     // Resolve them
     await flux.resolver.dispatchPendingActions();
-
     fluxSnapshot = flux.takeSnapshot();
     app = ReactDOMServer.renderToString(element);
+
 		return {
-			content: app,
+			content: Iso.render(app, fluxSnapshot),
 			statusCode: 200
 		};
 	}	

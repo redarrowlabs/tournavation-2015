@@ -22,6 +22,10 @@ export default React.createClass({
         flux.getStore('auth').listen(this.stateChanged);
     },
 
+    stateChanged(state) {
+
+    },
+
     render() {
         return (
         <div>

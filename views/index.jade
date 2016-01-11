@@ -10,16 +10,15 @@ html
     meta(name='google-signin-client_id' content='73545608160-grie8h8aqsg3pimc0mfroim40ae8qp41.apps.googleusercontent.com')
     
     link(href='/styles.css', rel='stylesheet')
-    //link(href='/react-widgets.css', rel='stylesheet')
 
   body
     #react-main-mount!= content
 
   script.
-    window.__STATE__= JSON.parse("#{state}".split('\'').join('"'));
-    console.log(JSON.stringify(window.__STATE__));
+    window.__LOCALE__= "#{locale}";
 
-  script(src='http://localhost:8080/dist/vendor-bundle.js', defer)
-  script(src='http://localhost:8080/dist/app-bundle.js', defer)
+  script(src='#{scriptUrl}/dist/vendor-bundle.js', defer)
+  script(src='#{scriptUrl}/dist/app-bundle.js', defer)
+
   script(src='https://apis.google.com/js/platform.js', async, defer)
   

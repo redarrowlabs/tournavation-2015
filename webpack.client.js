@@ -1,7 +1,5 @@
 var webpack = require("webpack");
 var path = require("path");
-var GlobalizePlugin = require("globalize-webpack-plugin");
-var ReactGlobalizePlugin = require('react-globalize-webpack-plugin');
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
 module.exports = {
@@ -15,9 +13,20 @@ module.exports = {
 		vendor: [
 	    "alt",
 	    "alt-container",
+	    "alt-utils/lib/ImmutableUtil",
 	    "alt-utils/lib/withAltContext",
 	    'alt-utils/lib/makeFinalStore',
 	    "cldr",
+	    "history",
+	    "immutable",
+	    "iso",
+	    "lodash",
+	    "moment",
+	    "node-uuid",
+	    "react",
+	    "react-dom",
+	    "react-router",
+	    "superagent",
 			"globalize",
 			"globalize/dist/globalize-runtime/number",
 			"globalize/dist/globalize-runtime/plural",
@@ -25,38 +34,37 @@ module.exports = {
 			"globalize/dist/globalize-runtime/currency",
 			"globalize/dist/globalize-runtime/date",
 			"globalize/dist/globalize-runtime/relative-time",
-	"cldr-data/main/en/ca-gregorian.json",
-	"cldr-data/main/en/characters.json",
-	"cldr-data/main/en/dateFields.json",
-	"cldr-data/main/en/numbers.json",
-	"cldr-data/main/es/ca-gregorian.json",
-	"cldr-data/main/es/characters.json",
-	"cldr-data/main/es/dateFields.json",
-	"cldr-data/main/es/numbers.json",
-	"cldr-data/supplemental/calendarData.json",
-	"cldr-data/supplemental/likelySubtags.json",
-	"cldr-data/supplemental/numberingSystems.json",
-	"cldr-data/supplemental/plurals.json",
-	"cldr-data/supplemental/timeData.json",
-	"cldr-data/supplemental/weekData.json",
-	    "history",
-	    "immutable",
-	    "moment",
-	    "node-uuid",
-	    "react",
-	    "react-dom",
-	    "react-router",
-	    "superagent"
+			"cldr-data/main/en/ca-gregorian.json",
+			"cldr-data/main/en/characters.json",
+			"cldr-data/main/en/dateFields.json",
+			"cldr-data/main/en/numbers.json",
+			"cldr-data/main/es/ca-gregorian.json",
+			"cldr-data/main/es/characters.json",
+			"cldr-data/main/es/dateFields.json",
+			"cldr-data/main/es/numbers.json",
+			"cldr-data/supplemental/calendarData.json",
+			"cldr-data/supplemental/likelySubtags.json",
+			"cldr-data/supplemental/numberingSystems.json",
+			"cldr-data/supplemental/plurals.json",
+			"cldr-data/supplemental/timeData.json",
+			"cldr-data/supplemental/weekData.json"
 		]
 	},
 	output: {
 		path: path.join(__dirname, "static/dist"),
 		filename: "app-bundle.js",
-		publicPath: "dist/"
+		publicPath: "/static/dist/"
 	},
 	plugins: [
 		new webpack.DefinePlugin({__CLIENT__: true, __SERVER__: false}),
-		new webpack.DefinePlugin({"process.env": {NODE_ENV: '"production"'}}),
+		new webpack.DefinePlugin({
+			"process.env": {
+				NODE_ENV: '"production"',
+				//HOST: '"https://localhost"',
+				HOST: '"https://tournavation-db.cloudapp.net"',
+				PORT: '"443"'
+			}
+		}),
 		/*new ReactGlobalizePlugin({
 			production: true,
 			developmentLocale: "en",
@@ -73,8 +81,18 @@ module.exports = {
 	module: {
 		loaders: [
 			{test: /\.json$/, loaders: ["json"]},
-			{test: /\.js$/, loaders: ["babel?cacheDirectory&presets[]=es2015&presets[]=react&presets[]=stage-0"], exclude: /node_modules/},
-			{test: /\.jsx?$/, loaders: ["babel?cacheDirectory&presets[]=es2015&presets[]=react&presets[]=stage-0"], exclude: /node_modules/},
+			{
+				test: /\.jsx?$/,
+				loader: 'babel',
+		      query: {
+		        cacheDirectory: true,
+		        plugins: [
+		          'transform-runtime',
+		          'transform-decorators-legacy',
+		        ],
+		        presets: ['es2015', 'react', 'stage-0'],
+		      },
+				exclude: /node_modules/},
 			{test: /\\.css$/, loader: "style!css"},
 			{test: /\\.scss$/, loader: "style!css!sass"},
 			{test: /\\.sass$/, loader: "style!css!sass?indentedSyntax=sass"},
