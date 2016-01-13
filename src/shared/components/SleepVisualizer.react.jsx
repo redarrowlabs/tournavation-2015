@@ -38,19 +38,23 @@ export default React.createClass({
 		var translatedData = [];
 		if (rawData) {
 			rawData.map(function(dataPoint, idx) {
+				let dt = dataPoint.get('filter');
 				let start = dataPoint.get('data').get('start');
 			    let end = dataPoint.get('data').get('end');
-				if (!end || !start) return;
+				if (!dt || !end || !start) return;
 
 				var startDate = moment(start);
       			var endDate = moment(end);
 			    let totalHours = Number(Math.round(moment.duration(endDate.diff(startDate)).asHours()+'e2')+'e-2');
 	      		
-      			var startDateStr = startDate.format('YYYY-MM-DD');
+	      		var obsDate = moment(parseInt(dt, 10));
+      			var obsDateStr = obsDate.format('YYYY-MM-DD');
       			var color = (totalHours >= 8) ? "#04D215" : "#FCD202";
-      			translatedData.push( { "date": startDateStr, "value": totalHours, "color": color } );
+      			translatedData.push( { "date": obsDateStr, "value": totalHours, "color": color } );
 			});
 		}
+		// chart not happy if data isnt in sorted order
+		translatedData.sort(function(a,b) { return (a.date.localeCompare(b.date)); })
 		return translatedData;
 	},
 

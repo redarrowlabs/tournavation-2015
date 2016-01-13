@@ -64,8 +64,12 @@ class HealthBehaviorStore{
 			let index = _.findIndex(healthBehaviors.toArray(), item => {
 				return item.get('_id') === healthBehavior.get('_id');
 			});
-		  healthBehaviors = healthBehaviors
-				.set(index, healthBehavior);
+			if (index > -1) {
+		  		healthBehaviors = healthBehaviors.set(index, healthBehavior);
+		  	}
+		  	else {
+		  		healthBehaviors = healthBehaviors.push(healthBehavior);
+		  	}
 		} else {
 			healthBehaviors	= new Immutable.List([healthBehavior]);
 		}
