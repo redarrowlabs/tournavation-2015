@@ -64,7 +64,8 @@ const webServer = async function(req, res) {
         {
           content,
           scriptUrl: appConfig.scriptUrl,
-          locale: req.locale.code
+          locale: req.locale.code,
+          googleApiClientId: appConfig.googleApiClientId
         });
   } catch (err) {
     console.log(err);

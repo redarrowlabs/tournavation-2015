@@ -17,7 +17,7 @@ export default function (router) {
               /* The value of aud in the ID token is equal to one of your app's client IDs.  This check is necessary to prevent 
                * ID tokens issued to a malicious app being used to access data about the same user on your app's backend server. */
               const aud = resp.body.aud;
-              if(aud != appConfig.googleApiSignInClientId) {
+              if(aud != appConfig.googleApiClientId) {
                   res.status(401).send("Unable to validate Google sign in.");
                   return;
               }
