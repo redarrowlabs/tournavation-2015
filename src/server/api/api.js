@@ -19,7 +19,7 @@ export default server => {
   
   // Setup session store
   let sessionProperties = {
-    secret: "Find a way to make this actually a secret rather than sitting in code",
+    secret: appConfig.cookieSecret,
     store: new MongoStore({ mongooseConnection: connection.connection }),
     genid: function(req) {
       return uuid.v4(); // use UUIDs for session IDs

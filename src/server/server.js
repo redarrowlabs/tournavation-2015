@@ -43,7 +43,7 @@ api(server);
 const flux = createFlux(appConfig);
 
 const webServer = async function(req, res) {
-  if(req.path != '/' && !req.session.user_id) {
+  if(req.path != '/' && req.path != '/favicon.ico' && !req.session.user_id) {
     console.log("Page unauthenticated on " + req.path);
     res.redirect('/');
     return;

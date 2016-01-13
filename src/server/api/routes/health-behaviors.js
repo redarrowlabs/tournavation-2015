@@ -2,7 +2,7 @@ import HealthBehaviors from '../models/health-behaviors';
 
 export default function (router) {
 	router.route('/healthbehaviors').get(function(req, res) {
-		HealthBehaviors.find(function(err, healthbehaviors) {
+		HealthBehaviors.find({ user: req.session.user_id }, function(err, healthbehaviors) {
 	    if (err) {
 	      return res.send(err);
 	    }
@@ -12,7 +12,7 @@ export default function (router) {
 	});
 
 	router.route('/healthbehaviors/:id').get(function(req, res) {
-		HealthBehaviors.findOne({_id: req.params.id}, function(err, healthbehavior) {
+		HealthBehaviors.findOne({user: req.session.user_id, _id: req.params.id}, function(err, healthbehavior) {
 	    if (err) {
 	      return res.send(err);
 	    }
@@ -22,7 +22,7 @@ export default function (router) {
 	});
 
 	router.route('/healthbehaviors/key/:key').get(function(req, res) {
-		HealthBehaviors.find({key: req.params.key}, function(err, healthbehaviors) {
+		HealthBehaviors.find({user: req.session.user_id, key: req.params.key}, function(err, healthbehaviors) {
 	    if (err) {
 	      return res.send(err);
 	    }
@@ -32,7 +32,7 @@ export default function (router) {
 	});
 
 	router.route('/healthbehaviors/key/:key/filter/:filter').get(function(req, res) {
-		HealthBehaviors.findOne({key: req.params.key, filter: req.params.filter}, function(err, healthbehavior) {
+		HealthBehaviors.findOne({user: req.session.user_id, key: req.params.key, filter: req.params.filter}, function(err, healthbehavior) {
 	    if (err) {
 	      return res.send(err);
 	    }
@@ -45,7 +45,7 @@ export default function (router) {
 	  var key = req.body.key;
 	  var filter = req.body.filter;
 	  var healthbehavior = new HealthBehaviors({
-	  	user: 'system',
+	  	user: req.session.user_id,
 	  	key: key,
 	  	filter: filter,
 	  	data: req.body.data});
@@ -60,7 +60,7 @@ export default function (router) {
 	});
 
 	router.route('/healthbehaviors/:id').put(function(req,res){
-		HealthBehaviors.findOne({ _id: req.params.id }, function(err, healthbehavior) {
+		HealthBehaviors.findOne({user: req.session.user_id, _id: req.params.id }, function(err, healthbehavior) {
 	    if (err) {
 	      return res.send(err);
 	    }
@@ -81,7 +81,8 @@ export default function (router) {
 
 	router.route('/healthbehaviors/:id').delete(function(req, res) {
 		HealthBehaviors.remove({
-	    _id: req.params.id
+          user: req.session.user_id,
+	      _id: req.params.id
 	  }, function(err, movie) {
 	    if (err) {
 	      return res.send(err);
