@@ -13,6 +13,7 @@ The issue tracker is the preferred channel for [bug reports](#bugs), [features r
 
 * Please **do not** derail or troll issues. Keep the discussion on topic and respect the opinions of others.
 
+For guidance on the use of GitHub issue tags and milestones for the project, please consult the Wiki.
 
 <a name="bugs"></a>
 ## Bug reports
@@ -52,7 +53,7 @@ It is recommended to use the #ideation Slack channel (link below) to discuss ide
 
 [![Slack](https://img.shields.io/badge/Slack-Channel-blue.svg)](https://redarrowlabs.slack.com/messages/ideation/details/)
 
-User Stories in GitHub should follow the BDD approach where applicable.  A strong story narrative with at least one valid scenario should be present. Be sure to note "User Story" in the Github issue title, apply the correct labels (enhancement) and milestone.
+User Stories in GitHub should follow the BDD approach where applicable.  A strong story narrative with at least one valid scenario should be present. Be sure to note "User Story" in the Github issue title, apply the correct labels and milestone.
 
 <a name="pull-requests"></a>
 ## Pull requests
