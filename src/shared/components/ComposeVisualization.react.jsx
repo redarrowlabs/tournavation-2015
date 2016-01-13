@@ -1,6 +1,7 @@
 import moment from 'moment';
 import React, {PropTypes} from 'react';
 import SleepVisualizer from './SleepVisualizer.react';
+import AlertnessVisualizer from './AlertnessVisualizer.react';
 
 export default React.createClass({
 
@@ -15,6 +16,7 @@ export default React.createClass({
     return (
       <div>
         <SleepVisualizer key="sleep-visualizer"  />
+        <AlertnessVisualizer key="alertness-visualizer"  />
       </div>
     );
   }
