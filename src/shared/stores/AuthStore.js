@@ -3,10 +3,16 @@ import Immutable from 'immutable';
 class AuthStore {
 	constructor() {
         this.bindActions(this.alt.getActions('auth'));
+        
+        this.state = Immutable.Map({
+			isAuthenticated: false
+		});
 	}
 
-    onSetLogin(payload) {
-		this.setState(Immutable.fromJS(payload));
+    onSetIsAuthenticated(isAuthenticated) {
+		this.setState(Immutable.Map({
+			isAuthenticated
+		}));
 	}
 };
 
