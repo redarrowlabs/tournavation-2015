@@ -43,9 +43,18 @@ api(server);
 const flux = createFlux(appConfig);
 
 const webServer = async function(req, res) {
+  if(req.path != '/' && !req.session.user_id) {
+    console.log("Page unauthenticated on " + req.path);
+    res.redirect('/');
+    return;
+  }  
+  
   let location = createLocation(req.url);
 
   try {
+    let cookie = req.get('Cookie');
+    flux.api.saveCookie(cookie);
+      
     console.log("*** Server @ " + req.url + " for: " + req.locale.code);
     const { content, statusCode } = await universalRender({flux, location, locale: req.locale.code});
 
@@ -72,21 +81,21 @@ const webServer = async function(req, res) {
 
 server.get('*', webServer);
 
-var appServer = null;
+let appServer = null;
 // In production, redirect incoming requests on the insecure http port to the secured https port
 if(appConfig.isProduction) {
-    var redirectServer = http.createServer(function(req, res){
-        var redirect = appConfig.host + ":" + appConfig.port + req.url;
+    let redirectServer = http.createServer(function(req, res){
+        let redirect = appConfig.host + ":" + appConfig.port + req.url;
         console.log("*** Request on insecure URL http://" + req.headers['host'] + req.url + " redirected to " + redirect);
         res.writeHead(301, { "Location": redirect });
         res.end();
     }).listen(appConfig.insecurePort, function () {  
-        var host = redirectServer.address().address;
-        var port = redirectServer.address().port;
+        let host = redirectServer.address().address;
+        let port = redirectServer.address().port;
         console.info('----\n==> ✅  HTTP redirect is running on http://%s:%s', host, port);
     });
     
-    var httpsOptions = {
+    let httpsOptions = {
         key: fs.readFileSync(appConfig.sslKeyPath),
         cert: fs.readFileSync(appConfig.sslCertPath),
     };
@@ -96,8 +105,8 @@ if(appConfig.isProduction) {
 }
 
 appServer.listen(appConfig.port, function () {  
-  var host = appServer.address().address;
-  var port = appServer.address().port;
+  let host = appServer.address().address;
+  let port = appServer.address().port;
 
   console.info('----\n==> ✅  %s is running, talking to API server on %s.', appConfig.app.title, port);
   console.info('==> 💻  Open http://%s:%s in a browser to view the app.', host, port);

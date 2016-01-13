@@ -13,6 +13,25 @@ const App = React.createClass({
     return {
     };
   },
+  
+  componentDidMount() {
+    const { flux } = this.context;
+    flux.getStore('auth').listen(this.authStateChanged);
+  },
+  
+  componentWillUnmount() {
+    const { flux } = this.context;
+    flux.getStore('auth').unlisten(this.authStateChanged);
+  },
+
+  authStateChanged(state) {
+    const { flux } = this.context;
+    if(state.get('isAuthenticated')) {
+      window.location.href = '/track';
+    } else {
+      window.location.href = '/';
+    }
+  },
 
   render() {
     return (

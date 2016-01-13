@@ -17,8 +17,7 @@ html
   script.
     window.__LOCALE__= "#{locale}";
 
+  script(src='https://apis.google.com/js/platform.js', defer)
+  
   script(src='#{scriptUrl}/dist/vendor-bundle.js', defer)
   script(src='#{scriptUrl}/dist/app-bundle.js', defer)
-
-  script(src='https://apis.google.com/js/platform.js', async, defer)
-  

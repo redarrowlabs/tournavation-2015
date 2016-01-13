@@ -1,23 +1,35 @@
 import request from 'superagent';
 import Immutable from 'immutable';
 import UUID from 'node-uuid';
-import config from '../../config'
 
 class AuthActions {
-
   constructor() {
     // Add dispatch only actions
     this.generateActions(
-      'setIdToken'
+      'setLogin'
     );
   }
-
-    setUserLogin(idToken) {
-        return (dispatch, alt) => alt.getActions('auth').setIdToken(idToken);
+    
+  submitLogin(googleAuthResponse) {
+    return (dispatch, alt) => {
+      alt.resolve(async () => {
+        let data = await alt.api.create('auth', googleAuthResponse);
+        alt.getActions('auth').setLogin({
+          isAuthenticated: true
+        });
+      });
     }
+  }
+  
+  submitLogout() {
+    return (dispatch, alt) =>
+      alt.resolve(async () => {
+        let data = request.delete(alt.api.baseUrl + 'auth').end(function(err, res){});
+        alt.getActions('auth').setLogin({
+          isAuthenticated: false
+         });
+      });
+  }
 }
 
-/* If your actions are as simple as just dispatching passed values, you can use a slightly different (and more concise) API for such use case:
- * export default alt.generateActions('changeContent', 'clearForm');
- */
 export default AuthActions;

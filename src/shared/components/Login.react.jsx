@@ -1,6 +1,5 @@
 import React, {PropTypes} from "react";
 import { Router, Route, Link } from 'react-router';
-import AuthStore from '../stores/AuthStore';
 
 // Class component - can have state
 // Can only return a single node
@@ -17,47 +16,33 @@ export default React.createClass({
             'longtitle': true,
             'theme': 'dark',
             'onsuccess': this.onSignIn
-        });  
-        const { flux } = this.context;
-        flux.getStore('auth').listen(this.stateChanged);
+        });
     },
-
-    stateChanged(state) {
-
-    },
-
+    
     render() {
         return (
         <div>
-            <header id="navigation">
-            <nav>
-                <label>HealthHeros</label>
-                
-            </nav>
-            </header>
             <div className="login-containter">
-                <p>Get Started | Check Progress</p>
                 <h1>Sign In Today</h1>
                 <br />
                 <hr />
                 <button className="g-signin2" id="hh-signin2"></button>
-                <a href="#" onClick={this.signOut}>Sign out</a>
             </div>
+            <a href="#" onClick={this.signOut}>Sign out</a>
         </div>
         );
     },
     
     onSignIn(googleUser) {
         const { flux } = this.context;
-        var idToken = googleUser.getAuthResponse().id_token;
-        flux.getActions('auth').setUserLogin(idToken);
-        window.location.href = '/track'
+        let googleAuthResponse = googleUser.getAuthResponse();
+        flux.getActions('auth').submitLogin(googleAuthResponse);
     },
     
     signOut() {
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
-            console.log('User signed out.');
+          flux.getActions('auth').submitLogout();
         });
     }
 })
