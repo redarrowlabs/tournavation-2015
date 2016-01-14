@@ -38,5 +38,8 @@ module.exports = Object.assign({
     }
   },
   connectionString: 'mongodb://localhost:27017/healthHeroesDb',
-  cacheAge: 86400000
+  cacheAge: 86400000,
+  googleApiClientId: "73545608160-grie8h8aqsg3pimc0mfroim40ae8qp41.apps.googleusercontent.com",
+  googleApiTokenInfoUrl: "https://www.googleapis.com/oauth2/v3/tokeninfo",
+  cookieSecret: process.env.COOKIE_SECRET || "This should be an environment variable in production."
 }, environment);
