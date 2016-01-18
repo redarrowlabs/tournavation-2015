@@ -28,7 +28,6 @@ export default React.createClass({
                 <hr />
                 <button className="g-signin2" id="hh-signin2"></button>
             </div>
-            <a href="#" onClick={this.signOut}>Sign out</a>
         </div>
         );
     },
@@ -37,12 +36,5 @@ export default React.createClass({
         const { flux } = this.context;
         let googleAuthResponse = googleUser.getAuthResponse();
         flux.getActions('auth').submitLogin(googleAuthResponse);
-    },
-    
-    signOut() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-          flux.getActions('auth').submitLogout();
-        });
     }
 })

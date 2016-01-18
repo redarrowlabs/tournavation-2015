@@ -10,8 +10,16 @@ const App = React.createClass({
   contextTypes: { flux: PropTypes.object.isRequired },
 
   getInitialState() {
+    const { flux } = this.context;
+    let isAuthenticated = flux.getStore('auth').getState().isAuthenticated;
     return {
+      isAuthenticated
     };
+  },
+  
+  componentWillMount() {
+	const { flux } = this.context;
+	flux.getActions('auth').fetchAuthStatus();
   },
   
   componentDidMount() {
@@ -26,10 +34,44 @@ const App = React.createClass({
 
   authStateChanged(state) {
     const { flux } = this.context;
-    if(state.get('isAuthenticated')) {
-      window.location.href = '/track';
-    } else {
+    this.state.isAuthenticated = state.get('isAuthenticated');
+    if(this.state.isAuthenticated) {
+      if(window.location.pathname == '/') {
+        window.location.href = '/track';
+      }
+    } else if(window.location.pathname != '/') {
       window.location.href = '/';
+    }
+  },
+  
+  signOut() {
+    const { flux } = this.context;
+    // If the google api is already loaded, then just go ahead and sign out
+    if(gapi.auth2) {
+      this.executeSignOut(gapi.auth2.getAuthInstance(), flux);
+    } else {
+      // If the google api is not loaded, load it then sign out.  It will not load twice
+      let self = this;
+      gapi.load('auth2', function() {
+        let clientId = document.getElementsByTagName('meta')['google-signin-client_id'].getAttribute('content');
+        let auth2 = gapi.auth2.init({
+          client_id: clientId,
+          scope: 'https://www.googleapis.com/auth/plus.login'
+        });
+        auth2.then(function() {
+          self.executeSignOut(auth2, flux);
+        });
+      });
+    }
+  },
+  
+  executeSignOut(auth2, flux) {
+    if(auth2.currentUser.get().isSignedIn()) {
+        auth2.signOut().then(function () {
+        flux.getActions('auth').submitLogout();
+      });
+    } else {
+      flux.getActions('auth').submitLogout();
     }
   },
 
@@ -41,6 +83,7 @@ const App = React.createClass({
             <ul>
               <li><Link to="/home">{Globalize.formatMessage('home-nav-home')}</Link></li>
               <li><Link to="/track">{Globalize.formatMessage('home-nav-track')}</Link></li>
+              <li><a href="#" onClick={this.signOut}>Sign out</a></li>
             </ul>
           </nav>
         </header>

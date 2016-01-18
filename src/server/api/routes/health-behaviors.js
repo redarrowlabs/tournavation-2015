@@ -31,7 +31,7 @@ export default function (router) {
 	  });
 	});
 
-	router.route('/healthbehaviors/key/:key/filter/:filter').get(function(req, res) {
+	router.route('/healthbehaviors/key/:key/filter/:filter').get(function(req, res) {        
 		HealthBehaviors.findOne({user: req.session.user_id, key: req.params.key, filter: req.params.filter}, function(err, healthbehavior) {
 	    if (err) {
 	      return res.send(err);

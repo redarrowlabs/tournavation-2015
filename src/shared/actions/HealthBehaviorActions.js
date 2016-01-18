@@ -27,7 +27,7 @@ class HealthBehaviorActions {
   findHealthBehavior(key, filter) {
     return (dispatch, alt) =>
       alt.resolve(async () => {
-        var data = await alt.api.fetch('healthbehaviors/key/' + key + '/filter', filter);      
+        var data = await alt.api.fetch('healthbehaviors/key/' + key + '/filter', filter);
         alt.getActions('healthBehaviors').updateCurrentHealthBehavior({key, data});
       });
   }
