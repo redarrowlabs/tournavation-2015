@@ -9,7 +9,15 @@ class AuthActions {
       'setIsAuthenticated'
     );
   }
-    
+  
+  fetchAuthStatus(id) {
+    return (dispatch, alt) =>
+      alt.resolve(async () => {
+        var data = await alt.api.fetchAll('auth');      
+        alt.getActions('auth').setIsAuthenticated(data.isAuthenticated);
+      });
+  }
+  
   submitLogin(googleAuthResponse) {
     return (dispatch, alt) => {
       alt.resolve(async () => {

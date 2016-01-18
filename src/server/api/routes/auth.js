@@ -2,6 +2,11 @@ import request from 'superagent';
 import appConfig from '../../../config';
 
 export default function (router) {
+    router.route('/auth').get(function(req, res) {
+      const isAuthenticated = typeof req.session.user_id != "undefined";
+      res.send({ isAuthenticated });
+	});
+    
 	router.route('/auth').post(function(req, res) {
         const id_token = req.body.id_token;
         // To verify that the token is valid, ensure that the following criteria are satisfied.

@@ -10,9 +10,9 @@ class AuthStore {
 	}
 
     onSetIsAuthenticated(isAuthenticated) {
-		this.setState(Immutable.Map({
-			isAuthenticated
-		}));
+      this.setState(Immutable.Map({
+        isAuthenticated
+      }));
 	}
 };
 

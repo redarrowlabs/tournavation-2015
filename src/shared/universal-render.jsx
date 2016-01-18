@@ -22,48 +22,47 @@ export default async function({ flux, history, location, locale }) {
 	Globalize.locale(locale);
 
 	if (__CLIENT__) {
-
-    const { container, initialState } = await bootstrap();
-    flux.bootstrap(initialState);
-
-		const element = (
-      <AltContainer flux={ flux }>
-        <Router
-          history={ history }
-          routes={ routes } />
-      </AltContainer>
-    );
+      const { container, initialState } = await bootstrap();
+      flux.bootstrap(initialState);
     
-		//var mountNode = document.getElementById('react-main-mount');
-		ReactDOM.render(element, container);
+      const element = (
+        <AltContainer flux={ flux }>
+          <Router
+            history={ history }
+            routes={ routes } />
+        </AltContainer>
+      );
+    
+      //var mountNode = document.getElementById('react-main-mount');
+      ReactDOM.render(element, container);
 
-    // Tell `alt-resolver` we have done the first render
-    // next promises will be resolved
-    flux.resolver.firstRender = false;
-	} else {
-		const {error, redirectLocation, renderProps} = await runRouter(location);	
+      // Tell `alt-resolver` we have done the first render
+      // next promises will be resolved
+      flux.resolver.firstRender = false;
+    } else {
+      const {error, redirectLocation, renderProps} = await runRouter(location);	
 		
-		if (error || redirectLocation || !renderProps) throw ({ error, redirectLocation });
+      if (error || redirectLocation || !renderProps) throw ({ error, redirectLocation });
 
-  	const element = (
-      <AltContainer flux={ flux }>
-        <RoutingContext { ...renderProps } />
-      </AltContainer>
-    );
+      const element = (
+        <AltContainer flux={ flux }>
+          <RoutingContext { ...renderProps } />
+        </AltContainer>
+      );
 
-    let app;
-    let fluxSnapshot;
-    // Collect promises with a first render
-    ReactDOMServer.renderToString(element);
+      let app;
+      let fluxSnapshot;
+      // Collect promises with a first render
+      ReactDOMServer.renderToString(element);
 
-    // Resolve them
-    await flux.resolver.dispatchPendingActions();
-    fluxSnapshot = flux.takeSnapshot();
-    app = ReactDOMServer.renderToString(element);
+      // Resolve them
+      await flux.resolver.dispatchPendingActions();
+      fluxSnapshot = flux.takeSnapshot();
+      app = ReactDOMServer.renderToString(element);
 
-		return {
-			content: Iso.render(app, fluxSnapshot),
-			statusCode: 200
-		};
-	}	
+      return {
+        content: Iso.render(app, fluxSnapshot),
+        statusCode: 200
+      };
+    }	
 };

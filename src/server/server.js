@@ -40,8 +40,6 @@ server.set('view engine', 'jade');
 // init the api
 api(server);
 
-const flux = createFlux(appConfig);
-
 const webServer = async function(req, res) {
   if(req.path != '/' && req.path != '/favicon.ico' && !req.session.user_id) {
     console.log("Page unauthenticated on " + req.path);
@@ -52,10 +50,13 @@ const webServer = async function(req, res) {
   let location = createLocation(req.url);
 
   try {
+    const flux = createFlux(appConfig);
+    
     let cookie = req.get('Cookie');
     flux.api.saveCookie(cookie);
       
     console.log("*** Server @ " + req.url + " for: " + req.locale.code);
+    
     const { content, statusCode } = await universalRender({flux, location, locale: req.locale.code});
 
     res
