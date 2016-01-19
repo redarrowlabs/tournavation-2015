@@ -1,4 +1,4 @@
-import createBrowserHistory from 'history/lib/createBrowserHistory';
+import history from './history';
 import universalRender from '../shared/universal-render';
 import createFlux from '../shared/flux/create-flux';
 import appConfig from '../config';
@@ -16,18 +16,29 @@ Globalize.load(
 	require("cldr-data/main/es/dateFields.json"),
 	require("cldr-data/main/es/numbers.json"),
 	require("cldr-data/supplemental/calendarData.json"),
-	require("cldr-data/supplemental/dayPeriods.json"),
+	require("cldr-data/supplemental/calendarPreferenceData.json"),
+	require("cldr-data/supplemental/characterFallbacks.json"),
+	require("cldr-data/supplemental/languageData.json"),
+	require("cldr-data/supplemental/languageMatching.json"),
 	require("cldr-data/supplemental/likelySubtags.json"),
+	require("cldr-data/supplemental/measurementData.json"),
+	require("cldr-data/supplemental/metaZones.json"),
 	require("cldr-data/supplemental/numberingSystems.json"),
+	require("cldr-data/supplemental/ordinals.json"),
+	require("cldr-data/supplemental/parentLocales.json"),
 	require("cldr-data/supplemental/plurals.json"),
+	require("cldr-data/supplemental/primaryZones.json"),
+	require("cldr-data/supplemental/references.json"),
+	require("cldr-data/supplemental/territoryContainment.json"),
+	require("cldr-data/supplemental/territoryInfo.json"),
 	require("cldr-data/supplemental/timeData.json"),
-	require("cldr-data/supplemental/weekData.json")
+	require("cldr-data/supplemental/weekData.json"),
+	require("cldr-data/supplemental/windowsZones.json")
 );
 Globalize.loadMessages(require("../shared/globalization/en.json"));
 // prime globalization
 Globalize.locale('en');
 
-let history = createBrowserHistory();
 const flux = createFlux(appConfig);
 
 let locale = window.__LOCALE__;

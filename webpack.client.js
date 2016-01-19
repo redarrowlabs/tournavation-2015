@@ -43,11 +43,24 @@ module.exports = {
 			"cldr-data/main/es/dateFields.json",
 			"cldr-data/main/es/numbers.json",
 			"cldr-data/supplemental/calendarData.json",
+			"cldr-data/supplemental/calendarPreferenceData.json",
+			"cldr-data/supplemental/characterFallbacks.json",
+			"cldr-data/supplemental/languageData.json",
+			"cldr-data/supplemental/languageMatching.json",
 			"cldr-data/supplemental/likelySubtags.json",
+			"cldr-data/supplemental/measurementData.json",
+			"cldr-data/supplemental/metaZones.json",
 			"cldr-data/supplemental/numberingSystems.json",
+			"cldr-data/supplemental/ordinals.json",
+			"cldr-data/supplemental/parentLocales.json",
 			"cldr-data/supplemental/plurals.json",
+			"cldr-data/supplemental/primaryZones.json",
+			"cldr-data/supplemental/references.json",
+			"cldr-data/supplemental/territoryContainment.json",
+			"cldr-data/supplemental/territoryInfo.json",
 			"cldr-data/supplemental/timeData.json",
-			"cldr-data/supplemental/weekData.json"
+			"cldr-data/supplemental/weekData.json",
+			"cldr-data/supplemental/windowsZones.json"
 		]
 	},
 	output: {

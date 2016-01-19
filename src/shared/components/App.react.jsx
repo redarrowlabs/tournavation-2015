@@ -11,10 +11,8 @@ const App = React.createClass({
 
   getInitialState() {
     const { flux } = this.context;
-    let isAuthenticated = flux.getStore('auth').getState().isAuthenticated;
-    return {
-      isAuthenticated
-    };
+    //let isAuthenticated = flux.getStore('auth').getState().isAuthenticated;
+    return {};
   },
   
   componentWillMount() {
@@ -34,8 +32,8 @@ const App = React.createClass({
 
   authStateChanged(state) {
     const { flux } = this.context;
-    this.state.isAuthenticated = state.get('isAuthenticated');
-    if(this.state.isAuthenticated) {
+    const isAuthenticated = state.get('isAuthenticated');
+    if(isAuthenticated) {
       if(window.location.pathname == '/') {
         window.location.href = '/track';
       }
@@ -81,15 +79,13 @@ const App = React.createClass({
         <header id="navigation">
           <nav>
             <ul>
-              <li><Link to="/home">{Globalize.formatMessage('home-nav-home')}</Link></li>
-              <li><Link to="/track">{Globalize.formatMessage('home-nav-track')}</Link></li>
-              <li><a href="#" onClick={this.signOut}>Sign out</a></li>
+              <li><a href="#" onClick={this.signOut}>{Globalize.formatMessage('app-signout')}</a></li>
             </ul>
           </nav>
         </header>
 
         <div>
-          <h1>{Globalize.formatMessage('home-title')}</h1>
+          <h1>{Globalize.formatMessage('app-title')}</h1>
           {this.props.children}
         </div>
       </div>
