@@ -67,7 +67,8 @@ export default React.createClass({
     let start = data.get('start');
     let end = data.get('end');
     return start !== null && moment(start).isValid()
-      && end !== null && moment(end).isValid();
+      && end !== null && moment(end).isValid()
+      && start.isBefore(end);
   },
 
   canSubmit() {
@@ -102,7 +103,9 @@ export default React.createClass({
   updateBedTime(event) {
     let val = event.currentTarget.value;
     let date = this.parseTimeString(val);
-    date.subtract(1, 'days');
+    if (date.hour() >= 12) {
+      date.subtract(1, 'days');
+    }
     const currentHealthBehavior = this.state.currentHealthBehavior;
     const data = this.getData(currentHealthBehavior)
       .set('start', date);
@@ -140,7 +143,7 @@ export default React.createClass({
     
     let start = moment(data.get('start'));
     let end = moment(data.get('end'));
-    let totalHours = (end.isValid() && start.isValid())
+    let totalHours = this.state.canSubmit
       ? moment.duration(end.diff(start)).asHours()
       : null;
 
