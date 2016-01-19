@@ -73,8 +73,8 @@ module.exports = {
 		new webpack.DefinePlugin({
 			"process.env": {
 				NODE_ENV: '"production"',
-				//HOST: '"https://localhost"',
-				HOST: '"https://tournavation-db.cloudapp.net"',
+				HOST: '"https://localhost"',
+				//HOST: '"https://tournavation-db.cloudapp.net"',
 				PORT: '"443"'
 			}
 		}),
@@ -89,7 +89,7 @@ module.exports = {
 		new CommonsChunkPlugin("vendor", "vendor-bundle.js"),
 		new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.OccurenceOrderPlugin(),
-		new webpack.optimize.UglifyJsPlugin()
+		//new webpack.optimize.UglifyJsPlugin()
 	],
 	module: {
 		loaders: [
