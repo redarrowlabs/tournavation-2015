@@ -15,6 +15,7 @@ html
     #react-main-mount!= content
 
   script.
+    window.__CONFIG__ = {apiBaseUrl: "#{apiBaseUrl}"};
     window.__LOCALE__= "#{locale}";
 
   script(src='https://apis.google.com/js/platform.js', defer)

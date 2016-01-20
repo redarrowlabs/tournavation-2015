@@ -1,7 +1,6 @@
 import history from './history';
 import universalRender from '../shared/universal-render';
 import createFlux from '../shared/flux/create-flux';
-import appConfig from '../config';
 
 import Globalize from 'globalize';
 /*Globalize.load(require("cldr-data").entireSupplemental());
@@ -39,7 +38,7 @@ Globalize.loadMessages(require("../shared/globalization/en.json"));
 // prime globalization
 Globalize.locale('en');
 
-const flux = createFlux(appConfig);
+const flux = createFlux(window.__CONFIG__);
 
 let locale = window.__LOCALE__;
 

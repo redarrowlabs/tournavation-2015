@@ -1,0 +1,12 @@
+{
+  "host": "http://localhost",
+  "port": 3000,
+  "apiBaseUrl" : "http://localhost:3000/api/",
+  "connectionString": "mongodb://localhost:27017/healthHeroesDb",
+  "cookieSecret": "The secret for session cookie.",
+  "scriptUrl": "http://localhost:8080/",
+  "cacheAge": 86400000,
+  "googleApiClientId": "73545608160-grie8h8aqsg3pimc0mfroim40ae8qp41.apps.googleusercontent.com",
+  "googleApiTokenInfoUrl": "https://www.googleapis.com/oauth2/v3/tokeninfo",
+  "insecurePort": 3000
+}

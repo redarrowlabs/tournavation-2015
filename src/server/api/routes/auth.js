@@ -1,5 +1,5 @@
 import request from 'superagent';
-import appConfig from '../../../config';
+import appConfig from '../../config';
 
 export default function (router) {
     router.route('/auth').get(function(req, res) {
@@ -11,7 +11,7 @@ export default function (router) {
         const id_token = req.body.id_token;
         // To verify that the token is valid, ensure that the following criteria are satisfied.
         request
-          .get(appConfig.googleApiTokenInfoUrl)
+          .get(appConfig.get('googleApiTokenInfoUrl'))
           .query({id_token})
           .end((err, resp) => {
               // The ID token is a JWT that is properly signed with an appropriate Google public key (available in JWK or PEM format).
@@ -22,7 +22,7 @@ export default function (router) {
               /* The value of aud in the ID token is equal to one of your app's client IDs.  This check is necessary to prevent 
                * ID tokens issued to a malicious app being used to access data about the same user on your app's backend server. */
               const aud = resp.body.aud;
-              if(aud != appConfig.googleApiClientId) {
+              if(aud != appConfig.get('googleApiClientId')) {
                   res.status(401).send("Unable to validate Google sign in.");
                   return;
               }

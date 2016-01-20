@@ -1,7 +1,7 @@
 import express from "express";
 import locale from 'express-locale';
 import { createLocation } from "history";
-import appConfig from '../config';
+import appConfig from './config';
 import compression from 'compression';
 
 import createFlux from '../shared/flux/create-flux';
@@ -29,7 +29,7 @@ server.use(locale({
 }));
 
 // serve static assets normally
-server.use(express.static('static', {maxAge: appConfig.cacheAge}));
+server.use(express.static('static', {maxAge: appConfig.get('cacheAge')}));
 // add content compression middle-ware
 server.use(compression());
 // Set view path
@@ -50,7 +50,7 @@ const webServer = async function(req, res) {
   let location = createLocation(req.url);
 
   try {
-    const flux = createFlux(appConfig);
+    const flux = createFlux({apiBaseUrl: appConfig.get('apiBaseUrl')});
     
     let cookie = req.get('Cookie');
     flux.api.saveCookie(cookie);
@@ -64,9 +64,10 @@ const webServer = async function(req, res) {
       .render('index',
         {
           content,
-          scriptUrl: appConfig.scriptUrl,
+          scriptUrl: appConfig.get('scriptUrl'),
+          apiBaseUrl: appConfig.get('apiBaseUrl'),
           locale: req.locale.code,
-          googleApiClientId: appConfig.googleApiClientId
+          googleApiClientId: appConfig.get('googleApiClientId')
         });
   } catch (err) {
     console.log(err);
@@ -85,31 +86,31 @@ server.get('*', webServer);
 
 let appServer = null;
 // In production, redirect incoming requests on the insecure http port to the secured https port
-if(appConfig.isProduction) {
+if(appConfig.get('env') === 'production') {
     let redirectServer = http.createServer(function(req, res){
-        let redirect = appConfig.host + ":" + appConfig.port + req.url;
+        let redirect = appConfig.get('host') + ":" + appConfig.get('port') + req.url;
         console.log("*** Request on insecure URL http://" + req.headers['host'] + req.url + " redirected to " + redirect);
         res.writeHead(301, { "Location": redirect });
         res.end();
-    }).listen(appConfig.insecurePort, function () {  
+    }).listen(appConfig.get('insecurePort'), function () {  
         let host = redirectServer.address().address;
         let port = redirectServer.address().port;
         console.info('----\n==> ✅  HTTP redirect is running on http://%s:%s', host, port);
     });
     
     let httpsOptions = {
-        key: fs.readFileSync(appConfig.sslKeyPath),
-        cert: fs.readFileSync(appConfig.sslCertPath),
+        key: fs.readFileSync(appConfig.get('sslKeyPath')),
+        cert: fs.readFileSync(appConfig.get('sslCertPath')),
     };
     appServer = https.createServer(httpsOptions, server);
 } else {
     appServer = http.createServer(server);    
 }
 
-appServer.listen(appConfig.port, function () {  
+appServer.listen(appConfig.get('port'), function () {  
   let host = appServer.address().address;
   let port = appServer.address().port;
 
-  console.info('----\n==> ✅  %s is running, talking to API server on %s.', appConfig.app.title, port);
+  console.info('----\n==> ✅  Server is running, talking to API server on %s.', port);
   console.info('==> 💻  Open http://%s:%s in a browser to view the app.', host, port);
 });

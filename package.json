@@ -29,6 +29,7 @@
     "cldr-data": "^28.0.3",
     "compression": "^1.6.0",
     "connect-mongo": "^1.1.0",
+    "convict": "^1.0.2",
     "express": "^4.13.3",
     "express-locale": "^0.1.2",
     "express-session": "^1.13.0",
@@ -86,10 +87,7 @@
       "command": "node --harmony ./babel.server",
       "env": {
         "NODE_ENV": "development",
-        "NODE_PATH": "./src",
-        "HOST": "http://localhost",
-        "PORT": 3000,
-        "SCRIPT_HOST": "http://localhost:8080"
+        "NODE_PATH": "./src"
       }
     },
     "build-prod": {
@@ -103,10 +101,7 @@
       "command": "node --harmony ./babel.server",
       "env": {
         "NODE_ENV": "production",
-        "NODE_PATH": "./src",
-        "HOST": "https://tournavation-db.cloudapp.net",
-        "PORT": 443,
-        "SCRIPT_HOST": "https://tournavation-db.cloudapp.net"
+        "NODE_PATH": "./src"
       }
     }
   }
