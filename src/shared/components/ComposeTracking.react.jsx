@@ -73,14 +73,20 @@ export default React.createClass({
     let maxDate = moment().startOf('day').format('YYYY-MM-DD');
 
     return (
-      <div>
-        <input type="date" value={dateDisplay} max={maxDate} onChange={this.updateDate} />
-
-        <SleepTracker ref={ (ref) => {if (ref !== null ) this.trackers.push(ref);} } />
-        <AlertnessTracker ref={ (ref) => {if (ref !== null ) this.trackers.push(ref);} } />
-
-        <input type="submit" value={Globalize.formatMessage('sleeptracker-submit')} onClick={this.handleSubmit} disabled={isDisabled}/>
-      </div>
+      <aside className="sleepAlertness">
+        <ul>
+          <li>
+            <div>
+                <p className="calenderContainer"><strong>On </strong><input type="date" value={dateDisplay} max={maxDate} onChange={this.updateDate} /></p>
+            </div>
+          </li>
+          <SleepTracker ref={ (ref) => {if (ref !== null ) this.trackers.push(ref);} } />
+          <AlertnessTracker ref={ (ref) => {if (ref !== null ) this.trackers.push(ref);} } />
+          <li>
+            <button type="submit" onClick={this.handleSubmit} disabled={isDisabled}>{Globalize.formatMessage('sleeptracker-submit')}</button>
+          </li>            
+        </ul>
+      </aside>
     );
   },
 

@@ -111,29 +111,22 @@ export default React.createClass({
     const currentHealthBehavior = this.state.currentHealthBehavior;
     const selectedLevel = this.getData(currentHealthBehavior).get('level');
 
-    return (
-      <div>
-        <div>
-          <span align="left">2</span>
-          <div align="center">
-            <span>{Globalize.formatMessage('alertnesstracker-level-title')}</span>
-            <br/>
-            <span>{Globalize.formatMessage('alertnesstracker-level-subtitle')}</span>
-          </div>
-        </div>
-        <div align="center">
-          <div>
-            <span align="left">
-              <span>{Globalize.formatMessage('alertnesstracker-level')}</span>
-            </span>
-            <input type="radio" name="level" value="1" onChange={this.updateLevel} checked={selectedLevel==="1"} />1
+            /*<input type="radio" name="level" value="1" onChange={this.updateLevel} checked={selectedLevel==="1"} />1
             <input type="radio" name="level" value="2" onChange={this.updateLevel} checked={selectedLevel==="2"} />2
             <input type="radio" name="level" value="3" onChange={this.updateLevel} checked={selectedLevel==="3"} />3
             <input type="radio" name="level" value="4" onChange={this.updateLevel} checked={selectedLevel==="4"} />4
-            <input type="radio" name="level" value="5" onChange={this.updateLevel} checked={selectedLevel==="5"} />5
-          </div>
-        </div>        
-      </div>
+            <input type="radio" name="level" value="5" onChange={this.updateLevel} checked={selectedLevel==="5"} />5*/
+    return (
+      <li className="alertnessLevel">
+        <strong className="numBG">2</strong>
+          <h2>{Globalize.formatMessage('alertnesstracker-level-title')}</h2>
+          <strong>{Globalize.formatMessage('alertnesstracker-level-subtitle')}</strong>
+          <div id="carousel">
+            <a href="#" title="Ready to Go"><img src="images/readyToGo.png" id="item-1" onClick={this.updateLevel} data-value="1" /></a>
+            <a href="#" title="Tired"><img src="images/tired.png" id="item-2" onClick={this.updateLevel} data-value="2" /></a>
+            <a href="#" title="Ok"><img src="images/ok.png" id="item-3" onClick={this.updateLevel} data-value="3" /></a>
+           </div>
+      </li>
     );
   }
 });

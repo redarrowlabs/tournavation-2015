@@ -14,10 +14,15 @@ export default React.createClass({
 
   render() {
     return (
-      <div>
-        <SleepVisualizer key="sleep-visualizer"  />
-        <AlertnessVisualizer key="alertness-visualizer"  />
-      </div>
+      <section className="trackData">
+        <strong className="numBG">3</strong>
+          <div className="headerContainer">
+            <h2>Track Your Data</h2>
+            <h3>View your data over time to see how you can improve!</h3>
+          </div>
+          <SleepVisualizer key="sleep-visualizer" />
+          <AlertnessVisualizer key="alertness-visualizer" />       
+      </section>
     );
   }
 });
