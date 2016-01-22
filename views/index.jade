@@ -10,25 +10,16 @@ html
     meta(name='google-signin-client_id' content='#{googleApiClientId}')
     
     link(href='/styles.css', rel='stylesheet')
-    link(href='http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css', rel='stylesheet')
+    link(href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css', rel='stylesheet')
 
   body
     #react-main-mount!= content
 
-  script(src='https://apis.google.com/js/platform.js')
-
-  script(src='http://code.jquery.com/jquery-1.10.2.js')
-  script(src='http://code.jquery.com/ui/1.11.4/jquery-ui.js')
-  script(src='js/jquery.waterwheelCarousel.js')
-
   script.
     window.__CONFIG__ = {apiBaseUrl: "#{apiBaseUrl}"};
     window.__LOCALE__= "#{locale}";
-    $(document).ready(function () {
-        var carousel = $("#carousel").waterwheelCarousel({
-          flankingItems: 3
-        });
-      });
+
+  script(src='https://apis.google.com/js/platform.js')
   
   script(src='#{scriptUrl}/dist/vendor-bundle.js', defer)
   script(src='#{scriptUrl}/dist/app-bundle.js', defer)

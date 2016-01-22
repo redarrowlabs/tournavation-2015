@@ -76,8 +76,8 @@ export default React.createClass({
       <aside className="sleepAlertness">
         <ul>
           <li>
-            <div>
-                <p className="calenderContainer"><strong>On </strong><input type="date" value={dateDisplay} max={maxDate} onChange={this.updateDate} /></p>
+            <div className="headerContainer sleepAlertnessHeader">
+                <h2>For <input type="date" value={dateDisplay} max={maxDate} onChange={this.updateDate} /></h2>
             </div>
           </li>
           <SleepTracker ref={ (ref) => {if (ref !== null ) this.trackers.push(ref);} } />

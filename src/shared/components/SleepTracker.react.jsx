@@ -145,7 +145,7 @@ export default React.createClass({
     let end = moment(data.get('end'));
     let totalHours = this.state.canSubmit
       ? moment.duration(end.diff(start)).asHours()
-      : null;
+      : ' ';
 
     let startDisplay = start.isValid() ? start.format('HH:mm') : null;
     let endDisplay = end.isValid() ? end.format('HH:mm') : null;

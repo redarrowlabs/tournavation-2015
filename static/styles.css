@@ -112,6 +112,9 @@ ul.signInInfo li.greeting{
 .sleepAlertness ul li ul li{
 	padding:5px;
 }
+.sleepAlertnessHeader{
+	width: 100%;
+}
 .recordSleep{
 	border-bottom:3px solid #fff;	
 }
@@ -179,18 +182,13 @@ ul.signInInfo li.greeting{
 	padding:20px;
 	background-color: #fff;
 }
- #carousel {
+ .carousel {
 	width:100%;
 	height:350px;
 	position:relative;
 	clear:both;
 	overflow:hidden;
 	margin: 15px 0;
-
-  }
-  #carousel img {
-	visibility:hidden; /* hide images until carousel can handle them */
-	cursor:pointer; /* otherwise it's not as obvious items can be clicked */
   }
 
   .split-left {
