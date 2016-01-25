@@ -2,8 +2,12 @@ import moment from 'moment';
 import React, {PropTypes} from 'react';
 import Globalize from 'globalize';
 import Immutable from 'immutable';
+//TODO: needed updated source
+//import Carousel from 'nuka-carousel';
+import Carousel from '../../../libs/nuka-carousel/carousel';
 
 export default React.createClass({
+  mixins: [Carousel.ControllerMixin],
 
   contextTypes: { flux: PropTypes.object.isRequired },
 
@@ -19,6 +23,10 @@ export default React.createClass({
     const { flux } = this.context;
     flux.getStore('healthBehaviors').listen(this.healthBehaviorStateChanged);
     flux.getStore('date').listen(this.dateStateChanged);
+
+    const currentHealthBehavior = this.state.currentHealthBehavior;
+    const level = this.getData(currentHealthBehavior).get('level');
+    this.refs.carousel.goToSlide((level - 1) || 0);
   },
 
   componentWillUnmount() {
@@ -34,8 +42,6 @@ export default React.createClass({
   dateStateChanged(state) {
     const { flux } = this.context;
     flux.getActions('healthBehaviors').findHealthBehavior(this.behaviorKey, state.get('selectedDate'));
-
-    //this.setState({selectedDate: state.get('selectedDate')});
   },
 
   getInitialState() {
@@ -92,11 +98,11 @@ export default React.createClass({
       });
   },
 
-  updateLevel(event) {
-    let val = event.currentTarget.value;
+  updateLevel(index) {
+    const level = index + 1;
     const currentHealthBehavior = this.state.currentHealthBehavior;
     const data = this.getData(currentHealthBehavior)
-      .set('level', val);
+      .set('level', level);
     const canSubmit = this._getCanSubmit(data);
 
     this.setState({
@@ -112,28 +118,77 @@ export default React.createClass({
     const selectedLevel = this.getData(currentHealthBehavior).get('level');
 
     return (
-      <div>
-        <div>
-          <span align="left">2</span>
-          <div align="center">
-            <span>{Globalize.formatMessage('alertnesstracker-level-title')}</span>
-            <br/>
-            <span>{Globalize.formatMessage('alertnesstracker-level-subtitle')}</span>
-          </div>
+      <li className="alertnessLevel">
+        <strong className="numBG">2</strong>
+        <div className="headerContainer">
+            <h2>{Globalize.formatMessage('alertnesstracker-level-title')}</h2>
+            <h3>{Globalize.formatMessage('alertnesstracker-level-subtitle')}</h3>
         </div>
-        <div align="center">
-          <div>
-            <span align="left">
-              <span>{Globalize.formatMessage('alertnesstracker-level')}</span>
-            </span>
-            <input type="radio" name="level" value="1" onChange={this.updateLevel} checked={selectedLevel==="1"} />1
-            <input type="radio" name="level" value="2" onChange={this.updateLevel} checked={selectedLevel==="2"} />2
-            <input type="radio" name="level" value="3" onChange={this.updateLevel} checked={selectedLevel==="3"} />3
-            <input type="radio" name="level" value="4" onChange={this.updateLevel} checked={selectedLevel==="4"} />4
-            <input type="radio" name="level" value="5" onChange={this.updateLevel} checked={selectedLevel==="5"} />5
-          </div>
-        </div>        
-      </div>
+        <Carousel className="carousel"
+          ref="carousel" 
+          data={this.setCarouselData.bind(this, 'carousel')}
+          decorators={this.Decorators}
+          slidesToShow={3}
+          slidesToScroll={1}
+          cellAlign="center"
+          dragging={true}
+          easing="easeInOutElastic"
+          edgeEasing="easeOutCirc"
+          afterSlide={this.updateLevel}>
+          <img src="images/tired.png" />
+          <img src="images/ok.png" />
+          <img src="images/readyToGo.png" />
+        </Carousel>
+      </li>
     );
-  }
+  },
+
+  Decorators: [
+    {
+      component: React.createClass({
+        render() {
+          return (
+            <button
+              style={this.getButtonStyles(this.props.currentSlide === 0)}
+              onClick={this.props.previousSlide}><i className="fa fa-arrow-circle-left"></i></button>
+          )
+        },
+        getButtonStyles(disabled) {
+          return {
+            border: 0,
+            background: 'rgba(0,0,0,0.4)',
+            color: 'white',
+            padding: 10,
+            outline: 0,
+            opacity: disabled ? 0.3 : 1,
+            cursor: 'pointer'
+          }
+        }
+      }),
+      position: 'CenterLeft'
+    },
+    {
+      component: React.createClass({
+        render() {
+          return (
+            <button
+              style={this.getButtonStyles(this.props.currentSlide + this.props.slidesToScroll >= this.props.slideCount)}
+              onClick={this.props.nextSlide}><i className="fa fa-arrow-circle-right"></i></button>
+          )
+        },
+        getButtonStyles(disabled) {
+          return {
+            border: 0,
+            background: 'rgba(0,0,0,0.4)',
+            color: 'white',
+            padding: 10,
+            outline: 0,
+            opacity: disabled ? 0.3 : 1,
+            cursor: 'pointer'
+          }
+        }
+      }),
+      position: 'CenterRight'
+    }
+  ]
 });

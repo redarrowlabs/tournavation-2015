@@ -1,6 +1,6 @@
 html  
   head
-    title="HealthHero"
+    title="HeathHero"
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
 
@@ -10,6 +10,7 @@ html
     meta(name='google-signin-client_id' content='#{googleApiClientId}')
     
     link(href='/styles.css', rel='stylesheet')
+    link(href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css', rel='stylesheet')
 
   body
     #react-main-mount!= content
@@ -18,7 +19,7 @@ html
     window.__CONFIG__ = {apiBaseUrl: "#{apiBaseUrl}"};
     window.__LOCALE__= "#{locale}";
 
-  script(src='https://apis.google.com/js/platform.js', defer)
+  script(src='https://apis.google.com/js/platform.js')
   
   script(src='#{scriptUrl}/dist/vendor-bundle.js', defer)
   script(src='#{scriptUrl}/dist/app-bundle.js', defer)
