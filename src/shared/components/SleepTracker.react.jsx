@@ -103,7 +103,7 @@ export default React.createClass({
   updateBedTime(event) {
     let val = event.currentTarget.value;
     let date = this.parseTimeString(val);
-    if (date.hour() >= 12) {
+    if (date.hour() < 12) {
       date.subtract(1, 'days');
     }
     const currentHealthBehavior = this.state.currentHealthBehavior;

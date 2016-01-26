@@ -153,6 +153,34 @@ ul.signInInfo li.greeting{
 .alertnessLevel{
 	position:relative;	
 }
+.alert{
+	font-weight:bold;
+	margin:10px 0;
+	font-size:18px;
+}
+.graphData{
+	border-radius:4px;
+	border:1px solid gray;
+	margin:0 auto;
+	font-size:28px;
+	padding: 20px;
+	width:100%;
+	cursor:pointer;
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,cccccc+100;Gren+3D */
+	background: #eeeeee; /* Old browsers */
+	background: -moz-linear-gradient(top,  #eeeeee 0%, #cccccc 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  #eeeeee 0%,#cccccc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+}
+.graphData:hover{
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#adadad+0,cccccc+100 */
+	background: #adadad; /* Old browsers */
+	background: -moz-linear-gradient(top,  #adadad 0%, #cccccc 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  #adadad 0%,#cccccc 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  #adadad 0%,#cccccc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#adadad', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+}
 .calenderContainer{
 	text-align:center;	
 }
@@ -184,12 +212,16 @@ ul.signInInfo li.greeting{
 }
  .carousel {
 	width:100%;
-	height:350px;
+	height:250px;
 	position:relative;
 	clear:both;
 	overflow:hidden;
 	margin: 15px 0;
+
   }
+.carousel-center{
+	border:2px solid #262525;
+}
 
   .split-left {
 	width:50px;
@@ -207,6 +239,8 @@ ul.signInInfo li.greeting{
 
 footer{
 	text-align: center;
-	background-color:#000;
 	color:#fff;
+	clear:both;
+	background-color:#252525;
+	padding:10px;
 }

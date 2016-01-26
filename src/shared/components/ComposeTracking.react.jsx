@@ -83,7 +83,7 @@ export default React.createClass({
           <SleepTracker ref={ (ref) => {if (ref !== null ) this.trackers.push(ref);} } />
           <AlertnessTracker ref={ (ref) => {if (ref !== null ) this.trackers.push(ref);} } />
           <li>
-            <button type="submit" onClick={this.handleSubmit} disabled={isDisabled}>{Globalize.formatMessage('sleeptracker-submit')}</button>
+            <button className="graphData" type="submit" onClick={this.handleSubmit} disabled={isDisabled}>{Globalize.formatMessage('sleeptracker-submit')}</button>
           </li>            
         </ul>
       </aside>
