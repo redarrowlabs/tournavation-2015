@@ -53,7 +53,7 @@ var conf = convict({
   scriptUrl: {
     doc: "The URL to get client scripts.",
     format: "url",
-    default: "http://tournavation-db.cloudapp.net/"
+    default: "http://tournavation-db.cloudapp.net/",
     env: "SCRIPT_URL"
   },
   cacheAge: {
