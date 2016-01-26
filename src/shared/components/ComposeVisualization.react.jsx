@@ -2,6 +2,7 @@ import moment from 'moment';
 import React, {PropTypes} from 'react';
 import SleepVisualizer from './SleepVisualizer.react';
 import AlertnessVisualizer from './AlertnessVisualizer.react';
+import Globalize from 'globalize';
 
 export default React.createClass({
 
@@ -16,8 +17,8 @@ export default React.createClass({
     return (
       <section className="trackData">
           <div className="headerContainer">
-            <h2>Track Your Data</h2>
-            <h3>View your data over time to see how you can improve!</h3>
+            <h2>{Globalize.formatMessage('visualize-title')}</h2>
+            <h3>{Globalize.formatMessage('visualize-subtitle')}</h3>
           </div>
           <SleepVisualizer key="sleep-visualizer" />
           <AlertnessVisualizer key="alertness-visualizer" />       

@@ -30,63 +30,82 @@ var ObservationChartBuilder = React.createClass({
 		
         var chartSettings = {
             "type": "serial",
-            "theme": "dark",
+            "theme": "light",
+            "marginRight": 40,
+            "marginLeft": 40,
+            "autoMarginOffset": 20,
+            "dataDateFormat": "YYYY-MM-DD",
+            "categoryField": "date",
             "titles": [ {
                 "text": this.props.chartTitle,
                 "size": 15
             }],
-            "dataDateFormat": "YYYY-MM-DD",
             "dataProvider": data,
             "valueAxes": [{
+                "id": "v1",
                 "axisAlpha": 0,
-                "gridAlpha": 0.7,
+                "position": "left",
+                "ignoreAxisWidth":true
             }],
-            "chartCursor": {
-                "cursorAlpha": 0,
-                "zoomable":false,
-                "valueZoomable":true
+            "balloon": {
+                "borderThickness": 1,
+                "shadowAlpha": 0
             },
+            "graphs": [{
+                "id": "g1",
+                "balloon":{
+                  "drop":true,
+                  "adjustBorderColor":false,
+                  "color":"#ffffff"
+                },
+                "bullet": "round",
+                "bulletBorderAlpha": 1,
+                "bulletColor": "#FFFFFF",
+                "bulletSize": 5,
+                "hideBulletsCount": 50,
+                "lineThickness": 2,
+                "useLineColorForBulletBorder": true,
+                "valueField": "value",
+                "balloonText": "<span style='font-size:18px;'>[[value]]</span>"
+            }],
+            /*"chartScrollbar": {
+                "graph": "g1",
+                "oppositeAxis":false,
+                "offset":30,
+                "scrollbarHeight": 80,
+                "backgroundAlpha": 0,
+                "selectedBackgroundAlpha": 0.1,
+                "selectedBackgroundColor": "#888888",
+                "graphFillAlpha": 0,
+                "graphLineAlpha": 0.5,
+                "selectedGraphFillAlpha": 0,
+                "selectedGraphLineAlpha": 1,
+                "autoGridCount":true,
+                "color":"#AAAAAA"
+            },*/
+            "chartCursor": {
+                "pan": true,
+                "valueLineEnabled": true,
+                "valueLineBalloonEnabled": true,
+                "cursorAlpha":1,
+                "cursorColor":"#258cbb",
+                "limitToGraph":"g1",
+                "valueLineAlpha":0.2
+            },
+            /*"valueScrollbar":{
+              "oppositeAxis":false,
+              "offset":50,
+              "scrollbarHeight":10
+            },*/
             "categoryField": "date",
             "categoryAxis": {
-                "parseDates": true
+                "parseDates": true,
+                "dashLength": 1,
+                "minorGridEnabled": true
             },
-            "chartScrollbar": {
-            },
-            "valueScrollbar":{
+            "export": {
+                "enabled": true
             }
-        };
-
-        if (this.props.chartType === 'Column') {
-            chartSettings.graphs = [{
-                "type": "column",
-                "valueField": "value",
-                "fillAlphas" : 0.9,
-                "lineAlpha": 0.2,
-                "colorField": "color",
-                "topRadius": 1
-            }];
-        }
-        else if (this.props.chartType === 'Line') {
-            chartSettings.graphs = [{
-                "type": "line",
-                "valueField": "value",
-                "bullet": "square",
-                "bulletBorderAlpha": 1,
-                "bulletBorderThickness": 3,
-                "colorField": "color"
-            }];
-        }
-        else if (this.props.chartType === 'StepLine') {
-            chartSettings.graphs = [{
-                "type": "step",
-                "valueField": "value",
-                "bullet": "square",
-                "bulletBorderAlpha": 1,
-                "bulletBorderThickness": 1,
-                "fillAlphas" : 0.3,
-                "lineColorField": "color",
-                "fillColorsField": "color",
-            }];
         };
 
 		var chart = AmCharts.makeChart(
@@ -97,7 +116,7 @@ var ObservationChartBuilder = React.createClass({
   	this.buildChart(this.props.chartData);
     return (
     	<div>
-        	<div id={this.props.chartName} style={{width: "100%", height: "400px", background: "#3f3f4f", color:"#ffffff"}}></div>
+        	<div id={this.props.chartName} style={{width: "100%", height: "300px"}}></div>
     	</div>
   	);
   }

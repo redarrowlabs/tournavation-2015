@@ -77,14 +77,14 @@ export default React.createClass({
         <ul>
           <li>
             <div className="headerContainer sleepAlertnessHeader">
-                <h2>For <input type="date" value={dateDisplay} max={maxDate} onChange={this.updateDate} /></h2>
+                <h2>{Globalize.formatMessage('tracking-selectDate')} <input type="date" value={dateDisplay} max={maxDate} onChange={this.updateDate} /></h2>
             </div>
           </li>
           <SleepTracker ref={ (ref) => {if (ref !== null ) this.trackers.push(ref);} } />
           <AlertnessTracker ref={ (ref) => {if (ref !== null ) this.trackers.push(ref);} } />
           <li>
             <strong className="numBG">3</strong>
-            <div><button className="graphData" type="submit" onClick={this.handleSubmit} disabled={isDisabled}>{Globalize.formatMessage('sleeptracker-submit')}</button></div>
+            <div><button className="graphData" type="submit" onClick={this.handleSubmit} disabled={isDisabled}>{Globalize.formatMessage('tracking-submit')}</button></div>
           </li>            
         </ul>
       </aside>

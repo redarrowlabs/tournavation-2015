@@ -77,20 +77,20 @@ const App = React.createClass({
     return (
       <div id="mainContainer">
         <header className="logoExport">
-            <h1>HealthHero</h1>
+            <h1>{Globalize.formatMessage('app-title')}</h1>
             <ul className="signInInfo">
                 <li className="greeting">Hi Sam!</li>
                 <li><a href="#" onClick={this.signOut}>{Globalize.formatMessage('app-signout')}</a></li>
             </ul>
-            <select className="output">
+           {/* <select className="output">
                 <option>Export</option> 
-            </select>
+            </select>*/}
         </header>
 
         {this.props.children}
 
         <footer style={{clear:"both"}}>
-            <p>HealthHero powered by <a href="#">Legal</a> | <a href="#">Contact Us</a></p>
+            <p>{Globalize.formatMessage('app-footer-power')} <a href="#">{Globalize.formatMessage('app-footer-group')}</a> | <a href="#">{Globalize.formatMessage('app-footer-contact')}</a></p>
         </footer>
       </div>
     );

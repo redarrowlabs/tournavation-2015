@@ -2,16 +2,19 @@
 	"en": {
     "app-signout": "(ES) Sign Out",
 		"app-title": "(ES) HealthHero",
+		"tracking-selectDate" : "(ES) For",
+		"tracking-submit": "(ES) Graph my data",
 		"sleeptracker-time-title": "(ES) Record Your Sleep",
 		"sleeptracker-time-subtitle": "(ES) How long did you sleep?",
 		"sleeptracker-time-start": "(ES) went to bed",
 		"sleeptracker-time-end": "(ES) woke up",
 		"sleeptracker-time-amount": "(ES) You slept",
 		"sleeptracker-time-unit": "(ES) Hours",
-		"sleeptracker-submit": "(ES) Graph my data",
 		"alertnesstracker-level-title": "(ES) Record Your Alertness",
     "alertnesstracker-level-subtitle": "(ES) How do you feel today?",
     "alertnesstracker-submit": "(ES) Graph my data",
-    "alertnesstracker-level": "(ES) Level"
+    "alertnesstracker-level": "(ES) Level",
+    "visualize-title": "(ES) Track Your Data",
+    "visualize-subtitle": "(ES) View your data over time to see how you can improve!"
 	}
 }
