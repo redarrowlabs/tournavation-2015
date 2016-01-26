@@ -1,10 +1,10 @@
 {
-  "host": "https://tournavation-db.cloudapp.net/",
+  "host": "https://tournavation-db.cloudapp.net",
   "port": 443,
   "apiBaseUrl" : "https://tournavation-db.cloudapp.net/api/",
   "connectionString": "mongodb://localhost:27017/healthHeroesDb",
   "cookieSecret": "The secret for session cookie.",
-  "scriptUrl": "https://tournavation-db.cloudapp.net/",
+  "scriptUrl": "https://tournavation-db.cloudapp.net:443/",
   "cacheAge": 86400000,
   "googleApiClientId": "73545608160-grie8h8aqsg3pimc0mfroim40ae8qp41.apps.googleusercontent.com",
   "googleApiTokenInfoUrl": "https://www.googleapis.com/oauth2/v3/tokeninfo",
