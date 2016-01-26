@@ -2,6 +2,10 @@
 	"en": {
     "app-signout": "(ES) Sign Out",
 		"app-title": "(ES) HealthHero",
+		"app-greeting": "¡Hola {0}!",
+		"app-footer-power": "(ES) HealthHero powered by",
+		"app-footer-group": "(ES) Legal",
+		"app-footer-contact": "(ES) Contact Us",
 		"tracking-selectDate" : "(ES) For",
 		"tracking-submit": "(ES) Graph my data",
 		"sleeptracker-time-title": "(ES) Record Your Sleep",

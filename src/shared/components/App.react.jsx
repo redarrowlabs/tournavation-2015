@@ -10,9 +10,11 @@ const App = React.createClass({
   contextTypes: { flux: PropTypes.object.isRequired },
 
   getInitialState() {
-    const { flux } = this.context;
-    //let isAuthenticated = flux.getStore('auth').getState().isAuthenticated;
-    return {};
+    /*const { flux } = this.context;
+    const isAuthenticated = flux.getStore('auth').get('isAuthenticated');
+    const userName = flux.getStore('auth').get('userName');
+    return {isAuthenticated, userName};*/
+    return {isAuthenticated: false, userName: ''};
   },
   
   componentWillMount() {
@@ -31,8 +33,10 @@ const App = React.createClass({
   },
 
   authStateChanged(state) {
-    const { flux } = this.context;
     const isAuthenticated = state.get('isAuthenticated');
+    const userName = state.get('userName') || '';
+    this.setState({isAuthenticated, userName});
+
     if(isAuthenticated) {
       if(window.location.pathname == '/') {
         window.location.href = '/track';
@@ -74,12 +78,14 @@ const App = React.createClass({
   },
 
   render() {
+    const user = this.state.userName;
+
     return (
       <div id="mainContainer">
         <header className="logoExport">
             <h1>{Globalize.formatMessage('app-title')}</h1>
             <ul className="signInInfo">
-                <li className="greeting">Hi Sam!</li>
+                <li className="greeting">{Globalize.formatMessage('app-greeting', user)}</li>
                 <li><a href="#" onClick={this.signOut}>{Globalize.formatMessage('app-signout')}</a></li>
             </ul>
            {/* <select className="output">

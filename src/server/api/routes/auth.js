@@ -4,7 +4,8 @@ import appConfig from '../../config';
 export default function (router) {
     router.route('/auth').get(function(req, res) {
       const isAuthenticated = typeof req.session.user_id != "undefined";
-      res.send({ isAuthenticated });
+      const userName = isAuthenticated ? req.session.user_name : null;
+      res.send({ isAuthenticated, userName });
 	});
     
 	router.route('/auth').post(function(req, res) {
@@ -40,7 +41,8 @@ export default function (router) {
               }
               const googleId = resp.body.sub;
               req.session.user_id = googleId;
-	          res.send("Authenticated");
+              req.session.user_name = resp.body.given_name;
+	            res.send({ isAuthenticated: true, userName: req.session.user_name });
           });
 	});
 

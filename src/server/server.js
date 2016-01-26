@@ -71,6 +71,7 @@ const webServer = async function(req, res) {
         });
   } catch (err) {
     console.log(err);
+    console.log(err.error.toJSON());
     const { error, redirectLocation } = err;
     if (error) {
       res.status(500).send(error.toJSON());

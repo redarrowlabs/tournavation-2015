@@ -6,15 +6,15 @@ class AuthActions {
   constructor() {
     // Add dispatch only actions
     this.generateActions(
-      'setIsAuthenticated'
+      'setUser'
     );
   }
   
   fetchAuthStatus(id) {
     return (dispatch, alt) =>
       alt.resolve(async () => {
-        var data = await alt.api.fetchAll('auth');      
-        alt.getActions('auth').setIsAuthenticated(data.isAuthenticated);
+        var data = await alt.api.fetchAll('auth');
+        alt.getActions('auth').setUser(data);
       });
   }
   
@@ -22,7 +22,7 @@ class AuthActions {
     return (dispatch, alt) => {
       alt.resolve(async () => {
         let data = await alt.api.create('auth', googleAuthResponse);
-        alt.getActions('auth').setIsAuthenticated(true);
+        alt.getActions('auth').setUser(data);
       });
     }
   }
@@ -31,7 +31,7 @@ class AuthActions {
     return (dispatch, alt) =>
       alt.resolve(async () => {
         let data = request.delete(alt.api.baseUrl + 'auth').end(function(err, res){});
-        alt.getActions('auth').setIsAuthenticated(false);
+        alt.getActions('auth').setUser(null);
       });
   }
 }
