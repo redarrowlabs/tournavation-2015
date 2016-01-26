@@ -101,14 +101,12 @@ export default React.createClass({
   },
 
   updateBedTime(event) {
-    let val = event.currentTarget.value;
-    let date = this.parseTimeString(val);
-    if (date.hour() < 12) {
-      date.subtract(1, 'days');
-    }
+    const val = event.currentTarget.value;
+    const start = this.parseTimeString(val);
     const currentHealthBehavior = this.state.currentHealthBehavior;
-    const data = this.getData(currentHealthBehavior)
-      .set('start', date);
+    let data = this.getData(currentHealthBehavior)
+      .set('start', start);
+    data = this._adjustTime(data);
     const canSubmit = this._getCanSubmit(data);
 
     this.setState({
@@ -124,8 +122,9 @@ export default React.createClass({
     let val = event.currentTarget.value;
     let date = this.parseTimeString(val);
     const currentHealthBehavior = this.state.currentHealthBehavior;
-    const data = this.getData(currentHealthBehavior)
+    let data = this.getData(currentHealthBehavior)
       .set('end', date);
+    data = this._adjustTime(data);
     const canSubmit = this._getCanSubmit(data);
     
     this.setState({
@@ -135,6 +134,22 @@ export default React.createClass({
     
     const { flux } = this.context;
     flux.getActions('submit').allowSubmit({component: this.behaviorKey, canSubmit: canSubmit});
+  },
+
+  _adjustTime(data) {
+    let start = data.get('start');
+    let end = data.get('end');
+    let newStart = moment().startOf('day');
+    newStart.hour(start.hour());
+    newStart.minute(start.minute());
+
+    if (start != null && end != null
+      && (start.hour() > end.hour() || (start.hour() === end.hour() && start.minute() > end.minute()))) {
+      newStart.subtract(1, 'days');
+    }
+      start = newStart;
+
+    return data.set('start', start);
   },
 
   render() {

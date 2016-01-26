@@ -15,7 +15,6 @@ export default React.createClass({
   render() {
     return (
       <section className="trackData">
-        <strong className="numBG">3</strong>
           <div className="headerContainer">
             <h2>Track Your Data</h2>
             <h3>View your data over time to see how you can improve!</h3>

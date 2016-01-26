@@ -135,12 +135,32 @@ export default React.createClass({
           easing="easeInOutElastic"
           edgeEasing="easeOutCirc"
           afterSlide={this.updateLevel}>
-          <img src="images/tired.png" />
-          <img src="images/ok.png" />
-          <img src="images/readyToGo.png" />
+          <img src="images/tired.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 0)} />
+          <img src="images/ok.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 1)} />
+          <img src="images/readyToGo.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 2)} />
         </Carousel>
       </li>
     );
+  },
+
+  DRAG_THRESHOLD: 5,
+
+  _startClick(e) {
+    this._originX = e.pageX;
+    this._originY = e.pageY;
+  },
+
+  _endClick(e, index) {
+    let deltaX = e.pageX - this._originX;
+    let deltaY = e.pageY - this._originY;
+    let distance = Math.abs(deltaX) + Math.abs(deltaY);
+    if (distance < this.DRAG_THRESHOLD) {
+      this.refs.carousel.setState({dragging: false});
+      e.preventDefault();
+      e.stopPropagation();
+      e.nativeEvent.stopPropagation();
+      this.refs.carousel.goToSlide(index);
+    }
   },
 
   Decorators: [
