@@ -96,10 +96,13 @@ export default React.createClass({
 
   updateDate(event) {
     let val = event.currentTarget.value;
-    let moment = this._parseDateString(val);
+    let selectedDate = this._parseDateString(val);
+    if (selectedDate.isAfter(moment().startOf('day'))) {
+      selectedDate = moment().startOf('day');
+    }
 
     const { flux } = this.context;
-    flux.getActions('date').setSelectedDate(moment);
+    flux.getActions('date').setSelectedDate(selectedDate);
   },
 
   handleSubmit() {
