@@ -5,6 +5,8 @@ import router from './router';
 
 import appConfig from '../config';
 
+import log from '../logger';
+
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
@@ -34,8 +36,9 @@ export default server => {
   server.use(session(sessionProperties));
   
   let ensureAuthenticated = function(req, res, next) {
+    log.info("*** API @ " + req.url);
     if(req.path != '/auth' && !req.session.user_id) {
-        console.log("Api unauthenticated on " + req.path);
+        log.info("Api unauthenticated on " + req.path);
         res.status(401).send("Unauthenticated");
         return;
     } else {

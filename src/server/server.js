@@ -19,6 +19,8 @@ Globalize.loadMessages(require("../shared/globalization/en"));
 // prime globalization
 Globalize.locale('en');
 
+import log from './logger';
+
 const server = global.server = express();
 
 // server locale
@@ -42,7 +44,7 @@ api(server);
 
 const webServer = async function(req, res) {
   if(req.path != '/' && req.path != '/favicon.ico' && !req.session.user_id) {
-    console.log("Page unauthenticated on " + req.path);
+    log.info("Page unauthenticated on " + req.path);
     res.redirect('/');
     return;
   }  
@@ -55,7 +57,7 @@ const webServer = async function(req, res) {
     let cookie = req.get('Cookie');
     flux.api.saveCookie(cookie);
       
-    console.log("*** Server @ " + req.url + " for: " + req.locale.code);
+    log.info("*** Server @ " + req.url + " for: " + req.locale.code);
     
     const { content, statusCode } = await universalRender({flux, location, locale: req.locale.code});
 
@@ -70,8 +72,7 @@ const webServer = async function(req, res) {
           googleApiClientId: appConfig.get('googleApiClientId')
         });
   } catch (err) {
-    console.log(err);
-    console.log(err.error.toJSON());
+    log.error(err);
     const { error, redirectLocation } = err;
     if (error) {
       res.status(500).send(error.toJSON());
@@ -90,13 +91,13 @@ let appServer = null;
 if(appConfig.get('env') === 'production') {
     let redirectServer = http.createServer(function(req, res){
         let redirect = appConfig.get('host') + ":" + appConfig.get('port') + req.url;
-        console.log("*** Request on insecure URL http://" + req.headers['host'] + req.url + " redirected to " + redirect);
+        log.info("*** Request on insecure URL http://" + req.headers['host'] + req.url + " redirected to " + redirect);
         res.writeHead(301, { "Location": redirect });
         res.end();
     }).listen(appConfig.get('insecurePort'), function () {  
         let host = redirectServer.address().address;
         let port = redirectServer.address().port;
-        console.info('----\n==> ✅  HTTP redirect is running on http://%s:%s', host, port);
+        log.info('----\n==> ✅  HTTP redirect is running on http://%s:%s', host, port);
     });
     
     let httpsOptions = {
@@ -112,6 +113,6 @@ appServer.listen(appConfig.get('port'), function () {
   let host = appServer.address().address;
   let port = appServer.address().port;
 
-  console.info('----\n==> ✅  Server is running, talking to API server on %s.', port);
-  console.info('==> 💻  Open http://%s:%s in a browser to view the app.', host, port);
+  log.info('----\n==> ✅  Server is running, talking to API server on %s.', port);
+  log.info('==> 💻  Open http://%s:%s in a browser to view the app.', host, port);
 });

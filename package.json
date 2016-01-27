@@ -26,6 +26,7 @@
     "alt": "^0.18.1",
     "alt-container": "^1.0.0",
     "alt-utils": "^1.0.0",
+    "bunyan": "^1.5.1",
     "cldr-data": "^28.0.3",
     "compression": "^1.6.0",
     "connect-mongo": "^1.1.0",
