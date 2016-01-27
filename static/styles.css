@@ -223,19 +223,24 @@ ul.signInInfo li.greeting{
 	border:2px solid #262525;
 }
 
-  .split-left {
+.split-left {
 	width:50px;
 	float:left;
-  }
-  .split-right {
+}
+.split-right {
 	width:50px;
 	float:left;
 	margin-left:10px;
-  }
-  #callback-output {
+}
+#callback-output {
 	height:250px;
 	overflow:scroll;
-  }
+}
+img.selectedLevel {
+	padding:1px;
+  border:3px solid #FF8433;
+  background-color:#ff0;
+}
 
 footer{
 	text-align: center;

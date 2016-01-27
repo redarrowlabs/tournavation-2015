@@ -35,6 +35,12 @@ export default React.createClass({
     flux.getStore('date').unlisten(this.dateStateChanged);
   },
 
+  componentDidUpdate() {
+    const currentHealthBehavior = this.state.currentHealthBehavior;
+    const selectedLevel = this.getData(currentHealthBehavior).get('level');
+    this._resetSelectStyle(selectedLevel - 1);
+  },
+
   healthBehaviorStateChanged(state) {
     this.setState(this.getStateFromStore());
   },
@@ -114,6 +120,8 @@ export default React.createClass({
   },
 
   render() {
+    this.levels = [];
+
     const currentHealthBehavior = this.state.currentHealthBehavior;
     const selectedLevel = this.getData(currentHealthBehavior).get('level');
 
@@ -135,9 +143,9 @@ export default React.createClass({
           easing="easeInOutElastic"
           edgeEasing="easeOutCirc"
           afterSlide={this.updateLevel}>
-          <img src="images/tired.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 0)} />
-          <img src="images/ok.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 1)} />
-          <img src="images/readyToGo.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 2)} />
+          <img src="images/tired.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 0)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+          <img src="images/ok.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 1)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+          <img src="images/readyToGo.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 2)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
         </Carousel>
       </li>
     );
@@ -160,6 +168,15 @@ export default React.createClass({
       e.stopPropagation();
       e.nativeEvent.stopPropagation();
       this.refs.carousel.goToSlide(index);
+    }
+  },
+
+  _resetSelectStyle(index) {
+    for (let i = 0; i < this.levels.length; ++i) {
+      if (i === index) {
+        this.levels[i].classList.add('selectedLevel');
+      } else {
+        this.levels[i].classList.remove('selectedLevel');}
     }
   },
 

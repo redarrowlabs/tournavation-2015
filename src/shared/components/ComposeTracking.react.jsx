@@ -43,10 +43,10 @@ export default React.createClass({
     const { flux } = this.context;
 
     let components = flux.getStore('submit').getState().get('submittableComponents');
-    let canSubmit = false;
+    let canSubmit = true;
     for (let key of components.keys()) {
-      if (components.has(key) && components.get(key).get('canSubmit')) {
-        canSubmit = true;
+      if (!components.has(key) || !components.get(key).get('canSubmit')) {
+        canSubmit = false;
         break;
       }
     }
