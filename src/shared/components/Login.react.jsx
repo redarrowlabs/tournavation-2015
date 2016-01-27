@@ -20,16 +20,51 @@ export default React.createClass({
     },
     
     render() {
-        return (
+      return (
         <div>
-            <div className="login-containter">
-                <h1>Sign In Today</h1>
-                <br />
-                <hr />
-                <button className="g-signin2" id="hh-signin2"></button>
-            </div>
+          <section className="mainSignIn">
+            <h2 className="mainMessage">Get Healthier With HealthHero!</h2>
+            <ul className="signInContainer">
+                <li className="signInText">
+                    <p>Get Started &#124; Check progress</p>
+                    <h2>Sign In Today</h2>
+                </li>
+                <li className="signInButton">
+                  <button className="g-signin2" id="hh-signin2"></button>
+                </li>
+                <li className="signInNewUser">
+                    <strong>New User?</strong>
+                    <p>Simply sign in using an existing google account.</p>
+                </li>
+            </ul>
+          </section>
+          <section className="stepsStory">
+            <h3>HealthHero helps you learn and get healthier in 3 easy steps</h3>
+              <p className="subHeading">Add, submit, and track to see what you could do to be healthier!</p>
+              <ul className="easySteps">
+                <li>
+                    <strong className="numBG">1</strong>
+                    <img src="images/addData.png" width="165" height="105" alt="Add Data" />
+                      <h4>Add Data</h4>
+                  </li>
+                  <li>
+                    <strong className="numBG">2</strong>
+                      <img src="images/submitData.png" width="165" height="105" alt="Submit Data" />
+                      <h4>Submit Data</h4>
+                  </li>
+                  <li>
+                    <strong className="numBG">3</strong>
+                      <img src="images/trackData.png" width="165" height="105" alt="Track Data" />
+                      <h4>Track Data</h4>
+                  </li>
+              </ul>
+              <div className="healthHeroStory">
+                  <h5>Health Hero Story</h5>
+                  <p>Bulit by the community for the community</p>
+              </div>
+          </section>
         </div>
-        );
+      );
     },
     
     onSignIn(googleUser) {

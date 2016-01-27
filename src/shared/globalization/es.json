@@ -2,7 +2,8 @@
 	"en": {
     "app-signout": "(ES) Sign Out",
 		"app-title": "(ES) HealthHero",
-		"app-greeting": "¡Hola {0}!",
+		"app-greeting-user": "¡Hola {0}!",
+		"app-greeting-welcome": "¡Hola!",
 		"app-footer-power": "(ES) HealthHero powered by",
 		"app-footer-group": "(ES) Legal",
 		"app-footer-contact": "(ES) Contact Us",

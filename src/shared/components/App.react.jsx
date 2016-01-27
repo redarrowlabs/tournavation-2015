@@ -79,13 +79,14 @@ const App = React.createClass({
 
   render() {
     const user = this.state.userName;
+    const greeting = user ? Globalize.formatMessage('app-greeting-user', user) : Globalize.formatMessage('app-greeting-welcome');
 
     return (
       <div id="mainContainer">
         <header className="logoExport">
             <h1>{Globalize.formatMessage('app-title')}</h1>
             <ul className="signInInfo">
-                <li className="greeting">{Globalize.formatMessage('app-greeting', user)}</li>
+                <li className="greeting">{greeting}</li>
                 <li><a href="#" onClick={this.signOut}>{Globalize.formatMessage('app-signout')}</a></li>
             </ul>
            {/* <select className="output">

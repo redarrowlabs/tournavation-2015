@@ -16,7 +16,7 @@ table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed, 
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
-time, mark, audio, video, input {
+time, mark, audio, video {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -84,6 +84,18 @@ h3{
 	font-weight: bold;
 	margin: 0 0 10px 0;
 }
+h4,h5{
+	font-weight:bold;
+}
+footer{
+	text-align: center;
+	color:#fff;
+	clear:both;
+	background-color:#252525;
+	padding:10px;
+}
+
+/* Data Page */
 ul.signInInfo {
 	float:left;
 	width:20%;
@@ -241,11 +253,98 @@ img.selectedLevel {
   border:3px solid #FF8433;
   background-color:#ff0;
 }
+/* End Data Page */
 
-footer{
-	text-align: center;
+	/* Marketing Page */
+.mainSignIn{
+	background: #ffffff url(../images/mainImage.png) no-repeat;
+	height: 294px;
+	position:relative;
+}
+.mainMessage{
+	position:absolute;
+	top:40px;		
+	font-size:35px;
+	width: 40%;
+	left:10px;
+	color:# 828282;
+}
+ul.signInContainer{
+	position:absolute;
+	right: 20px;
+	top: 30px;
+	background-color:#949494;
+	opacity:.95;
 	color:#fff;
-	clear:both;
-	background-color:#252525;
-	padding:10px;
+	padding: 30px;
+}
+.signInContainer li.signInText{
+	border-bottom:1px solid #ffffff;
+}
+.signInContainer li.signInText h2{
+	color:#ffffff;
+	margin:10px 0;
+	font-size:35px;
+}
+.signInContainer li.signInText p{
+	font-size:18px;
+}
+.signInContainer li.signInButton{
+	text-align:center;
+	margin: 20px 0;
+}
+
+.signInContainer li.signInNewUser{
+	text-align:center;
+	font-size:11px;
+}
+.signInContainer li.signInNewUser strong{
+	font-weight:bold;	
+}
+.stepsStory{
+	text-align:center;	
+	margin:20px 0 0 0;
+}
+.stepsStory h3 {
+	font-size:24px;	
+}
+.subHeading{
+	font-weight:bold;
+	font-size:18px;	
+}
+ul.easySteps{
+	margin:30px 0;	
+}
+ul.easySteps li{
+	display:inline-block;	
+	margin:0 30px;
+}
+ul.easySteps li img{
+	display:block;	
+	margin:20px;
+}
+ul.easySteps li .numBG{
+	float:none;
+	margin:0;
+}
+.healthHeroStory{
+	background: #ffffff url(../images/healthHeroStoryImg.png) no-repeat;
+	height:330px;
+	position:relative;
+	color:#ffffff;
+}
+.healthHeroStory h5{
+	font-size:36px;
+	position:absolute;
+	top: 100px;
+	width:100%;
+}
+.healthHeroStory p{
+	font-size:24px;	
+	font-weight:bold;
+	position:absolute;
+	top: 140px;
+	width:100%;
+}
+/* End Marketing Page */
 }

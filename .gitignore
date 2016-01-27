@@ -11,3 +11,4 @@ tmp
 .env
 .c9
 **/**.log
+**/*.log
