@@ -7,6 +7,7 @@ import AltContainer from 'alt-container';
 import routes from './routes';
 
 import Globalize from 'globalize';
+import moment from 'moment';
 
 const bootstrap = () =>
   new Promise((resolve) =>
@@ -20,6 +21,7 @@ const runRouter = location =>
 
 export default async function({ flux, history, location, locale }) {
 	Globalize.locale(locale);
+  moment.locale(locale);
 
 	if (__CLIENT__) {
       const { container, initialState } = await bootstrap();

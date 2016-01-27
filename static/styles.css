@@ -137,8 +137,7 @@ ul.signInInfo li.greeting{
 .recordSleep ul li.hoursSlept{
 	float:right;
 	position:absolute;
-	top:4px;
-	right:0;
+	top:20%;
 	color:#909090;
 }
 .recordSleep ul li.hoursSlept p{
@@ -146,7 +145,7 @@ ul.signInInfo li.greeting{
 	text-align:center;
 }
 .recordSleep ul li.hoursSlept p strong{
-	font-size:60px;
+	font-size:36px;
 	display:block;
 	font-weight:bold;
 }

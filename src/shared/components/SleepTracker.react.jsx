@@ -11,7 +11,7 @@ export default React.createClass({
 
   componentWillMount() {
     const { flux } = this.context;
-    flux.getActions('healthBehaviors').findHealthBehavior(this.behaviorKey, this.props.selectedDate);
+    flux.getActions('healthBehaviors').findHealthBehavior(this.behaviorKey, this.state.selectedDate);
     flux.getActions('submit').allowSubmit({component: this.behaviorKey, canSubmit: this.state.canSubmit});
   },
 
@@ -34,8 +34,6 @@ export default React.createClass({
   dateStateChanged(state) {
     const { flux } = this.context;
     flux.getActions('healthBehaviors').findHealthBehavior(this.behaviorKey, state.get('selectedDate'));
-    
-    //this.setState({selectedDate: state.get('selectedDate')});
   },
 
   getInitialState() {
@@ -137,8 +135,8 @@ export default React.createClass({
   },
 
   _adjustTime(data) {
-    let start = data.get('start');
-    let end = data.get('end');
+    let start = moment(data.get('start'));
+    let end = moment(data.get('end'));
     let newStart = moment().startOf('day');
     newStart.hour(start.hour());
     newStart.minute(start.minute());
@@ -158,9 +156,12 @@ export default React.createClass({
     
     let start = moment(data.get('start'));
     let end = moment(data.get('end'));
-    let totalHours = this.state.canSubmit
-      ? moment.duration(end.diff(start)).asHours()
-      : ' ';
+    let totalTime = this.state.canSubmit
+      ? moment.duration(end.diff(start))
+      : null;
+    let totalHours = totalTime ? totalTime.get('hours') : ' ';
+    let totalMinutes = totalTime ? totalTime.get('minutes') : ' ';
+    let divider = totalTime ? Globalize.formatMessage('sleeptracker-time-unit-divider') : '';
 
     let startDisplay = start.isValid() ? start.format('HH:mm') : null;
     let endDisplay = end.isValid() ? end.format('HH:mm') : null;
@@ -182,7 +183,8 @@ export default React.createClass({
                   <input type="time" value={endDisplay} onChange={this.updateWakeTime} />
               </li>
               <li className="hoursSlept">
-                  <p>{Globalize.formatMessage('sleeptracker-time-amount')} <strong>{totalHours}</strong> {Globalize.formatMessage('sleeptracker-time-unit')}</p>
+                  <p>{Globalize.formatMessage('sleeptracker-time-amount')}</p>
+                  <p><strong>{totalHours}{divider}{totalMinutes}</strong>{Globalize.formatMessage('sleeptracker-time-unit')}</p>
               </li>
           </ul>           
       </li>

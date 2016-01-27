@@ -1,6 +1,7 @@
 import history from './history';
 import universalRender from '../shared/universal-render';
 import createFlux from '../shared/flux/create-flux';
+import moment from 'moment';
 
 import Globalize from 'globalize';
 /*Globalize.load(require("cldr-data").entireSupplemental());
@@ -37,6 +38,7 @@ Globalize.load(
 Globalize.loadMessages(require("../shared/globalization/en.json"));
 // prime globalization
 Globalize.locale('en');
+moment.locale('en');
 
 const flux = createFlux(window.__CONFIG__);
 
