@@ -50,7 +50,7 @@ export default React.createClass({
 	      		var obsDate = moment(parseInt(dt, 10));
       			var obsDateStr = obsDate.format('YYYY-MM-DD');
       			var color = (totalHours >= 8) ? "#04D215" : "#FCD202";
-      			translatedData.push( { "date": obsDateStr, "value": totalHours, "color": color } );
+      			translatedData.push( { "date": obsDateStr, "value": totalHours, "color": color, "hoverText": totalHours } );
 			});
 		}
 		// chart not happy if data isnt in sorted order

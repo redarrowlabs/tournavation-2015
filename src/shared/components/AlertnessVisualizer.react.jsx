@@ -4,6 +4,8 @@ import moment from 'moment';
 
 export default React.createClass({
   
+  alertnessLabelMappings: [{value:1,label:"Tired"},{value:2,label:"Ok"},{value:3,label:"Ready to go!"}],
+		
   contextTypes: { flux: PropTypes.object.isRequired },
 
 	componentDidMount () {
@@ -36,6 +38,7 @@ export default React.createClass({
 
 	generateChartData(rawData) {
 		var translatedData = [];
+		var vis = this;
 		if (rawData) {
 			rawData.map(function(dataPoint, idx) {
 				let dt = dataPoint.get('filter');
@@ -47,7 +50,11 @@ export default React.createClass({
       			var obsDateStr = obsDate.format('YYYY-MM-DD');
 
       			var color = (alertness >= 4) ? "#04D215" : "#FCD202";
-      			translatedData.push( { "date": obsDateStr, "value": alertness, "color": color } );
+
+      			var alertnessMapping = vis.alertnessLabelMappings.find(function(e,i,a) { return (e.value == alertness)});
+        		var hoverText = alertnessMapping ? alertnessMapping.label : "";
+
+      			translatedData.push( { "date": obsDateStr, "value": alertness, "color": color, "hoverText": hoverText } );
 			});
 		}
 		// chart not happy if data isnt in sorted order
@@ -59,7 +66,7 @@ export default React.createClass({
 		var transformedData = this.generateChartData(this.state.alertnessData);
 		return (
 			<div>
-		    	<ObservationChart chartData={transformedData} chartName='alertness' chartTitle='Alertness Level' chartType='StepLine'/>
+		    	<ObservationChart chartData={transformedData} chartName='alertness' chartTitle='Alertness Level' chartType='StepLine' axisMappings={this.alertnessLabelMappings}/>
 			</div>
 		);
 	}
