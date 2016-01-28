@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import ObservationChart from './ObservationChartBuilder.react';
 import moment from 'moment';
+import Globalize from 'globalize';
 
 export default React.createClass({
   
@@ -43,9 +44,8 @@ export default React.createClass({
 		    let end = dataPoint.get('data').get('end');
 				if (!dt || !end || !start) return;
 
-				let totalTime = this.state.canSubmit
-		      ? moment.duration(end.diff(start))
-		      : null;
+				let totalTime = moment.duration(moment(end).diff(moment(start)));
+				let value = Number(Math.round(totalTime.asHours()+'e2')+'e-2');
 		    let totalHours = totalTime ? totalTime.get('hours') : null;
 		    let totalMinutes = totalTime ? totalTime.get('minutes') : null;
 		    totalMinutes = totalMinutes != null && totalMinutes < 10 ? '0' + totalMinutes : totalMinutes;
@@ -55,7 +55,7 @@ export default React.createClass({
     		var obsDate = moment(parseInt(dt, 10));
   			var obsDateStr = obsDate.format('YYYY-MM-DD');
   			var color = (totalHours >= 8) ? "#04D215" : "#FCD202";
-  			translatedData.push( { "date": obsDateStr, "value": timeValue, "color": color, "hoverText": timeValue } );
+  			translatedData.push( { "date": obsDateStr, "value": value, "color": color, "hoverText": timeValue } );
 			});
 		}
 		// chart not happy if data isnt in sorted order
@@ -67,7 +67,7 @@ export default React.createClass({
 		var transformedData = this.generateChartData(this.state.sleepData);
 		return (
 			<div>
-		    	<ObservationChart chartData={transformedData} chartName='sleep' chartTitle='Total Hours of Sleep' chartType='StepLine'/>
+		    	<ObservationChart chartData={transformedData} chartName='sleep' chartTitle={Globalize.formatMessage('sleepvisualizer-title')}/>
 			</div>
 		);
 	}

@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import ObservationChart from './ObservationChartBuilder.react';
 import moment from 'moment';
+import Globalize from 'globalize';
 
 export default React.createClass({
   
@@ -66,7 +67,7 @@ export default React.createClass({
 		var transformedData = this.generateChartData(this.state.alertnessData);
 		return (
 			<div>
-		    	<ObservationChart chartData={transformedData} chartName='alertness' chartTitle='Alertness Level' chartType='StepLine' axisMappings={this.alertnessLabelMappings}/>
+		    	<ObservationChart chartData={transformedData} chartName='alertness' chartTitle={Globalize.formatMessage('alertnessvisualizer-title')} axisMappings={this.alertnessLabelMappings}/>
 			</div>
 		);
 	}

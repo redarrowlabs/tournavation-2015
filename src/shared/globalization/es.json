@@ -21,6 +21,8 @@
     "alertnesstracker-submit": "(ES) Graph my data",
     "alertnesstracker-level": "(ES) Level",
     "visualize-title": "(ES) Track Your Data",
-    "visualize-subtitle": "(ES) View your data over time to see how you can improve!"
+    "visualize-subtitle": "(ES) View your data over time to see how you can improve!",
+    "sleepvisualizer-title": "(ES) Total Hours of Sleep",
+    "alertnessvisualizer-title": "(ES) Alertness Level"
 	}
 }
