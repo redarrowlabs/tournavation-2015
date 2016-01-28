@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-var immutableAlt = require('alt-utils/lib/ImmutableUtil');
+import immutableAlt from 'alt-utils/lib/ImmutableUtil';
 import _ from 'lodash';
 
 @immutableAlt
@@ -13,40 +13,7 @@ class HealthBehaviorStore{
 			healthBehaviors: Immutable.Map(),
 			currentHealthBehaviors: Immutable.Map()
 		});
-		/*this.state = Immutable.Map({
-			healthBehaviors: new Immutable.List([]),
-			currentHealthBehavior: Immutable.Map({
-				_id: null,
-				key: null,
-				filter: null,
-				data: null
-			})
-		});*/
 	}
-
-	/*onFetchAllHealthBehaviors(payload) {
-  	this.setState(
-  		this.state.set('healthBehaviors',
-  			this.state.get('healthBehaviors').clear()));
-	}
-
-	onFetchHealthBehavior(payload) {
-		this.setState(
-  		this.state.set('currentHealthBehavior',
-  			this.state.get('currentHealthBehavior').clear()));
-	}
-
-	onSubmitHealthBehavior(payload) {
-		this.setState(
-  		this.state.set('currentHealthBehavior',
-  			this.state.get('currentHealthBehavior').clear()));
-	}
-
-	onUpdateHealthBehavior(payload) {
-		this.setState(
-  		this.state.set('currentHealthBehavior',
-  			this.state.get('currentHealthBehavior').clear()));
-	}*/
 
 	onUpdateCurrentHealthBehavior(payload) {
 		if (!payload.data) {
@@ -66,10 +33,10 @@ class HealthBehaviorStore{
 			});
 			if (index > -1) {
 		  		healthBehaviors = healthBehaviors.set(index, healthBehavior);
-		  	}
-		  	else {
-		  		healthBehaviors = healthBehaviors.push(healthBehavior);
-		  	}
+	  	}
+	  	else {
+	  		healthBehaviors = healthBehaviors.push(healthBehavior);
+	  	}
 		} else {
 			healthBehaviors	= new Immutable.List([healthBehavior]);
 		}

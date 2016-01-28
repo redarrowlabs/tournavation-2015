@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-var immutableAlt = require('alt-utils/lib/ImmutableUtil');
+import immutableAlt from 'alt-utils/lib/ImmutableUtil';
 
 @immutableAlt
 class SubmitStore{

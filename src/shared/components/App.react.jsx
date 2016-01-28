@@ -10,16 +10,15 @@ const App = React.createClass({
   contextTypes: { flux: PropTypes.object.isRequired },
 
   getInitialState() {
-    /*const { flux } = this.context;
-    const isAuthenticated = flux.getStore('auth').get('isAuthenticated');
-    const userName = flux.getStore('auth').get('userName');
-    return {isAuthenticated, userName};*/
-    return {isAuthenticated: false, userName: ''};
+    const { flux } = this.context;
+    const isAuthenticated = flux.getStore('auth').getState().get('isAuthenticated');
+    const userName = flux.getStore('auth').getState().get('userName');
+    return {isAuthenticated, userName};
   },
   
   componentWillMount() {
-	const { flux } = this.context;
-	flux.getActions('auth').fetchAuthStatus();
+  	const { flux } = this.context;
+  	flux.getActions('auth').fetchAuthStatus();
   },
   
   componentDidMount() {
@@ -78,17 +77,11 @@ const App = React.createClass({
   },
 
   render() {
-    const user = this.state.userName;
-    const greeting = user ? Globalize.formatMessage('app-greeting-user', user) : Globalize.formatMessage('app-greeting-welcome');
-
     return (
       <div id="mainContainer">
         <header className="logoExport">
             <h1>{Globalize.formatMessage('app-title')}</h1>
-            <ul className="signInInfo">
-                <li className="greeting">{greeting}</li>
-                <li><a href="#" onClick={this.signOut}>{Globalize.formatMessage('app-signout')}</a></li>
-            </ul>
+            {this.renderGreeting()}
            {/* <select className="output">
                 <option>Export</option> 
             </select>*/}
@@ -101,6 +94,23 @@ const App = React.createClass({
         </footer>
       </div>
     );
+  },
+
+  renderGreeting() {
+    const isAuthenticated = this.state.isAuthenticated;
+    if (isAuthenticated) {      
+      const user = this.state.userName;
+      const greeting = user ? Globalize.formatMessage('app-greeting-user', user) : Globalize.formatMessage('app-greeting-welcome');
+
+      return (
+        <ul className="signInInfo">
+            <li className="greeting">{greeting}</li>
+            <li><a href="#" onClick={this.signOut}>{Globalize.formatMessage('app-signout')}</a></li>
+        </ul>
+      );
+    }
+
+    return null;
   }
 });
 

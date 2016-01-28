@@ -40,17 +40,22 @@ export default React.createClass({
 			rawData.map(function(dataPoint, idx) {
 				let dt = dataPoint.get('filter');
 				let start = dataPoint.get('data').get('start');
-			    let end = dataPoint.get('data').get('end');
+		    let end = dataPoint.get('data').get('end');
 				if (!dt || !end || !start) return;
 
-				var startDate = moment(start);
-      			var endDate = moment(end);
-			    let totalHours = Number(Math.round(moment.duration(endDate.diff(startDate)).asHours()+'e2')+'e-2');
+				let totalTime = this.state.canSubmit
+		      ? moment.duration(end.diff(start))
+		      : null;
+		    let totalHours = totalTime ? totalTime.get('hours') : null;
+		    let totalMinutes = totalTime ? totalTime.get('minutes') : null;
+		    totalMinutes = totalMinutes != null && totalMinutes < 10 ? '0' + totalMinutes : totalMinutes;
+		    let divider = totalTime ? Globalize.formatMessage('sleeptracker-time-unit-divider') : null;
+		    let timeValue = totalHours + divider + totalMinutes;
 	      		
-	      		var obsDate = moment(parseInt(dt, 10));
-      			var obsDateStr = obsDate.format('YYYY-MM-DD');
-      			var color = (totalHours >= 8) ? "#04D215" : "#FCD202";
-      			translatedData.push( { "date": obsDateStr, "value": totalHours, "color": color } );
+    		var obsDate = moment(parseInt(dt, 10));
+  			var obsDateStr = obsDate.format('YYYY-MM-DD');
+  			var color = (totalHours >= 8) ? "#04D215" : "#FCD202";
+  			translatedData.push( { "date": obsDateStr, "value": timeValue, "color": color } );
 			});
 		}
 		// chart not happy if data isnt in sorted order

@@ -1,5 +1,7 @@
 import Immutable from 'immutable';
+import immutableAlt from 'alt-utils/lib/ImmutableUtil';
 
+@immutableAlt
 class AuthStore {
 	constructor() {
     this.bindActions(this.alt.getActions('auth'));

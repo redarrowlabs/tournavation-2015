@@ -161,7 +161,7 @@ export default React.createClass({
       : null;
     let totalHours = totalTime ? totalTime.get('hours') : null;
     let totalMinutes = totalTime ? totalTime.get('minutes') : null;
-    totalMinutes = totalMinutes && totalMinutes < 10 ? '0' + totalMinutes : totalMinutes;
+    totalMinutes = totalMinutes != null && totalMinutes < 10 ? '0' + totalMinutes : totalMinutes;
     let divider = totalTime ? Globalize.formatMessage('sleeptracker-time-unit-divider') : null;
 
     let startDisplay = start.isValid() ? start.format('HH:mm') : null;
