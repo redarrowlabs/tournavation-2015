@@ -159,9 +159,10 @@ export default React.createClass({
     let totalTime = this.state.canSubmit
       ? moment.duration(end.diff(start))
       : null;
-    let totalHours = totalTime ? totalTime.get('hours') : ' ';
-    let totalMinutes = totalTime ? totalTime.get('minutes') : ' ';
-    let divider = totalTime ? Globalize.formatMessage('sleeptracker-time-unit-divider') : '';
+    let totalHours = totalTime ? totalTime.get('hours') : null;
+    let totalMinutes = totalTime ? totalTime.get('minutes') : null;
+    totalMinutes = totalMinutes && totalMinutes < 10 ? '0' + totalMinutes : totalMinutes;
+    let divider = totalTime ? Globalize.formatMessage('sleeptracker-time-unit-divider') : null;
 
     let startDisplay = start.isValid() ? start.format('HH:mm') : null;
     let endDisplay = end.isValid() ? end.format('HH:mm') : null;
