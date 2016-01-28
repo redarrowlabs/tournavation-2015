@@ -27,7 +27,7 @@ var ObservationChartBuilder = React.createClass({
 
 	buildChart(data) {
 		if (!this.state.scriptsReady) { return; }
-		
+
         var chartSettings = {
             "type": "serial",
             "theme": "light",
@@ -45,7 +45,8 @@ var ObservationChartBuilder = React.createClass({
                 "id": "v1",
                 "axisAlpha": 0,
                 "position": "left",
-                "ignoreAxisWidth":true
+                //"ignoreAxisWidth":true, // this causes the custom axis labels to get cut off
+                "labelFunction": this.props.axisMappings ? this.formatAxisValue : null,
             }],
             "balloon": {
                 "borderThickness": 1,
@@ -66,7 +67,7 @@ var ObservationChartBuilder = React.createClass({
                 "lineThickness": 2,
                 "useLineColorForBulletBorder": true,
                 "valueField": "value",
-                "balloonText": "<span style='font-size:18px;'>[[value]]</span>"
+                "balloonText": "<span style='font-size:18px;'>[[hoverText]]</span>"
             }],
             /*"chartScrollbar": {
                 "graph": "g1",
@@ -110,6 +111,15 @@ var ObservationChartBuilder = React.createClass({
 
 		var chart = AmCharts.makeChart(
             this.props.chartName, chartSettings);
+  },
+
+  formatAxisValue(value, formattedValue, valueAxis){
+        
+        if (!this.props.axisMappings) return value;
+
+        var mappedValue = this.props.axisMappings.find(function(e,i,a) { return (e.value == value)});
+
+        return mappedValue ? mappedValue.label : "";
   },
 
   render() {
