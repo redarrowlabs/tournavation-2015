@@ -64,6 +64,7 @@ const App = React.createClass({
         });
       });
     }
+    this.setState({isAuthenticated:false, userName:''});
   },
   
   executeSignOut(auth2, flux) {

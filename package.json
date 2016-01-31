@@ -39,6 +39,7 @@
     "immutable": "^3.7.5",
     "iso": "^5.0.0",
     "jade": "^1.11.0",
+    "kerberos": "0.0.18",
     "lodash": "^4.0.0",
     "moment": "^2.10.6",
     "mongoose": "^4.3.1",
