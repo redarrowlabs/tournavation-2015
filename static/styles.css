@@ -199,7 +199,7 @@ ul.signInInfo li.greeting{
 	font-size:28px;
 	padding: 20px;
 	width:80%;
-	cursor:pointer;
+	cursor:not-allowed;
 	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,cccccc+100;Gren+3D */
 	background: #eeeeee; /* Old browsers */
 	background: -moz-linear-gradient(top,  #eeeeee 0%, #cccccc 100%); /* FF3.6-15 */
