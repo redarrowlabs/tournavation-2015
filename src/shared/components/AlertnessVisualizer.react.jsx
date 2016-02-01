@@ -5,7 +5,7 @@ import Globalize from 'globalize';
 
 export default React.createClass({
   
-  alertnessLabelMappings: [{value:1,label:"Tired"},{value:2,label:"Ok"},{value:3,label:"Ready to go!"}],
+  alertnessLabelMappings: [{value:1,label:"Tired"},{value:2,label:"Meh"},{value:3,label:"Ok"},{value:4,label:"Almost there"},{value:5,label:"Ready to go!"}],
 		
   contextTypes: { flux: PropTypes.object.isRequired },
 

@@ -143,9 +143,11 @@ export default React.createClass({
           easing="easeInOutElastic"
           edgeEasing="easeOutCirc"
           afterSlide={this.updateLevel}>
-          <img src="images/tired.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 0)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-          <img src="images/ok.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 1)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-          <img src="images/readyToGo.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 2)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+          <img src="images/level-1.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 0)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+          <img src="images/level-2.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 1)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+          <img src="images/level-3.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 2)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+          <img src="images/level-4.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 3)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+          <img src="images/level-5.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 4)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
         </Carousel>
       </li>
     );
