@@ -4,6 +4,9 @@ import Globalize from 'globalize';
 import SleepTracker from "./SleepTracker.react";
 import AlertnessTracker from "./AlertnessTracker.react";
 
+import { DateTimePicker } from 'react-widgets';
+//import 'less!react-widgets/lib/less/react-widgets.less';
+
 export default React.createClass({
 
   contextTypes: { flux: PropTypes.object.isRequired },
@@ -69,15 +72,16 @@ export default React.createClass({
     let isDisabled = !this.state.canSubmit;
     this.trackers = [];
 
-    let dateDisplay = this.state.selectedDate.format('YYYY-MM-DD');
-    let maxDate = moment().startOf('day').format('YYYY-MM-DD');
+    let date = this.state.selectedDate.toDate();
+    let maxDate = moment().startOf('day').toDate();
 
     return (
       <aside className="sleepAlertness">
         <ul>
           <li>
             <div className="headerContainer sleepAlertnessHeader">
-                <h2>{Globalize.formatMessage('tracking-selectDate')} <input type="date" value={dateDisplay} max={maxDate} onChange={this.updateDate} /></h2>
+                <h2>{Globalize.formatMessage('tracking-selectDate')}</h2>
+                <DateTimePicker time={false} format="MMM dd, yyyy" defaultValue={date} max={maxDate} onChange={this.updateDate} />
             </div>
           </li>
           <SleepTracker ref={ (ref) => {if (ref !== null ) this.trackers.push(ref);} } />
@@ -91,13 +95,8 @@ export default React.createClass({
     );
   },
 
-  _parseDateString(date) {
-    return date === '' ? moment().startOf('day') : moment(date, ['YYYY-MM-DD']);
-  },
-
-  updateDate(event) {
-    let val = event.currentTarget.value;
-    let selectedDate = this._parseDateString(val);
+  updateDate(date, dateStr) {
+    let selectedDate = moment(dateStr, 'MMM dd, yyyy');
     if (selectedDate.isAfter(moment().startOf('day'))) {
       selectedDate = moment().startOf('day');
     }

@@ -48,6 +48,7 @@
     "react-async-script-loader": "^0.1.1",
     "react-dom": "^0.14.3",
     "react-router": "^1.0.0",
+    "react-widgets": "^3.1.7",
     "superagent": "^1.5.0"
   },
   "devDependencies": {
@@ -65,14 +66,16 @@
     "body-parser": "^1.14.1",
     "bundle-deps": "^1.0.0",
     "concurrently": "^1.0.0",
-    "eslint": "^1.10.3",
-    "eslint-config-airbnb": "^3.1.0",
-    "eslint-loader": "^1.1.1",
-    "eslint-plugin-react": "^3.11.3",
+    "css-loader": "^0.23.1",
+    "file-loader": "^0.8.5",
     "json-loader": "^0.5.4",
+    "less-loader": "^2.2.2",
     "piping": "^0.3.0",
     "react-hot-loader": "^1.3.0",
+    "sass-loader": "^3.1.2",
     "shelljs": "^0.5.3",
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.7",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
   },
@@ -86,7 +89,7 @@
   },
   "betterScripts": {
     "start-dev": {
-      "command": "node --harmony ./babel.server",
+      "command": "node --harmony ./babel.server | bunyan",
       "env": {
         "NODE_ENV": "development",
         "NODE_PATH": "./src"

@@ -3,6 +3,9 @@ import React, {PropTypes} from 'react';
 import Globalize from 'globalize';
 import Immutable from 'immutable';
 
+//import 'react-widgets/lib/less/react-widgets.less';
+import { DateTimePicker } from 'react-widgets';
+
 export default React.createClass({
 
   contextTypes: { flux: PropTypes.object.isRequired },
@@ -86,10 +89,6 @@ export default React.createClass({
     flux.getActions('submit').didSubmit({component: this.behaviorKey});
   },
 
-  parseTimeString(time) {
-    return time === '' ? null : moment(time, ['HH:mm']);
-  },
-
   getData(healthBehavior) {
     return healthBehavior.get('data') ||
       Immutable.Map({
@@ -98,9 +97,8 @@ export default React.createClass({
       });
   },
 
-  updateBedTime(event) {
-    const val = event.currentTarget.value;
-    const start = this.parseTimeString(val);
+  updateBedTime(date, dateStr) {
+    const start = moment(dateStr, 'hh:mm a');
     const currentHealthBehavior = this.state.currentHealthBehavior;
     let data = this.getData(currentHealthBehavior)
       .set('start', start);
@@ -116,12 +114,11 @@ export default React.createClass({
     flux.getActions('submit').allowSubmit({component: this.behaviorKey, canSubmit: canSubmit});
   },
 
-  updateWakeTime(event) {
-    let val = event.currentTarget.value;
-    let date = this.parseTimeString(val);
+  updateWakeTime(date, dateStr) {
+    let end = moment(dateStr, 'hh:mm a');
     const currentHealthBehavior = this.state.currentHealthBehavior;
     let data = this.getData(currentHealthBehavior)
-      .set('end', date);
+      .set('end', end);
     data = this._adjustTime(data);
     const canSubmit = this._getCanSubmit(data);
     
@@ -164,9 +161,6 @@ export default React.createClass({
     totalMinutes = totalMinutes != null && totalMinutes < 10 ? '0' + totalMinutes : totalMinutes;
     let divider = totalTime ? Globalize.formatMessage('sleeptracker-time-unit-divider') : null;
 
-    let startDisplay = start.isValid() ? start.format('HH:mm') : null;
-    let endDisplay = end.isValid() ? end.format('HH:mm') : null;
-
     return (
       <li className="recordSleep">
           <strong className="numBG">1</strong>
@@ -177,11 +171,11 @@ export default React.createClass({
           <ul>
               <li>
                   <img src="images/eveningWentToBed.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-start')}" />
-                  <input type="time" value={startDisplay} onChange={this.updateBedTime} />
+                  <DateTimePicker className="sleepTime" calendar={false} format="hh:mm a" defaultValue={start.isValid() ? start.toDate() : null} onChange={this.updateBedTime} />
               </li>
               <li>
                   <img src="images/morningWokeUp.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-end')}" />
-                  <input type="time" value={endDisplay} onChange={this.updateWakeTime} />
+                  <DateTimePicker className="sleepTime" calendar={false} format="hh:mm a" defaultValue={end.isValid() ? end.toDate() : null} onChange={this.updateWakeTime} />
               </li>
               <li className="hoursSlept">
                   <p>{Globalize.formatMessage('sleeptracker-time-amount')}</p>

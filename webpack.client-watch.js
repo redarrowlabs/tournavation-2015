@@ -24,16 +24,8 @@ config.output.hotUpdateChunkFilename = "update/[hash]/[id].update.js";
 config.plugins = [
 	new webpack.DefinePlugin({__CLIENT__: true, __SERVER__: false}),
 	new webpack.DefinePlugin({"process.env": {NODE_ENV: '"development"'}}),
-		new webpack.HotModuleReplacementPlugin(),
-	/*new ReactGlobalizePlugin({
-			production: false,
-			developmentLocale: "en",
-			supportedLocales: ["en", "es"],
-			messages: path.join(__dirname, "src/shared/globalization/[locale].json"),
-			writeMessages: true,
-			output: "i18n/[locale].js"
-		}),*/
-		new CommonsChunkPlugin("vendor", "vendor-bundle.js")
+	new webpack.HotModuleReplacementPlugin(),
+	new CommonsChunkPlugin("vendor", "vendor-bundle.js")
 ];
 
 config.module.postLoaders =  [
@@ -45,13 +37,13 @@ config.module.postLoaders =  [
 ];
 
 config.devServer = {
-    https:       false,    
-    host:        host,
-    port:        port,
+  https:       false,    
+  host:        host,
+  port:        port,
 	publicPath:  publicPath,
 	contentBase: path.join(__dirname, "static"),
 	hot:         true,
-    debug:       true,
+  debug:       true,
 	inline:      true,
 	lazy:        false,
 	quiet:       true,

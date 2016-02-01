@@ -16,7 +16,6 @@ module.exports = {
 	    "alt-utils/lib/ImmutableUtil",
 	    "alt-utils/lib/withAltContext",
 	    'alt-utils/lib/makeFinalStore',
-	    "cldr",
 	    "history",
 	    "immutable",
 	    "iso",
@@ -31,36 +30,24 @@ module.exports = {
 			"globalize/dist/globalize-runtime/number",
 			"globalize/dist/globalize-runtime/plural",
 			"globalize/dist/globalize-runtime/message",
-			"globalize/dist/globalize-runtime/currency",
 			"globalize/dist/globalize-runtime/date",
 			"globalize/dist/globalize-runtime/relative-time",
-			"cldr-data/main/en/ca-gregorian.json",
-			"cldr-data/main/en/characters.json",
-			"cldr-data/main/en/dateFields.json",
-			"cldr-data/main/en/numbers.json",
-			"cldr-data/main/es/ca-gregorian.json",
-			"cldr-data/main/es/characters.json",
-			"cldr-data/main/es/dateFields.json",
-			"cldr-data/main/es/numbers.json",
-			"cldr-data/supplemental/calendarData.json",
-			"cldr-data/supplemental/calendarPreferenceData.json",
-			"cldr-data/supplemental/characterFallbacks.json",
-			"cldr-data/supplemental/languageData.json",
-			"cldr-data/supplemental/languageMatching.json",
 			"cldr-data/supplemental/likelySubtags.json",
-			"cldr-data/supplemental/measurementData.json",
-			"cldr-data/supplemental/metaZones.json",
 			"cldr-data/supplemental/numberingSystems.json",
-			"cldr-data/supplemental/ordinals.json",
-			"cldr-data/supplemental/parentLocales.json",
-			"cldr-data/supplemental/plurals.json",
-			"cldr-data/supplemental/primaryZones.json",
-			"cldr-data/supplemental/references.json",
-			"cldr-data/supplemental/territoryContainment.json",
-			"cldr-data/supplemental/territoryInfo.json",
 			"cldr-data/supplemental/timeData.json",
 			"cldr-data/supplemental/weekData.json",
-			"cldr-data/supplemental/windowsZones.json"
+			"cldr-data/supplemental/plurals.json",
+			"cldr-data/supplemental/ordinals.json",
+			"cldr-data/main/en/numbers.json",
+			"cldr-data/main/en/ca-gregorian.json",
+			"cldr-data/main/en/timeZoneNames.json",
+			"cldr-data/main/en/dateFields.json",
+			"cldr-data/main/en/units.json",
+			"cldr-data/main/es/numbers.json",
+			"cldr-data/main/es/ca-gregorian.json",
+			"cldr-data/main/es/timeZoneNames.json",
+			"cldr-data/main/es/dateFields.json",
+			"cldr-data/main/es/units.json"
 		]
 	},
 	output: {
@@ -78,22 +65,14 @@ module.exports = {
 				PORT: '"443"'
 			}
 		}),
-		/*new ReactGlobalizePlugin({
-			production: true,
-			developmentLocale: "en",
-			supportedLocales: ["en", "es"],
-			messages: path.join(__dirname, "src/shared/globalization/[locale].json"),
-			writeMessages: true,
-			output: path.join(__dirname, "static/dist/i18n/[locale].js")
-		}),*/
 		new CommonsChunkPlugin("vendor", "vendor-bundle.js"),
 		new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.OccurenceOrderPlugin(),
-		//new webpack.optimize.UglifyJsPlugin()
+		new webpack.optimize.UglifyJsPlugin()
 	],
 	module: {
 		loaders: [
-			{test: /\.json$/, loaders: ["json"]},
+			{ test: /\.json$/, loaders: ["json"] },
 			{
 				test: /\.jsx?$/,
 				loader: 'babel',
@@ -106,13 +85,13 @@ module.exports = {
 		        presets: ['es2015', 'react', 'stage-0'],
 		      },
 				exclude: /node_modules/},
-			{test: /\\.css$/, loader: "style!css"},
-			{test: /\\.scss$/, loader: "style!css!sass"},
-			{test: /\\.sass$/, loader: "style!css!sass?indentedSyntax=sass"},
-		  {test: /\\.less$/, loader: "style!css!less"},
-		  {test: /\\.gif$/, loader: "url-loader?mimetype=image/png"},
-		  {test: /\\.woff(2)?(\\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?mimetype=application/font-woff"},
-		  {test: /\\.(ttf|eot|svg)(\\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader?name=[name].[ext]"}
+		  { test: /\.css$/,  loader: "style-loader!css-loader?name=styles/[name].[ext]" },
+			{ test: /\.scss$/, loader: "style-loader!css-loader!sass-loader?name=styles/[name].[ext]" },
+			{ test: /\.sass$/, loader: "style-loader!css-loader!sass-loader?indentedSyntax=sass&name=styles/[name].[ext]" },
+		  { test: /\.less$/, loader: "style-loader!css-loader!less-loader?name=styles/[name].[ext]" },
+		  { test: /\.gif$/, loader: "url-loader?mimetype=image/png&name=images/[name].[ext]" },
+		  { test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, loader: "url-loader?mimetype=application/font-woff&name=fonts/[name].[ext]" },
+		  { test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/, loader: "file-loader?name=fonts/[name].[ext]" }
 		],
 		postLoaders: [],
 		noParse: /\.min\.js/

@@ -12,13 +12,6 @@ var fs = require('fs');
 var http = require('http');
 var https = require('https');
 
-import Globalize from 'globalize';
-Globalize.load(require("cldr-data").entireSupplemental());
-Globalize.load(require("cldr-data").entireMainFor("en", "es"));
-Globalize.loadMessages(require("../shared/globalization/en"));
-// prime globalization
-Globalize.locale('en');
-
 import log from './logger';
 
 const server = global.server = express();

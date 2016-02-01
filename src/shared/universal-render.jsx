@@ -1,3 +1,35 @@
+import Globalize from 'globalize';
+import moment from 'moment';
+//Globalize.load(require("cldr-data").entireSupplemental());
+//Globalize.load(require("cldr-data").entireMainFor("en", "es"));
+Globalize.load(require("cldr-data/supplemental/likelySubtags.json"));
+Globalize.load(require("cldr-data/supplemental/numberingSystems.json"));
+Globalize.load(require("cldr-data/supplemental/timeData.json"));
+Globalize.load(require("cldr-data/supplemental/weekData.json"));
+Globalize.load(require("cldr-data/supplemental/plurals.json"));
+Globalize.load(require("cldr-data/supplemental/ordinals.json"));
+
+Globalize.load(require("cldr-data/main/en/numbers.json"));
+Globalize.load(require("cldr-data/main/en/ca-gregorian.json"));
+Globalize.load(require("cldr-data/main/en/timeZoneNames.json"));
+Globalize.load(require("cldr-data/main/en/dateFields.json"));
+Globalize.load(require("cldr-data/main/en/units.json"));
+
+Globalize.load(require("cldr-data/main/es/numbers.json"));
+Globalize.load(require("cldr-data/main/es/ca-gregorian.json"));
+Globalize.load(require("cldr-data/main/es/timeZoneNames.json"));
+Globalize.load(require("cldr-data/main/es/dateFields.json"));
+Globalize.load(require("cldr-data/main/es/units.json"));
+
+Globalize.loadMessages(require("../shared/globalization/es.json"));
+Globalize.loadMessages(require("../shared/globalization/en.json"));
+
+// prime globalization
+Globalize.locale('en');
+moment.locale('en');
+import globalizeLocalizer from 'react-widgets/lib/localizers/globalize';
+globalizeLocalizer(Globalize);
+
 import Iso from 'iso';
 import React from "react";
 import ReactDOM from 'react-dom';
@@ -5,9 +37,6 @@ import ReactDOMServer from 'react-dom/server';
 import { Router, match, RoutingContext } from 'react-router';
 import AltContainer from 'alt-container';
 import routes from './routes';
-
-import Globalize from 'globalize';
-import moment from 'moment';
 
 const bootstrap = () =>
   new Promise((resolve) =>
@@ -35,7 +64,6 @@ export default async function({ flux, history, location, locale }) {
         </AltContainer>
       );
     
-      //var mountNode = document.getElementById('react-main-mount');
       ReactDOM.render(element, container);
 
       // Tell `alt-resolver` we have done the first render
