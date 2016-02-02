@@ -162,33 +162,26 @@ export default React.createClass({
     let totalHours = totalTime ? totalTime.get('hours') : null;
     let totalMinutes = totalTime ? totalTime.get('minutes') : null;
     totalMinutes = totalMinutes != null && totalMinutes < 10 ? '0' + totalMinutes : totalMinutes;
-    let divider = totalTime ? Globalize.formatMessage('sleeptracker-time-unit-divider') : null;
 
     let startDisplay = start.isValid() ? start.format('HH:mm') : null;
     let endDisplay = end.isValid() ? end.format('HH:mm') : null;
 
     return (
-      <li className="recordSleep">
-          <strong className="numBG">1</strong>
-          <div className="headerContainer">
-              <h2>{Globalize.formatMessage('sleeptracker-time-title')}</h2>
-              <h3>{Globalize.formatMessage('sleeptracker-time-subtitle')}</h3>
-          </div>
-          <ul>
-              <li>
-                  <img src="images/eveningWentToBed.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-start')}" />
-                  <input type="time" value={startDisplay} onChange={this.updateBedTime} />
-              </li>
-              <li>
-                  <img src="images/morningWokeUp.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-end')}" />
-                  <input type="time" value={endDisplay} onChange={this.updateWakeTime} />
-              </li>
-              <li className="hoursSlept">
-                  <p>{Globalize.formatMessage('sleeptracker-time-amount')}</p>
-                  <p><strong>{totalHours}{divider}{totalMinutes}</strong>{Globalize.formatMessage('sleeptracker-time-unit')}</p>
-              </li>
-          </ul>           
-      </li>
+      <ul>
+          <li>
+              <img src="images/eveningWentToBed.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-start')}" />
+              <input type="time" value={startDisplay} onChange={this.updateBedTime} />
+          </li>
+          <li>
+              <img src="images/morningWokeUp.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-end')}" />
+              <input type="time" value={endDisplay} onChange={this.updateWakeTime} />
+          </li>
+          <li className="hoursSlept">
+              <p>{Globalize.formatMessage('sleeptracker-time-amount')}</p>
+              <p><strong>{totalHours}</strong>{Globalize.formatMessage('sleeptracker-time-unit-hours')}</p>
+              <p><strong>{totalMinutes}</strong>{Globalize.formatMessage('sleeptracker-time-unit-minutes')}</p>
+          </li>
+      </ul>
     );
   }
 });

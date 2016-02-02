@@ -5,7 +5,30 @@ import Globalize from 'globalize';
 
 export default React.createClass({
   
-  alertnessLabelMappings: [{value:1,label:"Tired"},{value:2,label:"Meh"},{value:3,label:"Ok"},{value:4,label:"Almost there"},{value:5,label:"Ready to go!"}],
+  alertnessLabelMappings() {
+  	return [
+	  	{
+	  		value: 1,
+	  		label: Globalize.formatMessage('alertnesstracker-level-1')
+	  	},
+	  	{
+	  		value: 2,
+	  		label: Globalize.formatMessage('alertnesstracker-level-2')
+	  	},
+	  	{
+	  		value: 3,
+	  		label: Globalize.formatMessage('alertnesstracker-level-3')
+	  	},
+	  	{
+	  		value: 4,
+	  		label: Globalize.formatMessage('alertnesstracker-level-4')
+	  	},
+	  	{
+	  		value: 5,
+	  		label: Globalize.formatMessage('alertnesstracker-level-5')
+	  	}
+		];
+  },
 		
   contextTypes: { flux: PropTypes.object.isRequired },
 
@@ -48,14 +71,14 @@ export default React.createClass({
 				if (!dt || !alertness) return;
 
 				var obsDate = moment(parseInt(dt,10));
-      			var obsDateStr = obsDate.format('YYYY-MM-DD');
+  			var obsDateStr = obsDate.format('YYYY-MM-DD');
 
-      			var color = (alertness >= 4) ? "#04D215" : "#FCD202";
+  			var color = (alertness >= 4) ? "#04D215" : "#FCD202";
 
-      			var alertnessMapping = vis.alertnessLabelMappings.find(function(e,i,a) { return (e.value == alertness)});
-        		var hoverText = alertnessMapping ? alertnessMapping.label : "";
+  			var alertnessMapping = vis.alertnessLabelMappings().find(function(e,i,a) { return (e.value == alertness)});
+    		var hoverText = alertnessMapping ? alertnessMapping.label : "";
 
-      			translatedData.push( { "date": obsDateStr, "value": alertness, "color": color, "hoverText": hoverText } );
+  			translatedData.push( { "date": obsDateStr, "value": alertness, "color": color, "hoverText": hoverText } );
 			});
 		}
 		// chart not happy if data isnt in sorted order
@@ -67,7 +90,7 @@ export default React.createClass({
 		var transformedData = this.generateChartData(this.state.alertnessData);
 		return (
 			<div>
-		    	<ObservationChart chartData={transformedData} chartName='alertness' chartTitle={Globalize.formatMessage('alertnessvisualizer-title')} axisMappings={this.alertnessLabelMappings}/>
+		    	<ObservationChart chartData={transformedData} chartName='alertness' chartTitle={Globalize.formatMessage('alertnessvisualizer-title')} axisMappings={this.alertnessLabelMappings()}/>
 			</div>
 		);
 	}
