@@ -26,6 +26,7 @@ module.exports = {
 	    "react",
 	    "react-dom",
 	    "react-router",
+	    "react-widgets",
 	    "superagent",
 			"globalize",
 			"globalize/dist/globalize-runtime/number",
