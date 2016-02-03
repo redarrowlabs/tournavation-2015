@@ -3,6 +3,7 @@ import React, {PropTypes} from 'react';
 import Globalize from 'globalize';
 import SleepTracker from "./SleepTracker.react";
 import AlertnessTracker from "./AlertnessTracker.react";
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 
 export default React.createClass({
 
@@ -69,8 +70,9 @@ export default React.createClass({
     const isDisabled = !this.state.canSubmit;
     this.trackers = [];
 
-    const dateDisplay = this.state.selectedDate.format('YYYY-MM-DD');
-    const maxDate = moment().startOf('day').format('YYYY-MM-DD');
+    const date = this.state.selectedDate;
+    const maxDate = moment().startOf('day').toDate();
+    const dateFormat = date.isSame(maxDate, 'days') ? '[today]' : 'ddd MMM D';
 
     const bedtimeDisplay = moment(this.state.selectedDate).subtract(1, 'days').format("ddd MMM D");
     const waketimeDisplay = this.state.selectedDate.format("ddd MMM D");
@@ -84,7 +86,7 @@ export default React.createClass({
             <strong className="numBG">1</strong>
             <div className="headerContainer">
                 <h2>{Globalize.formatMessage('alertnesstracker-level-title')}</h2>
-                <h3>{Globalize.formatMessage('app-day-header')} <input type="date" value={dateDisplay} max={maxDate} onChange={this.updateDate} /></h3>
+                <h3>{Globalize.formatMessage('app-day-header')} <DateTimePicker time={false} format={dateFormat} value={date.toDate()} max={maxDate} onChange={this.updateDate} /></h3>
             </div>
             <AlertnessTracker ref={ (ref) => {if (ref !== null ) this.trackers.push(ref);} } />
           </li>
@@ -110,9 +112,8 @@ export default React.createClass({
     return date === '' ? moment().startOf('day') : moment(date, ['YYYY-MM-DD']);
   },
 
-  updateDate(event) {
-    let val = event.currentTarget.value;
-    let selectedDate = this._parseDateString(val);
+  updateDate(date, dateStr) {
+    let selectedDate = moment(date);
     if (selectedDate.isAfter(moment().startOf('day'))) {
       selectedDate = moment().startOf('day');
     }

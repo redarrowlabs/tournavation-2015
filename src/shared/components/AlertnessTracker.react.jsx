@@ -34,10 +34,20 @@ export default React.createClass({
     flux.getStore('date').unlisten(this.dateStateChanged);
   },
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const ret = !this._forceUpdateCarousel;
+    this._forceUpdateCarousel = false;
+    return ret;
+  },
+
+  // Update the selected item style
+  // TODO WORKAROUND: force carousel to go to loaded slide (on date change)
   componentDidUpdate() {
     const currentHealthBehavior = this.state.currentHealthBehavior;
     const selectedLevel = this.getData(currentHealthBehavior).get('level');
     this._resetSelectStyle(selectedLevel - 1);
+    this._forceUpdateCarousel = true;
+    this.refs.carousel.goToSlide(selectedLevel - 1);
   },
 
   healthBehaviorStateChanged(state) {
@@ -104,6 +114,9 @@ export default React.createClass({
   },
 
   updateLevel(index) {
+    //TODO FIX
+    if (this._forceUpdateCarousel) {return;}
+    
     const level = index + 1;
     const currentHealthBehavior = this.state.currentHealthBehavior;
     const data = this.getData(currentHealthBehavior)
@@ -121,8 +134,10 @@ export default React.createClass({
   render() {
     this.levels = [];
 
-    const currentHealthBehavior = this.state.currentHealthBehavior;
-    const selectedLevel = this.getData(currentHealthBehavior).get('level');
+    //TODO: FIX WORKAROUND
+    //const currentHealthBehavior = this.state.currentHealthBehavior;
+    //const selectedLevel = this.getData(currentHealthBehavior).get('level');
+    /*initialSlideIndex={selectedLevel-1}*/
 
     return (
       <Carousel className="carousel"

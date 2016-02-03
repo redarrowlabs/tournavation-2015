@@ -74,6 +74,7 @@ var Carousel = _react2['default'].createClass({
     framePadding: _react2['default'].PropTypes.string,
     initialSlideHeight: _react2['default'].PropTypes.number,
     initialSlideWidth: _react2['default'].PropTypes.number,
+    initialSlideIndex: _react2['default'].PropTypes.number,
     slidesToShow: _react2['default'].PropTypes.number,
     slidesToScroll: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.number, _react2['default'].PropTypes.oneOf(['auto'])]),
     slideWidth: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.string, _react2['default'].PropTypes.number]),
@@ -94,6 +95,7 @@ var Carousel = _react2['default'].createClass({
       easing: 'easeOutCirc',
       edgeEasing: 'easeOutElastic',
       framePadding: '0px',
+      initialSlideIndex: 0,
       slidesToShow: 1,
       slidesToScroll: 1,
       slideWidth: 1,
@@ -107,7 +109,7 @@ var Carousel = _react2['default'].createClass({
 
   getInitialState: function getInitialState() {
     return {
-      currentSlide: 0,
+      currentSlide: this.props.initialSlideIndex,
       dragging: false,
       frameWidth: 0,
       left: 0,
@@ -647,9 +649,9 @@ var Carousel = _react2['default'].createClass({
           return {
             position: 'absolute',
             top: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            WebkitTransform: 'translateX(-50%)'
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%'
           };
         }
       case 'TopRight':
@@ -703,9 +705,9 @@ var Carousel = _react2['default'].createClass({
           return {
             position: 'absolute',
             bottom: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            WebkitTransform: 'translateX(-50%)'
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%'
           };
         }
       case 'BottomRight':
