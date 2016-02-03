@@ -49,8 +49,9 @@ export default React.createClass({
 		    let totalHours = totalTime ? totalTime.get('hours') : null;
 		    let totalMinutes = totalTime ? totalTime.get('minutes') : null;
 		    totalMinutes = totalMinutes != null && totalMinutes < 10 ? '0' + totalMinutes : totalMinutes;
-		    let divider = totalTime ? Globalize.formatMessage('sleeptracker-time-unit-divider') : null;
-		    let timeValue = totalHours + divider + totalMinutes;
+		    let h = totalTime ? Globalize.formatMessage('sleeptracker-time-unit-hours-abv') + ' ' : null;
+		    let m = totalTime ? Globalize.formatMessage('sleeptracker-time-unit-minutes-abv') : null;
+		    let timeValue = totalHours + h + (totalMinutes != null && totalMinutes > 0 ? totalMinutes + m : '');
 	      		
     		var obsDate = moment(parseInt(dt, 10));
   			var obsDateStr = obsDate.format('YYYY-MM-DD');

@@ -10,5 +10,5 @@ tmp
 .sass-cache
 .env
 .c9
-**/**.log
-**/*.log
+**/**.log*
+**/*.log*

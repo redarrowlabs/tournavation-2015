@@ -3,6 +3,8 @@ import universalRender from '../shared/universal-render';
 import createFlux from '../shared/flux/create-flux';
 import moment from 'moment';
 
+import 'react-widgets/lib/less/react-widgets.less';
+
 import Globalize from 'globalize';
 /*Globalize.load(require("cldr-data").entireSupplemental());
 Globalize.load(require("cldr-data").entireMainFor("en", "es"));*/
@@ -36,6 +38,7 @@ Globalize.load(
 	require("cldr-data/supplemental/windowsZones.json")
 );
 Globalize.loadMessages(require("../shared/globalization/en.json"));
+Globalize.loadMessages(require("../shared/globalization/es.json"));
 // prime globalization
 Globalize.locale('en');
 moment.locale('en');
