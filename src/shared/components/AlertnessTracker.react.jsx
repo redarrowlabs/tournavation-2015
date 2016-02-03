@@ -45,9 +45,9 @@ export default React.createClass({
   componentDidUpdate() {
     const currentHealthBehavior = this.state.currentHealthBehavior;
     const selectedLevel = this.getData(currentHealthBehavior).get('level');
-    this._resetSelectStyle(selectedLevel - 1);
     this._forceUpdateCarousel = true;
     this.refs.carousel.goToSlide(selectedLevel - 1);
+    this._resetSelectStyle(selectedLevel - 1);
   },
 
   healthBehaviorStateChanged(state) {

@@ -67,7 +67,7 @@ var ObservationChartBuilder = React.createClass({
                 "lineThickness": 2,
                 "useLineColorForBulletBorder": true,
                 "valueField": "value",
-                "balloonText": "<span style='font-size:18px;'>[[hoverText]]</span>"
+                "balloonText": "<span style='font-size:10x;'>[[hoverText]]</span>"
             }],
             /*"chartScrollbar": {
                 "graph": "g1",
