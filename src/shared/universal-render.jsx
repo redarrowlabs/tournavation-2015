@@ -9,6 +9,9 @@ import routes from './routes';
 import Globalize from 'globalize';
 import moment from 'moment';
 
+var momentLocalizer = require('react-widgets/lib/localizers/moment');
+momentLocalizer(moment);
+
 const bootstrap = () =>
   new Promise((resolve) =>
     Iso.bootstrap((initialState, container) =>

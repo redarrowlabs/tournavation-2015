@@ -2,6 +2,7 @@ import moment from 'moment';
 import React, {PropTypes} from 'react';
 import Globalize from 'globalize';
 import Immutable from 'immutable';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 
 export default React.createClass({
 
@@ -98,9 +99,8 @@ export default React.createClass({
       });
   },
 
-  updateBedTime(event) {
-    const val = event.currentTarget.value;
-    const start = this.parseTimeString(val);
+  updateBedTime(date, dateStr) {
+    const start = moment(date);
     const currentHealthBehavior = this.state.currentHealthBehavior;
     let data = this.getData(currentHealthBehavior)
       .set('start', start);
@@ -116,12 +116,11 @@ export default React.createClass({
     flux.getActions('submit').allowSubmit({component: this.behaviorKey, canSubmit: canSubmit});
   },
 
-  updateWakeTime(event) {
-    let val = event.currentTarget.value;
-    let date = this.parseTimeString(val);
+  updateWakeTime(date, dateStr) {
+    let end = moment(date);
     const currentHealthBehavior = this.state.currentHealthBehavior;
     let data = this.getData(currentHealthBehavior)
-      .set('end', date);
+      .set('end', end);
     data = this._adjustTime(data);
     const canSubmit = this._getCanSubmit(data);
     
@@ -162,33 +161,26 @@ export default React.createClass({
     let totalHours = totalTime ? totalTime.get('hours') : null;
     let totalMinutes = totalTime ? totalTime.get('minutes') : null;
     totalMinutes = totalMinutes != null && totalMinutes < 10 ? '0' + totalMinutes : totalMinutes;
-    let divider = totalTime ? Globalize.formatMessage('sleeptracker-time-unit-divider') : null;
 
-    let startDisplay = start.isValid() ? start.format('HH:mm') : null;
-    let endDisplay = end.isValid() ? end.format('HH:mm') : null;
+    let startDisplay = start.isValid() ? start.toDate() : null;
+    let endDisplay = end.isValid() ? end.toDate() : null;
 
     return (
-      <li className="recordSleep">
-          <strong className="numBG">1</strong>
-          <div className="headerContainer">
-              <h2>{Globalize.formatMessage('sleeptracker-time-title')}</h2>
-              <h3>{Globalize.formatMessage('sleeptracker-time-subtitle')}</h3>
-          </div>
-          <ul>
-              <li>
-                  <img src="images/eveningWentToBed.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-start')}" />
-                  <input type="time" value={startDisplay} onChange={this.updateBedTime} />
-              </li>
-              <li>
-                  <img src="images/morningWokeUp.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-end')}" />
-                  <input type="time" value={endDisplay} onChange={this.updateWakeTime} />
-              </li>
-              <li className="hoursSlept">
-                  <p>{Globalize.formatMessage('sleeptracker-time-amount')}</p>
-                  <p><strong>{totalHours}{divider}{totalMinutes}</strong>{Globalize.formatMessage('sleeptracker-time-unit')}</p>
-              </li>
-          </ul>           
-      </li>
+      <ul>
+          <li>
+              <img src="images/eveningWentToBed.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-start')}" />
+              <DateTimePicker className="sleepTimePicker" calendar={false} format="hh:mm a" value={startDisplay} onChange={this.updateBedTime} />
+          </li>
+          <li>
+              <img src="images/morningWokeUp.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-end')}" />
+              <DateTimePicker className="sleepTimePicker" calendar={false} format="hh:mm a" value={endDisplay} onChange={this.updateWakeTime} />
+          </li>
+          <li className="hoursSlept">
+              <p>{Globalize.formatMessage('sleeptracker-time-amount')}</p>
+              <div><strong>{totalHours}</strong>{Globalize.formatMessage('sleeptracker-time-unit-hours')}</div>
+              <div><strong>{totalMinutes}</strong>{Globalize.formatMessage('sleeptracker-time-unit-minutes')}</div>
+          </li>
+      </ul>
     );
   }
 });

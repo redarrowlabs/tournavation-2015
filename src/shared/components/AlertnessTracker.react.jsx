@@ -7,10 +7,9 @@ import Immutable from 'immutable';
 import Carousel from '../../../libs/nuka-carousel/carousel';
 
 export default React.createClass({
-  mixins: [Carousel.ControllerMixin],
-
+  mixins: [Carousel.ControllerMixin],  
+  displayName: 'AlertnessTracker',
   contextTypes: { flux: PropTypes.object.isRequired },
-
   behaviorKey: "alertness-level",
 
   componentWillMount() {
@@ -35,10 +34,20 @@ export default React.createClass({
     flux.getStore('date').unlisten(this.dateStateChanged);
   },
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const ret = !this._forceUpdateCarousel;
+    this._forceUpdateCarousel = false;
+    return ret;
+  },
+
+  // Update the selected item style
+  // TODO WORKAROUND: force carousel to go to loaded slide (on date change)
   componentDidUpdate() {
     const currentHealthBehavior = this.state.currentHealthBehavior;
     const selectedLevel = this.getData(currentHealthBehavior).get('level');
     this._resetSelectStyle(selectedLevel - 1);
+    this._forceUpdateCarousel = true;
+    this.refs.carousel.goToSlide(selectedLevel - 1);
   },
 
   healthBehaviorStateChanged(state) {
@@ -105,6 +114,9 @@ export default React.createClass({
   },
 
   updateLevel(index) {
+    //TODO FIX
+    if (this._forceUpdateCarousel) {return;}
+    
     const level = index + 1;
     const currentHealthBehavior = this.state.currentHealthBehavior;
     const data = this.getData(currentHealthBehavior)
@@ -122,34 +134,29 @@ export default React.createClass({
   render() {
     this.levels = [];
 
-    const currentHealthBehavior = this.state.currentHealthBehavior;
-    const selectedLevel = this.getData(currentHealthBehavior).get('level');
+    //TODO: FIX WORKAROUND
+    //const currentHealthBehavior = this.state.currentHealthBehavior;
+    //const selectedLevel = this.getData(currentHealthBehavior).get('level');
+    /*initialSlideIndex={selectedLevel-1}*/
 
     return (
-      <li className="alertnessLevel">
-        <strong className="numBG">2</strong>
-        <div className="headerContainer">
-            <h2>{Globalize.formatMessage('alertnesstracker-level-title')}</h2>
-            <h3>{Globalize.formatMessage('alertnesstracker-level-subtitle')}</h3>
-        </div>
-        <Carousel className="carousel"
-          ref="carousel" 
-          data={this.setCarouselData.bind(this, 'carousel')}
-          decorators={this.Decorators}
-          slidesToShow={3}
-          slidesToScroll={1}
-          cellAlign="center"
-          dragging={true}
-          easing="easeInOutElastic"
-          edgeEasing="easeOutCirc"
-          afterSlide={this.updateLevel}>
-          <img src="images/level-1.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 0)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-          <img src="images/level-2.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 1)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-          <img src="images/level-3.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 2)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-          <img src="images/level-4.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 3)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-          <img src="images/level-5.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 4)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-        </Carousel>
-      </li>
+      <Carousel className="carousel"
+        ref="carousel" 
+        data={this.setCarouselData.bind(this, 'carousel')}
+        decorators={this.Decorators}
+        slidesToShow={3}
+        slidesToScroll={1}
+        cellAlign="center"
+        dragging={true}
+        easing="easeInOutElastic"
+        edgeEasing="easeOutCirc"
+        afterSlide={this.updateLevel}>
+        <img src="images/level-1.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 0)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+        <img src="images/level-2.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 1)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+        <img src="images/level-3.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 2)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+        <img src="images/level-4.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 3)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+        <img src="images/level-5.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 4)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+      </Carousel>
     );
   },
 
