@@ -36,6 +36,7 @@ var ObservationChartBuilder = React.createClass({
             "autoMarginOffset": 20,
             "dataDateFormat": "YYYY-MM-DD",
             "categoryField": "date",
+            "plotAreaFillAlphas": 1,
             "titles": [ {
                 "text": this.props.chartTitle,
                 "size": 15
@@ -54,6 +55,7 @@ var ObservationChartBuilder = React.createClass({
             },
             "graphs": [{
                 "id": "g1",
+                "type": "line",
                 "balloon":{
                   "drop":true,
                   "adjustBorderColor":false,
@@ -64,6 +66,8 @@ var ObservationChartBuilder = React.createClass({
                 "bulletColor": "#FFFFFF",
                 "bulletSize": 5,
                 "hideBulletsCount": 50,
+                "lineAlpha": 1,
+                "lineColor": "#000000",
                 "lineThickness": 2,
                 "useLineColorForBulletBorder": true,
                 "valueField": "value",

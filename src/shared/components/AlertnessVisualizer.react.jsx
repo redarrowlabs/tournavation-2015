@@ -90,7 +90,7 @@ export default React.createClass({
 		var transformedData = this.generateChartData(this.state.alertnessData);
 		return (
 			<div>
-		    	<ObservationChart chartData={transformedData} chartName='alertness' chartTitle={Globalize.formatMessage('alertnessvisualizer-title')} axisMappings={this.alertnessLabelMappings()}/>
+		    	<ObservationChart chartData={transformedData} chartName='alertness-chart' chartTitle={Globalize.formatMessage('alertnessvisualizer-title')} axisMappings={this.alertnessLabelMappings()}/>
 			</div>
 		);
 	}

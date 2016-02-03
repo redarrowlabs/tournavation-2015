@@ -78,35 +78,41 @@ const App = React.createClass({
 
   render() {
     return (
-      <div id="mainContainer">
-        <header className="logoExport">
-            <h1>{Globalize.formatMessage('app-title')}</h1>
-            {this.renderGreeting()}
-           {/* <select className="output">
-                <option>Export</option> 
-            </select>*/}
-        </header>
+      <div>
+        {this.renderHeader()}
 
         {this.props.children}
 
         <footer style={{clear:"both"}}>
-            <p>{Globalize.formatMessage('app-footer-power')} <a href="#">{Globalize.formatMessage('app-footer-group')}</a> | <a href="#">{Globalize.formatMessage('app-footer-contact')}</a></p>
+            <p>
+              {Globalize.formatMessage('app-footer-power')}
+              <a href="http://www.redarrowlabs.com/">
+                <img src="http://www.redarrowlabs.com/Images/ral-logo-notag.png" alt="Red Arrow Labs logo"/>
+              </a> 
+               <a href="#">{Globalize.formatMessage('app-footer-group')}</a> | <a href="#">{Globalize.formatMessage('app-footer-contact')}</a>
+            </p>
         </footer>
       </div>
     );
   },
 
-  renderGreeting() {
+  renderHeader() {
     const isAuthenticated = this.state.isAuthenticated;
     if (isAuthenticated) {      
       const user = this.state.userName;
       const greeting = user ? Globalize.formatMessage('app-greeting-user', user) : Globalize.formatMessage('app-greeting-welcome');
 
       return (
-        <ul className="signInInfo">
-            <li className="greeting">{greeting}</li>
-            <li><a href="#" onClick={this.signOut}>{Globalize.formatMessage('app-signout')}</a></li>
-        </ul>
+        <header>
+          <div className="logoExport">
+            <h1>{Globalize.formatMessage('app-title')}</h1>
+            <ul className="signInInfo">
+                <li className="greeting">{greeting}</li>
+                <li><a href="#" onClick={this.signOut}>{Globalize.formatMessage('app-signout')}</a></li>
+            </ul>
+          </div>
+          <div className="logoHeaderBG"></div>
+        </header>
       );
     }
 

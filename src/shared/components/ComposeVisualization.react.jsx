@@ -16,12 +16,13 @@ export default React.createClass({
   render() {
     return (
       <section className="trackData">
+          <strong className="numBG">3</strong>
           <div className="headerContainer">
             <h2>{Globalize.formatMessage('visualize-title')}</h2>
             <h3>{Globalize.formatMessage('visualize-subtitle')}</h3>
           </div>
-          <SleepVisualizer key="sleep-visualizer" />
-          <AlertnessVisualizer key="alertness-visualizer" />       
+          <AlertnessVisualizer key="alertness-visualizer" /> 
+          <SleepVisualizer key="sleep-visualizer" />      
       </section>
     );
   }

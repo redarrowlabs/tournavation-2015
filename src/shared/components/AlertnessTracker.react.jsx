@@ -140,23 +140,26 @@ export default React.createClass({
     /*initialSlideIndex={selectedLevel-1}*/
 
     return (
-      <Carousel className="carousel"
-        ref="carousel" 
-        data={this.setCarouselData.bind(this, 'carousel')}
-        decorators={this.Decorators}
-        slidesToShow={3}
-        slidesToScroll={1}
-        cellAlign="center"
-        dragging={true}
-        easing="easeInOutElastic"
-        edgeEasing="easeOutCirc"
-        afterSlide={this.updateLevel}>
-        <img src="images/level-1.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 0)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-        <img src="images/level-2.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 1)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-        <img src="images/level-3.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 2)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-        <img src="images/level-4.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 3)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-        <img src="images/level-5.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 4)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-      </Carousel>
+      <div id="carousel">
+        <Carousel className="carousel"
+          ref="carousel" 
+          data={this.setCarouselData.bind(this, 'carousel')}
+          decorators={this.Decorators}
+          slidesToShow={3}
+          slidesToScroll={1}
+          cellAlign="center"
+          dragging={true}
+          easing="easeInOutElastic"
+          edgeEasing="easeOutCirc"
+          afterSlide={this.updateLevel}>
+          <img src="images/level-1.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 0)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+          <img src="images/level-2.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 1)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+          <img src="images/level-3.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 2)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+          <img src="images/level-4.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 3)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+          <img src="images/level-5.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 4)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+        </Carousel>
+        <p className="chooseEmotion">{Globalize.formatMessage('alertnesstracker-choose')}</p>
+      </div>
     );
   },
 

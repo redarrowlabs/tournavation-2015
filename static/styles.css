@@ -48,23 +48,45 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+a {color:#fff;}
+a:hover{color:#fff; text-decoration:none;}
 body{
 	width:100%;
-	background-color: #cccccc;
+	background: rgba(16,61,128,1);
+background: -moz-linear-gradient(left, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(16,61,128,1)), color-stop(53%, rgba(35,106,160,1)), color-stop(100%, rgba(122,165,199,1)));
+background: -webkit-linear-gradient(left, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
+background: -o-linear-gradient(left, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
+background: -ms-linear-gradient(left, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
+background: linear-gradient(to right, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#103d80', endColorstr='#7aa5c7', GradientType=1 );
 	position:relative;
 }
 #mainContainer{
-	max-width:1025px;
+	max-width:1100px;
 	margin: 0 auto;
-	background-color:#fff;
 }
-header.logoExport{
-	background-color:#949494;
-	padding:10px;
-	max-width:100%;
+.logoExport{
 	height:auto;
-	min-height:30px;
-	
+	max-width:1100px;
+	margin:0 auto;
+	position: relative;
+	top: .75em;
+	z-index: 2; 
+	color:#fff;
+}
+.logoExport h1{
+	background: transparent url(../images/HH_logo.png) no-repeat;
+	text-indent:-99999px;
+	height:70px;	
+}
+.logoHeaderBG{
+	height: 5em;
+	-moz-opacity:0.4;
+	-khtml-opacity: 0.4;
+	opacity: 0.4;
+	filter:alpha(opacity=40);
+	background: #ffffff;
 }
 h1{
 	font-size: 30px;
@@ -75,23 +97,20 @@ h1{
 h2{
 	font-size: 24px;
 	font-weight: bold;
-	color:#565454;
 	margin: 0 0 5px 0;
 }
 h3{
 	font-size:17px;
-	color:#565454;
-	font-weight: bold;
 	margin: 0 0 10px 0;
 }
-h4,h5{
+h4,h5,strong,b{
 	font-weight:bold;
 }
 footer{
 	text-align: center;
 	color:#fff;
 	clear:both;
-	background-color:#252525;
+	background:transparent url(../images/whiteTransBG.png) repeat;
 	padding:10px;
 }
 
@@ -106,32 +125,36 @@ ul.signInInfo li{
 ul.signInInfo li.greeting{
 	margin: 0 20px 0 0;
 	padding: 0 20px 0 0;
-	border-right:1px solid #000;
+	border-right:1px solid #fff;
 }
 .output{
 	float:right;	
 }
 
 .sleepAlertness {
-	background-color:#e7e7e8;
-	width:35%;
+	width:40%;
 	float:left;
-	padding:10px;
+}
+.sleepAlertness h2, .sleepAlertness h3, .sleepAlertness p, .headerContainer h2, .headerContainer h3{
+	color:#ffffff;	
 }
 .sleepAlertness ul li{
-	padding:10px;
+	padding:20px 15px ;
 }
 .sleepAlertness ul li ul li{
 	padding:5px;
 }
-.sleepAlertnessHeader{
-	width: 100%;
+.chooseEmotion{
+	text-align:center;
+	font-size:12px;
 }
 .recordSleep{
-	border-bottom:3px solid #fff;	
+	position:relative;	
+	background:transparent url(../images/recordSleepBG.png) repeat;
 }
+
 .recordSleep ul {
-	margin: 20px 0;
+	margin: 10px 0;
 	display:inline-block;
 	width:100%;
 	position:relative;
@@ -139,15 +162,27 @@ ul.signInInfo li.greeting{
 .recordSleep ul li img{
 	float:left;
 }
+.recordSleep ul.sleepTime{
+	color:#fff;
+	margin: 5px 0;
+	font-size:13px;
+}
+.recordSleep ul.sleepTime li.bedtime{
+	background:transparent url(../images/moonIcon.png) no-repeat;
+	padding: 2px 10px 7px 22px;
+}
+.recordSleep ul.sleepTime li.wakeup{
+	background:transparent url(../images/sunIcon.png) no-repeat;
+	padding: 2px 10px 7px 22px;
+}
 /*.recordSleep ul li input{
 	font-size:24px;
 	padding:5px;	
 }*/
 .sleepTimePicker{
-	/*font-size:24px;*/
-	padding:5px;
 	display: inline-block;
-	width: 150px;
+	padding:5px;
+	max-width: 150px;	
 }
 .recordSleep ul li{
 	display:inline-block;
@@ -155,119 +190,137 @@ ul.signInInfo li.greeting{
 .recordSleep ul li.hoursSlept{
 	float:right;
 	position:absolute;
-	top:20%;
+	top:4px;
+	right:0;
 	color:#909090;
-	min-width: 100px;
 }
-.recordSleep ul li.hoursSlept div{
-	font-size:14px;
+.youSlept{
+	border:1px solid #fff;
 	text-align:center;
-	display: inline-block;
-	float: left;
-}
-.recordSleep ul li.hoursSlept div strong{
-	font-size:36px;
-	display:block;
+	width:80%;
+	padding:10px;
+	font-size:18px;	
 	font-weight:bold;
+}
+.recordSleep ul li.hoursSlept ul li{
+	background-color:#4f698c;
+	color:#fff;
+}
+.recordSleep ul li.hoursSlept ul li strong{
+	font-weight:bold;
+	font-size: 28px;
+	display:block;	
+	text-align:center;
 }
 .alertnessLevel{
 	position:relative;	
+	background:transparent url(../images/alertnessBG.png) repeat;
 }
 .alert{
 	font-weight:bold;
 	margin:10px 0;
 	font-size:18px;
 }
-.graphData{
-	border-radius:4px;
-	border:1px solid gray;
+.graph{
+	background:transparent url(../images/recordSleepBG.png) repeat;	
 	margin:0 auto;
-	font-size:18px;
-	padding: 20px;
-	width:80%;
+	text-align:center;
+}
+.graphData{
+	border-radius:8px;
+	border:1px solid #ffffff;
+	font-size:16px;
+	padding: 15px 40px;
 	cursor:pointer;
-	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,cccccc+100;Gren+3D */
-	background: #eeeeee; /* Old browsers */
-	background: -moz-linear-gradient(top,  #eeeeee 0%, #cccccc 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom,  #eeeeee 0%,#cccccc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+	background:none;
+	color:#ffffff;
+	font-weight:bold;
 }
 .graphData:hover{
-	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#adadad+0,cccccc+100 */
-	background: #adadad; /* Old browsers */
-	background: -moz-linear-gradient(top,  #adadad 0%, #cccccc 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(top,  #adadad 0%,#cccccc 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom,  #adadad 0%,#cccccc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#adadad', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
-}
-.graphData:disabled {
-	cursor:not-allowed;
+	background:#000;
 }
 .calenderContainer{
-	text-align:center;	
+	text-align:left;
+	margin: 10px;
+	position:relative;
+}
+.calenderContainer strong{
+	font-size:20px;
+	padding:0 10px 0 0;
+}
+.calenderContainer p{
+	display:inline-block;
+	float:left;
+}
+.calenderContainer div{
+	display:inline-block;
+	float:left;
 }
 .numBG{
-	background-color:#565454;
 	color:#fff;
-	padding:6px 10px;
-	border-radius:17px;
+	padding:6px 11px;
+	border-radius:22px;
 	font-weight:bold;
 	float:left;	
 	margin: 0 10px 0 0;
+	border:2px solid #fff;
+	font-size:20px;
 }
 .headerContainer{
 	float:left;	
-	margin: 0 0 20px;
+	margin: 0 0 25px;
 }
 .headerContainer strong{
 	font-size:17px;
-	color:#565454;
 	font-weight: bold;
 }
 .headerContainer input{
 	padding: 3px 3px 3px 5px;	
+	border-radius:4px;
+	width:140px;
 }
+
 .trackData{
 	float:left;
 	padding:20px;
-	background-color: #fff;
-	width:59%;
 }
- .carousel {
+#sleep-chart{
+	background-color: #ffffff;
+	margin: 5px;
+}
+#alertness-chart{
+	background-color: #ffffff;
+	margin: 5px;
+}
+.carousel {
 	width:100%;
-	height:250px;
+	height:200px;
 	position:relative;
 	clear:both;
 	overflow:hidden;
 	margin: 15px 0;
-
-  }
-.carousel-center{
-	border:2px solid #262525;
+	z-index:1;
+}
+img.selectedLevel {
+	border:2px solid #fff;
 }
 
 .split-left {
-	width:50px;
-	float:left;
+width:50px;
+float:left;
 }
 .split-right {
-	width:50px;
-	float:left;
-	margin-left:10px;
+width:50px;
+float:left;
+margin-left:10px;
 }
 #callback-output {
-	height:250px;
-	overflow:scroll;
-}
-img.selectedLevel {
-	padding:1px;
-  border:3px solid #FF8433;
-  background-color:#ff0;
+height:250px;
+overflow:scroll;
 }
 /* End Data Page */
 
-	/* Marketing Page */
+/* Marketing Page */
 .mainSignIn{
 	background: #ffffff url(../images/mainImage.png) no-repeat;
 	height: 294px;
@@ -359,4 +412,3 @@ ul.easySteps li .numBG{
 	width:100%;
 }
 /* End Marketing Page */
-}

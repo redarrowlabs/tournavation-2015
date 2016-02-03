@@ -168,17 +168,19 @@ export default React.createClass({
     return (
       <ul>
           <li>
-              <img src="images/eveningWentToBed.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-start')}" />
+              <img src="images/eveningWentToBed.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-start-img-alt')}" />
               <DateTimePicker className="sleepTimePicker" calendar={false} format="hh:mm a" value={startDisplay} onChange={this.updateBedTime} />
           </li>
           <li>
-              <img src="images/morningWokeUp.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-end')}" />
+              <img src="images/morningWokeUp.png" width="87" height="50" alt="{Globalize.formatMessage('sleeptracker-time-end-img-alt')}" />
               <DateTimePicker className="sleepTimePicker" calendar={false} format="hh:mm a" value={endDisplay} onChange={this.updateWakeTime} />
           </li>
           <li className="hoursSlept">
-              <p>{Globalize.formatMessage('sleeptracker-time-amount')}</p>
-              <div><strong>{totalHours}</strong>{Globalize.formatMessage('sleeptracker-time-unit-hours')}</div>
-              <div><strong>{totalMinutes}</strong>{Globalize.formatMessage('sleeptracker-time-unit-minutes')}</div>
+              <p className="youSlept">{Globalize.formatMessage('sleeptracker-time-amount')}</p>
+              <ul>
+                <li><strong>{totalHours}</strong> {Globalize.formatMessage('sleeptracker-time-unit-hours')}</li>
+                  <li><strong>{totalMinutes}</strong> {Globalize.formatMessage('sleeptracker-time-unit-minutes')}</li>
+              </ul>
           </li>
       </ul>
     );

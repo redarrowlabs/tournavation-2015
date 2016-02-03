@@ -74,10 +74,11 @@ export default React.createClass({
     const maxDate = moment().startOf('day').toDate();
     const dateFormat = date.isSame(maxDate, 'days') ? '[today]' : 'ddd MMM D';
 
-    const bedtimeDisplay = moment(this.state.selectedDate).subtract(1, 'days').format("ddd MMM D");
-    const waketimeDisplay = this.state.selectedDate.format("ddd MMM D");
-    const sleepTrackerSubtitle = Globalize.formatMessage('sleeptracker-time-subtitle', bedtimeDisplay, waketimeDisplay);
-    const titleHtml = {__html: sleepTrackerSubtitle};
+    let bedtimeDisplay = moment(this.state.selectedDate).subtract(1, 'days').format("ddd");
+    bedtimeDisplay = Globalize.formatMessage('sleeptracker-time-bed', bedtimeDisplay);
+
+    let waketimeDisplay = moment(this.state.selectedDate).format("ddd");
+    waketimeDisplay = Globalize.formatMessage('sleeptracker-time-wake', waketimeDisplay);
 
     return (
       <aside className="sleepAlertness">
@@ -86,7 +87,7 @@ export default React.createClass({
             <strong className="numBG">1</strong>
             <div className="headerContainer">
                 <h2>{Globalize.formatMessage('alertnesstracker-level-title')}</h2>
-                <h3>{Globalize.formatMessage('app-day-header')} <DateTimePicker time={false} format={dateFormat} value={date.toDate()} max={maxDate} onChange={this.updateDate} /></h3>
+                <div className="calenderContainer"><p><strong>{Globalize.formatMessage('tracker-day-header')}</strong></p> <DateTimePicker time={false} format={dateFormat} value={date.toDate()} max={maxDate} onChange={this.updateDate} /></div>
             </div>
             <AlertnessTracker ref={ (ref) => {if (ref !== null ) this.trackers.push(ref);} } />
           </li>
@@ -94,13 +95,16 @@ export default React.createClass({
               <strong className="numBG">2</strong>
               <div className="headerContainer">
                   <h2>{Globalize.formatMessage('sleeptracker-time-title')}</h2>
-                  <h3  dangerouslySetInnerHTML={titleHtml}></h3>
+                  <ul className="sleepTime">
+                    <li className="bedtime">{bedtimeDisplay}</li>
+                    <li className="wakeup">{waketimeDisplay}</li>
+                  </ul>
               </div>
               <SleepTracker ref={ (ref) => {if (ref !== null ) this.trackers.push(ref);} } />
           </li>
-          <li>
+          <li className="graph">
             <div>
-              <button className="graphData" onClick={this.handleSubmit} disabled={isDisabled}>{Globalize.formatMessage('app-submit')}</button>
+              <button className="graphData" onClick={this.handleSubmit} disabled={isDisabled}>{Globalize.formatMessage('tracker-submit')}</button>
             </div>
           </li>            
         </ul>

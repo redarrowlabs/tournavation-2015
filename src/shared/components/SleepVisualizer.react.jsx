@@ -68,7 +68,7 @@ export default React.createClass({
 		var transformedData = this.generateChartData(this.state.sleepData);
 		return (
 			<div>
-		    	<ObservationChart chartData={transformedData} chartName='sleep' chartTitle={Globalize.formatMessage('sleepvisualizer-title')}/>
+		    	<ObservationChart chartData={transformedData} chartName='sleep-chart' chartTitle={Globalize.formatMessage('sleepvisualizer-title')}/>
 			</div>
 		);
 	}
