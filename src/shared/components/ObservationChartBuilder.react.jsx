@@ -61,7 +61,8 @@ var ObservationChartBuilder = React.createClass({
           "id": "v1",
           "labelFunction": this.props.axisMappings ? this.formatAxisValue : null,
           "axisColor": "#FFFFFF",
-          "gridColor": "#FFFFFF"
+          "gridColor": "#FFFFFF",
+          "includeAllValues": true
         }],
         "titles": [ {
           "text": this.props.chartTitle,
