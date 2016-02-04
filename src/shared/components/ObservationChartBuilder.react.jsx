@@ -28,90 +28,49 @@ var ObservationChartBuilder = React.createClass({
 	buildChart(data) {
 		if (!this.state.scriptsReady) { return; }
 
-        var chartSettings = {
-            "type": "serial",
-            "theme": "light",
-            "marginRight": 40,
-            "marginLeft": 40,
-            "autoMarginOffset": 20,
-            "dataDateFormat": "YYYY-MM-DD",
-            "categoryField": "date",
-            "plotAreaFillAlphas": 1,
-            "titles": [ {
-                "text": this.props.chartTitle,
-                "size": 15
-            }],
-            "dataProvider": data,
-            "valueAxes": [{
-                "id": "v1",
-                "axisAlpha": 0,
-                "position": "left",
-                //"ignoreAxisWidth":true, // this causes the custom axis labels to get cut off
-                "labelFunction": this.props.axisMappings ? this.formatAxisValue : null,
-            }],
-            "balloon": {
-                "borderThickness": 1,
-                "shadowAlpha": 0
-            },
-            "graphs": [{
-                "id": "g1",
-                "type": "line",
-                "balloon":{
-                  "drop":true,
-                  "adjustBorderColor":false,
-                  "color":"#ffffff"
-                },
-                "bullet": "round",
-                "bulletBorderAlpha": 1,
-                "bulletColor": "#FFFFFF",
-                "bulletSize": 5,
-                "hideBulletsCount": 50,
-                "lineAlpha": 1,
-                "lineColor": "#000000",
-                "lineThickness": 2,
-                "useLineColorForBulletBorder": true,
-                "valueField": "value",
-                "balloonText": "<span style='font-size:10x;'>[[hoverText]]</span>"
-            }],
-            /*"chartScrollbar": {
-                "graph": "g1",
-                "oppositeAxis":false,
-                "offset":30,
-                "scrollbarHeight": 80,
-                "backgroundAlpha": 0,
-                "selectedBackgroundAlpha": 0.1,
-                "selectedBackgroundColor": "#888888",
-                "graphFillAlpha": 0,
-                "graphLineAlpha": 0.5,
-                "selectedGraphFillAlpha": 0,
-                "selectedGraphLineAlpha": 1,
-                "autoGridCount":true,
-                "color":"#AAAAAA"
-            },*/
-            "chartCursor": {
-                "pan": true,
-                "valueLineEnabled": true,
-                "valueLineBalloonEnabled": true,
-                "cursorAlpha":1,
-                "cursorColor":"#258cbb",
-                "limitToGraph":"g1",
-                "valueLineAlpha":0.2
-            },
-            /*"valueScrollbar":{
-              "oppositeAxis":false,
-              "offset":50,
-              "scrollbarHeight":10
-            },*/
-            "categoryField": "date",
-            "categoryAxis": {
-                "parseDates": true,
-                "dashLength": 1,
-                "minorGridEnabled": true
-            },
-            "export": {
-                "enabled": true
-            }
-        };
+      var chartSettings = {
+        "dataProvider": data,
+        "type": "serial",
+        "categoryField": "date",
+        "dataDateFormat": "YYYY-MM-DD",
+        "theme": "light",
+        "fontFamily": "Arial,San-serif",
+        "color": "#FFFFFF",
+        "plotAreaBorderColor": "#FFFFFF",
+        "startDuration": 2,
+        "autoResize": true,
+        "autoDisplay": true,
+        "autoMarginOffset": 5,
+        "categoryAxis": {
+          "parseDates": true,
+          "axisColor": "#FFFFFF",
+          "gridColor": "#FFFFFF"
+        },
+        "chartCursor": {
+          "enabled": true
+        },
+        "graphs": [{
+          "id": "g1",
+          "type": "line",
+          "bullet": "round",
+          "lineThickness": 2,
+          "valueField": "value",
+          "balloonText": "<span style='font-size:10x;'>[[hoverText]]</span>"
+        }],
+        "valueAxes": [{
+          "id": "v1",
+          "labelFunction": this.props.axisMappings ? this.formatAxisValue : null,
+          "axisColor": "#FFFFFF",
+          "gridColor": "#FFFFFF"
+        }],
+        "titles": [ {
+          "text": this.props.chartTitle,
+          "size": 15
+        }],
+        "export": {
+          "enabled": true
+        }
+      };
 
 		var chart = AmCharts.makeChart(
             this.props.chartName, chartSettings);
@@ -130,12 +89,12 @@ var ObservationChartBuilder = React.createClass({
   	this.buildChart(this.props.chartData);
     return (
     	<div>
-        	<div id={this.props.chartName} style={{width: "100%", height: "300px"}}></div>
+        	<div id={this.props.chartName} style={{width: "100%"}}></div>
     	</div>
   	);
   }
 });
 
 export default scriptLoader(
-  '/amcharts/amcharts.js','/amcharts/serial.js','/amcharts/themes/dark.js'
+  '/amcharts/amcharts.js','/amcharts/serial.js','/amcharts/themes/dark.js','/amcharts/themes/light.js','/amcharts/themes/chalk.js'
 )(ObservationChartBuilder);

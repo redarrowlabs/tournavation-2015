@@ -135,9 +135,8 @@ export default React.createClass({
     this.levels = [];
 
     //TODO: FIX WORKAROUND
-    //const currentHealthBehavior = this.state.currentHealthBehavior;
-    //const selectedLevel = this.getData(currentHealthBehavior).get('level');
-    /*initialSlideIndex={selectedLevel-1}*/
+    const currentHealthBehavior = this.state.currentHealthBehavior;
+    const selectedLevel = this.getData(currentHealthBehavior).get('level') || 3;    
 
     return (
       <div id="carousel">
@@ -147,31 +146,36 @@ export default React.createClass({
           decorators={this.Decorators}
           slidesToShow={3}
           slidesToScroll={1}
+          initialSlideIndex={selectedLevel-1}
           cellAlign="center"
           dragging={true}
           easing="easeInOutElastic"
           edgeEasing="easeOutCirc"
           afterSlide={this.updateLevel}>
-          {this.renderTile(0, "images/level-1.png")}
-          <img src="images/level-1.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 0)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-          <img src="images/level-2.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 1)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-          <img src="images/level-3.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 2)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-          <img src="images/level-4.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 3)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
-          <img src="images/level-5.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 4)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+          {this.renderTile(0, "url(../images/level-1.png)")}
+          {this.renderTile(1, "url(../images/level-2.png)")}
+          {this.renderTile(2, "url(../images/level-3.png)")}
+          {this.renderTile(3, "url(../images/level-4.png)")}
+          {this.renderTile(4, "url(../images/level-5.png)")}
         </Carousel>
         <p className="chooseEmotion">{Globalize.formatMessage('alertnesstracker-choose')}</p>
       </div>
     );
   },
 
+          /*onMouseDown={e => this._startClick(e)}
+          onMouseUp={e => this._endClick(e, 0)}*/
+          //onClick={e => this.refs.carousel.goToSlide(index)}
+        //<img src={image} />
   renderTile(index, image) {
     return(
-        <img className="alertnessLevelImage"
-          src={image}
-          title={Globalize.formatMessage('alertnesstracker-level-' + (index+1))}
-          onMouseDown={e => this._startClick(e)}
-          onMouseUp={e => this._endClick(e, 0)}
-          ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
+      <ul className="alertnessLevelContainer"
+        onMouseDown={e => this._startClick(e)}
+        onMouseUp={e => this._endClick(e, index)}
+        ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} }
+        style={{backgroundImage:image}}>
+        <li>{Globalize.formatMessage('alertnesstracker-level-' + (index+1))}</li>
+      </ul>
     );
   },
 
