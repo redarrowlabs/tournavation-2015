@@ -84,13 +84,12 @@ const App = React.createClass({
         {this.props.children}
 
         <footer style={{clear:"both"}}>
-            <p>
-              {Globalize.formatMessage('app-footer-power')}
-              <a href="http://www.redarrowlabs.com/">
-                <img src="http://www.redarrowlabs.com/Images/ral-logo-notag.png" alt="Red Arrow Labs logo"/>
-              </a> 
-               <a href="#">{Globalize.formatMessage('app-footer-group')}</a> | <a href="#">{Globalize.formatMessage('app-footer-contact')}</a>
-            </p>
+          <p>
+            {Globalize.formatMessage('app-footer-power')}
+            <a href="http://www.redarrowlabs.com/">
+              <img src="http://www.redarrowlabs.com/Images/ral-logo-notag.png" alt="Red Arrow Labs logo"/>
+            </a> 
+          </p>
         </footer>
       </div>
     );

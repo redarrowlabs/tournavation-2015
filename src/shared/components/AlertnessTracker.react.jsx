@@ -152,6 +152,7 @@ export default React.createClass({
           easing="easeInOutElastic"
           edgeEasing="easeOutCirc"
           afterSlide={this.updateLevel}>
+          {this.renderTile(0, "images/level-1.png")}
           <img src="images/level-1.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 0)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
           <img src="images/level-2.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 1)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
           <img src="images/level-3.png" onMouseDown={e => this._startClick(e)} onMouseUp={e => this._endClick(e, 2)} ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
@@ -160,6 +161,17 @@ export default React.createClass({
         </Carousel>
         <p className="chooseEmotion">{Globalize.formatMessage('alertnesstracker-choose')}</p>
       </div>
+    );
+  },
+
+  renderTile(index, image) {
+    return(
+        <img className="alertnessLevelImage"
+          src={image}
+          title={Globalize.formatMessage('alertnesstracker-level-' + (index+1))}
+          onMouseDown={e => this._startClick(e)}
+          onMouseUp={e => this._endClick(e, 0)}
+          ref={ (ref) => {if (ref !== null ) this.levels.push(ref);} } />
     );
   },
 

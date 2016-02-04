@@ -24,19 +24,20 @@ export default React.createClass({
       return (
         <div id="mainContainer">
           <section className="mainSignIn">
-            <h2 className="mainMessage">{Globalize.formatMessage('login-main-message')}</h2>
+            {/*<h2 className="mainMessage">{Globalize.formatMessage('login-main-message')}</h2>*/}
             <ul className="signInContainer">
-              <li className="signInText">
-                  <p>{Globalize.formatMessage('login-get-started')}</p>
-                  <h2>{Globalize.formatMessage('login-signin')}</h2>
-                </li>
-                <li className="signInButton">
-                  <button className="g-signin2" id="hh-signin2" height="38" width="200" alt="Sign in with Google"></button>
-                </li>
-                <li className="signInNewUser">
-                  <strong>{Globalize.formatMessage('login-new-user')}</strong>
-                    <p>{Globalize.formatMessage('login-new-user-message')}</p>
-                </li>
+              <li className="signInButton"><img src="images/HH_logo.png" height="92" width="132" alt="HealthHero Logo" /></li>
+              <li className="signInButton">
+                <p>{Globalize.formatMessage('login-get-started')}</p>
+                <h2>{Globalize.formatMessage('login-signin')}</h2>
+              </li>
+              <li className="signInButton">
+                <button className="g-signin2" id="hh-signin2" height="38" width="200" alt="Sign in with Google"></button>
+              </li>
+              <li className="signInNewUser">
+                <strong>{Globalize.formatMessage('login-new-user')}</strong>
+                  <p>{Globalize.formatMessage('login-new-user-message')}</p>
+              </li>
             </ul>
           </section>
           <section className="stepsStory">
@@ -45,23 +46,26 @@ export default React.createClass({
               <ul className="easySteps">
                 <li>
                     <strong className="numBG">1</strong>
-                    <img src="images/addData.png" width="165" height="105" alt="Add Data" />
+                    <img src="images/addData.png" width="112" height="110" alt="Add Data" />
                       <h4>{Globalize.formatMessage('login-steps-add')}</h4>
                   </li>
                   <li>
                     <strong className="numBG">2</strong>
-                      <img src="images/submitData.png" width="165" height="105" alt="Submit Data" />
+                      <img src="images/submitData.png" width="112" height="110" alt="Submit Data" />
                       <h4>{Globalize.formatMessage('login-steps-submit')}</h4>
                   </li>
                   <li>
                     <strong className="numBG">3</strong>
-                      <img src="images/trackData.png" width="165" height="105" alt="Track Data" />
+                      <img src="images/trackData.png" width="112" height="110" alt="Track Data" />
                       <h4>{Globalize.formatMessage('login-steps-track')}</h4>
                   </li>
               </ul>
               <div className="healthHeroStory">
                   <h5>{Globalize.formatMessage('login-story-main')}</h5>
                   <p>{Globalize.formatMessage('login-story-sub')}</p>
+                  <div id="storybutton">
+                    <a href="https://github.com/redarrowlabs/tournavation-2015">{Globalize.formatMessage('login-story-link')}</a>
+                  </div>
               </div>
           </section>
         </div>

@@ -91,7 +91,7 @@ module.exports = {
 		new CommonsChunkPlugin("vendor", "vendor-bundle.js"),
 		new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.OccurenceOrderPlugin(),
-		new webpack.optimize.UglifyJsPlugin()
+		//new webpack.optimize.UglifyJsPlugin()
 	],
 	module: {
 		loaders: [

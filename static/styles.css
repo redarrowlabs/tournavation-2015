@@ -53,13 +53,13 @@ a:hover{color:#fff; text-decoration:none;}
 body{
 	width:100%;
 	background: rgba(16,61,128,1);
-background: -moz-linear-gradient(left, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
-background: -webkit-gradient(left top, right top, color-stop(0%, rgba(16,61,128,1)), color-stop(53%, rgba(35,106,160,1)), color-stop(100%, rgba(122,165,199,1)));
-background: -webkit-linear-gradient(left, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
-background: -o-linear-gradient(left, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
-background: -ms-linear-gradient(left, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
-background: linear-gradient(to right, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#103d80', endColorstr='#7aa5c7', GradientType=1 );
+	background: -moz-linear-gradient(left, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
+	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(16,61,128,1)), color-stop(53%, rgba(35,106,160,1)), color-stop(100%, rgba(122,165,199,1)));
+	background: -webkit-linear-gradient(left, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
+	background: -o-linear-gradient(left, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
+	background: -ms-linear-gradient(left, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
+	background: linear-gradient(to right, rgba(16,61,128,1) 0%, rgba(35,106,160,1) 53%, rgba(122,165,199,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#103d80', endColorstr='#7aa5c7', GradientType=1 );
 	position:relative;
 }
 #mainContainer{
@@ -78,7 +78,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#103d80', end
 .logoExport h1{
 	background: transparent url(../images/HH_logo.png) no-repeat;
 	text-indent:-99999px;
-	height:70px;	
+	height:70px;
+	background-size: 90px 60px;
 }
 .logoHeaderBG{
 	height: 5em;
@@ -101,7 +102,7 @@ h2{
 }
 h3{
 	font-size:17px;
-	margin: 0 0 10px 0;
+	margin: 0px 0px 10px 0;
 }
 h4,h5,strong,b{
 	font-weight:bold;
@@ -302,29 +303,62 @@ ul.signInInfo li.greeting{
 	z-index:1;
 }
 img.selectedLevel {
-	border:2px solid #fff;
+  border:2px solid #fff;
+}
+/*.alertnessLevelImage{
+	width: 100%;
+	height: 100%;
+}*/
+.alertnessLevelTitle{
+	text-align: center;
+	width: 100%;
+	height: 100%;
+	vertical-align: bottom;
 }
 
 .split-left {
-width:50px;
-float:left;
+  width:50px;
+  float:left;
 }
+
 .split-right {
-width:50px;
-float:left;
-margin-left:10px;
+  width:50px;
+  float:left;
+  margin-left:10px;
 }
+
 #callback-output {
-height:250px;
-overflow:scroll;
+  height:250px;
+  overflow:scroll;
 }
+
 /* End Data Page */
 
 /* Marketing Page */
 .mainSignIn{
 	background: #ffffff url(../images/mainImage.png) no-repeat;
-	height: 294px;
+	height: 500px;
 	position:relative;
+}
+.mainSignIn .logoExport h1{
+  height: 92px;
+}
+.mainSignIn h2{
+  padding: 20px 0px 0 0;
+}
+.mainSignIn h3{
+	padding: 40px 0px 0 0;
+}
+.stepsStory h2{
+  padding: 20px 0px 0 0;
+}
+.stepsStory h3{
+	padding: 40px 0px 0 0;
+}
+#storybutton {
+	position: absolute;
+	top: 200px;
+  width: 100%;
 }
 .mainMessage{
 	position:absolute;
@@ -335,19 +369,21 @@ overflow:scroll;
 	color:# 828282;
 }
 ul.signInContainer{
-	position:absolute;
-	right: 20px;
-	top: 30px;
-	background-color:#949494;
-	opacity:.95;
-	color:#fff;
-	padding: 30px;
+  position:absolute;
+  right: 20px;
+  top: 0px;
+  height: 500px;
+  width: 400px;
+  background-color:#ffffff;
+  opacity:.75;
+  color:#000;
+  padding: 0px;
 }
 .signInContainer li.signInText{
 	border-bottom:1px solid #ffffff;
 }
 .signInContainer li.signInText h2{
-	color:#ffffff;
+	color:#000000;
 	margin:10px 0;
 	font-size:35px;
 }
@@ -356,7 +392,7 @@ ul.signInContainer{
 }
 .signInContainer li.signInButton{
 	text-align:center;
-	margin: 20px 0;
+	margin: 40px 0;
 }
 
 .signInContainer li.signInNewUser{
@@ -368,17 +404,21 @@ ul.signInContainer{
 }
 .stepsStory{
 	text-align:center;	
-	margin:20px 0 0 0;
+	margin:0px 0 0 0;
+  background-color: #626ba8;
 }
 .stepsStory h3 {
-	font-size:24px;	
+	font-size:24px;
+  top: 100px;
+  color: #fff;
 }
 .subHeading{
-	font-weight:bold;
 	font-size:18px;	
+  color: #fff;
 }
 ul.easySteps{
-	margin:30px 0;	
+	margin:30px 0;
+  color: #fff
 }
 ul.easySteps li{
 	display:inline-block;	
