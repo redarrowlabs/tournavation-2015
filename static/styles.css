@@ -284,12 +284,14 @@ ul.signInInfo li.greeting{
 	padding:20px;
 }
 #sleep-chart{
+	width: 100%;
 	margin: 5px;
 	max-width: 460px;
 	padding-left: 60px;
 	height: 275px;
 }
 #alertness-chart{
+	width: 100%;
 	margin: 5px;
 	max-width: 460px;
 	height: 275px;

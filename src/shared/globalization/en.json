@@ -46,6 +46,7 @@
     
     "visualize-title": "Track Your Data",
     "visualize-subtitle": "View your data over time to see how you can improve!",
+    "visualize-no-data-message": "The chart contains no data",
 
     "sleepvisualizer-title": "Total Hours of Sleep",
     "alertnessvisualizer-title": "Energy Level"

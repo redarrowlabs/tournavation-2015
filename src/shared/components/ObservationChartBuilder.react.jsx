@@ -1,5 +1,6 @@
 import React from 'react';
 import scriptLoader from 'react-async-script-loader';
+import Globalize from 'globalize';
 
 var ObservationChartBuilder = React.createClass({
   
@@ -7,6 +8,30 @@ var ObservationChartBuilder = React.createClass({
 		if (isScriptLoaded && !this.props.isScriptLoaded) { // load finished
 			if (isScriptLoadSucceed) {
 				this.setState({scriptsReady: true});
+
+        AmCharts.checkEmptyData = function (chart) {
+          if ( 0 == chart.dataProvider.length ) {
+              // set min/max on the value axis
+              //chart.valueAxes[0].minimum = 0;
+              //chart.valueAxes[0].maximum = 100;
+              
+              // add dummy data point
+              var dataPoint = {
+                  dummyValue: 0
+              };
+              dataPoint[chart.categoryField] = '';
+              chart.dataProvider = [dataPoint];
+              
+              // add label
+              chart.addLabel(0, '50%', Globalize.formatMessage('visualize-no-data-message'), 'center');
+              
+              // set opacity of the chart div
+              chart.chartDiv.style.opacity = 0.5;
+              
+              // redraw it
+              chart.validateNow();
+          }
+        }
 			}
 			else this.props.onError()
 		}
@@ -29,7 +54,7 @@ var ObservationChartBuilder = React.createClass({
 		if (!this.state.scriptsReady) { return; }
 
       var chartSettings = {
-        "dataProvider": data,
+        "dataProvider": data || [],
         "type": "serial",
         "categoryField": "date",
         "dataDateFormat": "YYYY-MM-DD",
@@ -73,8 +98,8 @@ var ObservationChartBuilder = React.createClass({
         }
       };
 
-		var chart = AmCharts.makeChart(
-            this.props.chartName, chartSettings);
+		var chart = AmCharts.makeChart(this.props.chartName, chartSettings);
+    AmCharts.checkEmptyData(chart);
   },
 
   formatAxisValue(value, formattedValue, valueAxis){
@@ -88,9 +113,13 @@ var ObservationChartBuilder = React.createClass({
 
   render() {
   	this.buildChart(this.props.chartData);
+    let style = (this.props.chartData || []).length === 0
+      ? {paddingLeft: "0px"}
+      : null; 
+
     return (
     	<div>
-        	<div id={this.props.chartName} style={{width: "100%"}}></div>
+        	<div id={this.props.chartName} style={style}></div>
     	</div>
   	);
   }
