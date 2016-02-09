@@ -1,5 +1,6 @@
 import express from "express";
 import locale from 'express-locale';
+import favicon from 'serve-favicon';
 import { createLocation } from "history";
 import appConfig from './config';
 import compression from 'compression';
@@ -33,6 +34,7 @@ server.use(locale({
 
 // serve static assets normally
 server.use(express.static('static', {maxAge: appConfig.get('cacheAge')}));
+server.use(favicon('static/favicon.ico'));
 // add content compression middle-ware
 server.use(compression());
 // Set view path
