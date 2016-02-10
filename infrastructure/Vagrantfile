@@ -1,0 +1,14 @@
+Vagrant.configure(2) do |config|
+  # Which box to use
+  config.vm.box = "jerry-locke/HealthHero_Jenkins_Master"
+ 
+  # Using DHCP for dev.
+  # In a prod env - consider setting a static ip.
+  config.vm.network "public_network"
+
+  # Config to get Internet access inside the VM
+  config.vm.provider "virtualbox" do |v|
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  end
+end
